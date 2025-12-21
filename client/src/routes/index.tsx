@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { Button } from '@/components/ui'
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -14,12 +15,10 @@ function HomePage() {
         Juego de deducción social con palabras
       </p>
       <div className="flex gap-4">
-        <button className="rounded-lg bg-[--color-accent-cyan] px-6 py-3 font-semibold text-[--color-bg-primary] transition-transform hover:scale-105">
-          Crear Sala
-        </button>
-        <button className="rounded-lg border-2 border-[--color-accent-purple] px-6 py-3 font-semibold text-[--color-accent-purple] transition-transform hover:scale-105">
+        <Button size="lg">Crear Sala</Button>
+        <Button variant="outline" size="lg">
           Unirse
-        </button>
+        </Button>
       </div>
     </div>
   )
