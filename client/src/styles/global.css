@@ -1,0 +1,51 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Background */
+  --color-bg-primary: #1a1a2e;
+  --color-bg-secondary: #16213e;
+  --color-bg-card: #0f3460;
+
+  /* Accent - Party style */
+  --color-accent-pink: #e94560;
+  --color-accent-yellow: #f9ed69;
+  --color-accent-cyan: #08d9d6;
+  --color-accent-purple: #a855f7;
+
+  /* Text */
+  --color-text: #f0f0f0;
+  --color-text-muted: #9ca3af;
+
+  /* States */
+  --color-success: #22c55e;
+  --color-danger: #ef4444;
+  --color-warning: #f59e0b;
+}
+
+html {
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--color-accent-cyan);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
