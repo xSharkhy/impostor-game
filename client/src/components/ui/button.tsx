@@ -3,30 +3,31 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-accent-cyan] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
         default:
-          'bg-[--color-accent-cyan] text-[--color-bg-primary] hover:scale-105 active:scale-95',
+          'bg-[--color-text] text-[--color-bg-primary] hover:bg-[--color-text]/90',
         primary:
-          'bg-[--color-accent-pink] text-white hover:scale-105 active:scale-95',
+          'bg-[--color-accent-pink] text-white hover:bg-[--color-accent-pink]/90',
         secondary:
-          'bg-[--color-accent-purple] text-white hover:scale-105 active:scale-95',
+          'bg-[--color-bg-card] text-[--color-text] hover:bg-[--color-bg-card]/80',
         outline:
-          'border-2 border-[--color-accent-purple] text-[--color-accent-purple] bg-transparent hover:bg-[--color-accent-purple]/10',
+          'border border-[--color-bg-card] bg-transparent text-[--color-text] hover:bg-[--color-bg-card] hover:text-[--color-text]',
         ghost:
           'text-[--color-text-muted] hover:bg-[--color-bg-card] hover:text-[--color-text]',
+        link: 'text-[--color-accent-cyan] underline-offset-4 hover:underline',
         danger:
-          'bg-[--color-danger] text-white hover:scale-105 active:scale-95',
+          'bg-[--color-danger] text-white hover:bg-[--color-danger]/90',
         success:
-          'bg-[--color-success] text-white hover:scale-105 active:scale-95',
+          'bg-[--color-success] text-white hover:bg-[--color-success]/90',
       },
       size: {
-        default: 'h-10 px-4 py-2',
+        default: 'h-9 px-4 py-2',
         sm: 'h-8 px-3 text-xs',
-        lg: 'h-12 px-6 text-base',
-        icon: 'h-10 w-10',
+        lg: 'h-10 px-8',
+        icon: 'h-9 w-9',
       },
     },
     defaultVariants: {
