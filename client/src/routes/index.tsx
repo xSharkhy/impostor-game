@@ -1,22 +1,26 @@
 import { useState } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { Button } from '@/components/ui'
 import { LoginForm } from '@/components/auth/LoginForm'
 import { JoinRoom } from '@/components/lobby/JoinRoom'
 import { RoomLobby } from '@/components/lobby/RoomLobby'
-import { useUserStore, useRoomStore } from '@/stores'
+import { GameView } from '@/components/game/GameView'
+import { SuggestWord } from '@/components/words/SuggestWord'
+import { useUserStore, useRoomStore, useGameStore } from '@/stores'
 import { useAuth, useSocket } from '@/hooks'
 
 export const Route = createFileRoute('/')({
   component: HomePage,
 })
 
-type View = 'home' | 'join'
+type View = 'home' | 'join' | 'suggest'
 
 function HomePage() {
   const [view, setView] = useState<View>('home')
+  const navigate = useNavigate()
   const { user, isAuthenticated, isLoading } = useUserStore()
   const { room } = useRoomStore()
+  const { phase } = useGameStore()
   const { signOut } = useAuth()
   const { createRoom, isConnected } = useSocket()
 
@@ -28,7 +32,16 @@ function HomePage() {
     )
   }
 
-  // If in a room, show lobby
+  // If game is in progress, show game view
+  if (room && phase !== 'waiting') {
+    return (
+      <div className="flex min-h-[100dvh] flex-col items-center justify-center px-6 py-12">
+        <GameView />
+      </div>
+    )
+  }
+
+  // If in a room lobby, show lobby
   if (room) {
     return (
       <div className="flex min-h-[100dvh] flex-col items-center justify-center px-6 py-12">
@@ -52,6 +65,8 @@ function HomePage() {
         {isAuthenticated ? (
           view === 'join' ? (
             <JoinRoom onBack={() => setView('home')} />
+          ) : view === 'suggest' ? (
+            <SuggestWord onClose={() => setView('home')} />
           ) : (
             <div className="space-y-6">
               <p className="text-sm text-[--color-text-muted]">
@@ -71,6 +86,24 @@ function HomePage() {
                   onClick={() => setView('join')}
                 >
                   Unirse
+                </Button>
+              </div>
+              <div className="flex gap-2 justify-center">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-[--color-text-muted]"
+                  onClick={() => setView('suggest')}
+                >
+                  Sugerir palabra
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-[--color-text-muted]"
+                  onClick={() => navigate({ to: '/admin' })}
+                >
+                  Admin
                 </Button>
               </div>
               <Button

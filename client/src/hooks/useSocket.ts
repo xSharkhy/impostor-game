@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { supabase } from '@/lib/supabase'
-import { useRoomStore } from '@/stores'
+import { useRoomStore, useGameStore } from '@/stores'
 import type { ClientToServerEvents, ServerToClientEvents } from '@impostor/shared'
 
 type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>
@@ -40,8 +40,6 @@ export function useSocket() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const roomStore = useRoomStore.getState()
-
     const setupSocket = async () => {
       const socket = await getOrCreateSocket()
       if (!socket) {
@@ -97,6 +95,31 @@ export function useSocket() {
         useRoomStore.getState().setError(message)
       })
 
+      // Game events
+      socket.on('game:started', (data) => {
+        useGameStore.getState().startGame(data)
+      })
+
+      socket.on('game:newRound', ({ round }) => {
+        useGameStore.getState().setRound(round)
+      })
+
+      socket.on('game:votingStarted', () => {
+        useGameStore.getState().startVoting()
+      })
+
+      socket.on('vote:update', ({ votes, twoThirdsReached }) => {
+        useGameStore.getState().updateVotes(votes, twoThirdsReached)
+      })
+
+      socket.on('vote:result', ({ eliminated, wasImpostor }) => {
+        useGameStore.getState().setVoteResult(eliminated, wasImpostor)
+      })
+
+      socket.on('game:ended', ({ winner, impostorId }) => {
+        useGameStore.getState().endGame(winner, impostorId)
+      })
+
       if (socket.connected) {
         setIsConnected(true)
       }
@@ -122,6 +145,32 @@ export function useSocket() {
     socketInstance?.emit('room:kick', { playerId })
   }, [])
 
+  const startGame = useCallback((category?: string) => {
+    socketInstance?.emit('game:start', { category: category || '' })
+  }, [])
+
+  const nextRound = useCallback(() => {
+    socketInstance?.emit('game:nextRound')
+  }, [])
+
+  const startVoting = useCallback(() => {
+    socketInstance?.emit('game:startVoting')
+  }, [])
+
+  const castVote = useCallback((targetId: string) => {
+    socketInstance?.emit('vote:cast', { targetId })
+    useGameStore.getState().castVote(targetId)
+  }, [])
+
+  const confirmVote = useCallback((eliminate: boolean) => {
+    socketInstance?.emit('vote:confirm', { eliminate })
+  }, [])
+
+  const playAgain = useCallback(() => {
+    socketInstance?.emit('game:playAgain')
+    useGameStore.getState().reset()
+  }, [])
+
   return {
     socket: socketInstance,
     isConnected,
@@ -130,5 +179,11 @@ export function useSocket() {
     joinRoom,
     leaveRoom,
     kickPlayer,
+    startGame,
+    nextRound,
+    startVoting,
+    castVote,
+    confirmVote,
+    playAgain,
   }
 }

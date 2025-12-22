@@ -60,6 +60,7 @@ export interface ServerToClientEvents {
   'vote:update': (data: { votes: Record<string, string>; twoThirdsReached: boolean }) => void
   'vote:result': (data: { eliminated?: string; wasImpostor?: boolean }) => void
   'game:ended': (data: { winner: 'crew' | 'impostor'; impostorId: string }) => void
+  'word:suggested': (data: { word: string; categoryId: string }) => void
   'error': (data: { code: string; message: string }) => void
 }
 
