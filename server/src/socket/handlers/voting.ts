@@ -209,13 +209,13 @@ export function registerVotingHandlers(
       // Crew wins!
       room.status = 'finished'
       io.to(room.id).emit('vote:result', { eliminated: eliminatedId, wasImpostor: true })
-      io.to(room.id).emit('game:ended', { winner: 'crew', impostorId: room.impostorId! })
+      io.to(room.id).emit('game:ended', { winner: 'crew', impostorId: room.impostorId!, word: room.currentWord! })
       console.log(`Game ended in ${room.code}: Crew wins!`)
     } else if (remainingActive.length <= 2 && impostorRemains) {
       // Impostor wins! (only 2 players left including impostor)
       room.status = 'finished'
       io.to(room.id).emit('vote:result', { eliminated: eliminatedId, wasImpostor: false })
-      io.to(room.id).emit('game:ended', { winner: 'impostor', impostorId: room.impostorId! })
+      io.to(room.id).emit('game:ended', { winner: 'impostor', impostorId: room.impostorId!, word: room.currentWord! })
       console.log(`Game ended in ${room.code}: Impostor wins!`)
     } else {
       // Game continues

@@ -117,6 +117,7 @@ export function createVotingHandler(
           io.to(result.room.id).emit('game:ended', {
             winner,
             impostorId: result.room.impostorId!,
+            word: result.room.currentWord!,
           })
           console.log(`Game ended in room: ${winner} wins!`)
         } else {
