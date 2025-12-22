@@ -5,6 +5,7 @@ import cors from 'cors'
 import 'dotenv/config'
 import type { ClientToServerEvents, ServerToClientEvents } from '@impostor/shared'
 import { authMiddleware, type AuthenticatedSocket } from './middleware/auth.js'
+import { registerSocketHandlers } from './socket/index.js'
 
 const app = express()
 const httpServer = createServer(app)
@@ -46,13 +47,8 @@ io.on('connection', (socket) => {
   const authSocket = socket as AuthenticatedSocket
   console.log(`Client connected: ${authSocket.user.displayName} (${authSocket.user.id})`)
 
-  socket.on('disconnect', () => {
-    console.log(`Client disconnected: ${authSocket.user.displayName}`)
-  })
-
-  // Room events will be added in Phase 3
-  // Game events will be added in Phase 4
-  // Voting events will be added in Phase 5
+  // Register all handlers
+  registerSocketHandlers(io, authSocket)
 })
 
 const PORT = process.env.PORT || 3001

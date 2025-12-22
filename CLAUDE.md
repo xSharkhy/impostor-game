@@ -30,16 +30,17 @@ Plan detallado: `~/.claude/plans/enchanted-jingling-toast.md`
 **Estado: 100%**
 
 ### Fase 3: Gestión de Salas
-- [ ] Implementar RoomManager service
-- [ ] Generación de códigos únicos
-- [ ] Crear handlers de socket para CRUD de salas
-- [ ] UI de crear sala
-- [ ] UI de unirse (input de código)
-- [ ] Límite de 5 salas (server-side)
-- [ ] Auto-cleanup tras 5 min inactividad
-- [ ] Transferencia de admin en desconexión
+- [x] Implementar RoomManager service
+- [x] Generación de códigos únicos (4 chars)
+- [x] Crear handlers de socket (crear/unirse/salir/expulsar)
+- [x] UI de crear sala
+- [x] UI de unirse (input de código)
+- [x] RoomLobby (lista jugadores, admin controls)
+- [x] Límite de 5 salas (server-side)
+- [x] Auto-cleanup tras 5 min inactividad
+- [x] Transferencia de admin en desconexión
 
-**Estado: 0%**
+**Estado: 100%**
 
 ### Fase 4: Lógica del Juego
 - [ ] WordService (query a Supabase por categoría)
@@ -121,7 +122,7 @@ Plan detallado: `~/.claude/plans/enchanted-jingling-toast.md`
 |------|-------------|--------|
 | 1 | Setup del Proyecto | 100% |
 | 2 | Autenticación | 100% |
-| 3 | Gestión de Salas | 0% |
+| 3 | Gestión de Salas | 100% |
 | 4 | Lógica del Juego | 0% |
 | 5 | Sistema de Votación | 0% |
 | 6 | Condiciones de Victoria | 0% |
@@ -130,7 +131,7 @@ Plan detallado: `~/.claude/plans/enchanted-jingling-toast.md`
 | 9 | Infraestructura Pi 5 | 0% |
 | 10 | Deploy y Portfolio | 0% |
 
-**Progreso total: ~20%**
+**Progreso total: ~30%**
 
 ---
 
