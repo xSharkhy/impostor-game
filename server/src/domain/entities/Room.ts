@@ -12,6 +12,7 @@ import {
 export type RoomId = string
 export type RoomCode = string
 export type RoomStatus = 'lobby' | 'playing' | 'voting' | 'finished'
+export type WinCondition = 'impostor_caught' | 'impostor_survived'
 
 export interface RoomProps {
   id: RoomId
@@ -24,6 +25,7 @@ export interface RoomProps {
   turnOrder?: PlayerId[]
   currentRound: number
   category?: string
+  winCondition?: WinCondition
   createdAt: Date
   lastActivity: Date
 }
@@ -45,6 +47,7 @@ export class Room {
   private _turnOrder?: PlayerId[]
   private _currentRound: number
   private _category?: string
+  private _winCondition?: WinCondition
   private _lastActivity: Date
 
   private constructor(props: RoomProps) {
@@ -61,6 +64,7 @@ export class Room {
     this._turnOrder = props.turnOrder
     this._currentRound = props.currentRound
     this._category = props.category
+    this._winCondition = props.winCondition
     this._lastActivity = props.lastActivity
   }
 
@@ -99,7 +103,19 @@ export class Room {
   get turnOrder(): PlayerId[] | undefined { return this._turnOrder }
   get currentRound(): number { return this._currentRound }
   get category(): string | undefined { return this._category }
+  get winCondition(): WinCondition | undefined { return this._winCondition }
   get lastActivity(): Date { return this._lastActivity }
+
+  get currentTurnIndex(): number {
+    if (!this._turnOrder) return 0
+    return (this._currentRound - 1) % this._turnOrder.length
+  }
+
+  getCurrentPlayer(): Player | undefined {
+    if (!this._turnOrder || this._turnOrder.length === 0) return undefined
+    const playerId = this._turnOrder[this.currentTurnIndex]
+    return this._players.get(playerId)
+  }
 
   get players(): Player[] {
     return Array.from(this._players.values())
@@ -199,7 +215,7 @@ export class Room {
   }
 
   // Game operations
-  startGame(word: string, impostorId: PlayerId, category?: string): Room {
+  startGame(word: string, category?: string): Room {
     if (this._status !== 'lobby') {
       throw new GameAlreadyStartedError()
     }
@@ -211,6 +227,9 @@ export class Room {
     // Generate random turn order
     const playerIds = Array.from(this._players.keys())
     const shuffled = this.shuffle(playerIds)
+
+    // Select random impostor
+    const impostorId = shuffled[Math.floor(Math.random() * shuffled.length)]
 
     return this.withUpdate({
       status: 'playing',
@@ -311,21 +330,24 @@ export class Room {
     })
   }
 
-  finishGame(): Room {
-    return this.withUpdate({ status: 'finished' })
+  finishGame(winCondition: WinCondition): Room {
+    return this.withUpdate({
+      status: 'finished',
+      winCondition,
+    })
   }
 
-  checkWinCondition(): 'crew' | 'impostor' | null {
+  checkWinCondition(): WinCondition | null {
     const active = this.activePlayers
     const impostorEliminated = this._impostorId &&
       this._players.get(this._impostorId)?.isEliminated
 
     if (impostorEliminated) {
-      return 'crew'
+      return 'impostor_caught'
     }
 
     if (active.length <= 2 && active.some(p => p.id === this._impostorId)) {
-      return 'impostor'
+      return 'impostor_survived'
     }
 
     return null
@@ -345,6 +367,7 @@ export class Room {
       turnOrder: undefined,
       currentRound: 0,
       category: undefined,
+      winCondition: undefined,
     })
   }
 
@@ -367,6 +390,7 @@ export class Room {
     turnOrder: PlayerId[] | undefined
     currentRound: number
     category: string | undefined
+    winCondition: WinCondition | undefined
   }>): Room {
     const playerArray = updates.players
       ? Array.from(updates.players.values()).map(p => p.toProps())
@@ -383,6 +407,7 @@ export class Room {
       turnOrder: 'turnOrder' in updates ? updates.turnOrder : this._turnOrder,
       currentRound: updates.currentRound ?? this._currentRound,
       category: 'category' in updates ? updates.category : this._category,
+      winCondition: 'winCondition' in updates ? updates.winCondition : this._winCondition,
       createdAt: this.createdAt,
       lastActivity: new Date(),
     })
@@ -400,6 +425,7 @@ export class Room {
       turnOrder: this._turnOrder,
       currentRound: this._currentRound,
       category: this._category,
+      winCondition: this._winCondition,
       createdAt: this.createdAt,
       lastActivity: this._lastActivity,
     }
