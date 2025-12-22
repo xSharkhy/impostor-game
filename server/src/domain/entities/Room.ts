@@ -95,6 +95,10 @@ export class Room {
     })
   }
 
+  static fromProps(props: RoomProps): Room {
+    return new Room(props)
+  }
+
   // Getters
   get adminId(): PlayerId { return this._adminId }
   get status(): RoomStatus { return this._status }
