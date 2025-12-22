@@ -1,7 +1,10 @@
+// Base components
 export { Button, buttonVariants } from './button'
 export type { ButtonProps } from './button'
-export { Input } from './input'
+
+export { Input, inputVariants } from './input'
 export type { InputProps } from './input'
+
 export {
   Card,
   CardHeader,
@@ -9,4 +12,22 @@ export {
   CardTitle,
   CardDescription,
   CardContent,
+  cardVariants,
 } from './card'
+export type { CardProps } from './card'
+
+// Effects
+export { Confetti, EmojiBurst, Sparkles } from './confetti'
+
+// Dialogs
+export {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from './alert-dialog'

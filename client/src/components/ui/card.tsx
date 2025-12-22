@@ -1,19 +1,79 @@
 import * as React from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      'rounded-lg border border-[--color-bg-card] bg-[--color-bg-secondary] text-[--color-text] shadow-sm',
-      className
-    )}
-    {...props}
-  />
-))
+const cardVariants = cva(
+  'rounded-2xl transition-all duration-300',
+  {
+    variants: {
+      variant: {
+        default: [
+          'bg-[--color-bg-elevated]',
+          'shadow-lg',
+        ],
+        glass: [
+          'bg-[--glass-bg]',
+          'backdrop-blur-xl',
+          'shadow-xl',
+        ],
+        outline: [
+          'bg-transparent',
+          'border border-[--color-border]',
+        ],
+        ghost: [
+          'bg-transparent',
+        ],
+        glow: [
+          'bg-[--color-bg-elevated]',
+          'shadow-lg',
+          'border border-transparent',
+          'hover:border-[--color-neon-cyan]/30',
+          'hover:shadow-[0_0_30px_rgba(0,240,255,0.15)]',
+        ],
+        'glow-pink': [
+          'bg-[--color-bg-elevated]',
+          'shadow-lg',
+          'border border-transparent',
+          'hover:border-[--color-neon-pink]/30',
+          'hover:shadow-[0_0_30px_rgba(255,45,106,0.15)]',
+        ],
+      },
+      padding: {
+        none: '',
+        sm: 'p-4',
+        md: 'p-6',
+        lg: 'p-8',
+      },
+      hoverable: {
+        true: [
+          'hover:bg-[--glass-bg-hover]',
+          'hover:border-[--glass-border-hover]',
+          'cursor-pointer',
+        ],
+        false: '',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      padding: 'none',
+      hoverable: false,
+    },
+  }
+)
+
+export interface CardProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof cardVariants> {}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, variant, padding, hoverable, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(cardVariants({ variant, padding, hoverable }), className)}
+      {...props}
+    />
+  )
+)
 Card.displayName = 'Card'
 
 const CardHeader = React.forwardRef<
@@ -34,7 +94,10 @@ const CardTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h3
     ref={ref}
-    className={cn('font-semibold leading-none tracking-tight', className)}
+    className={cn(
+      'text-lg font-semibold leading-none tracking-tight text-[--color-text-primary]',
+      className
+    )}
     {...props}
   />
 ))
@@ -46,7 +109,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn('text-sm text-[--color-text-muted]', className)}
+    className={cn('text-sm text-[--color-text-secondary]', className)}
     {...props}
   />
 ))
@@ -72,4 +135,4 @@ const CardFooter = React.forwardRef<
 ))
 CardFooter.displayName = 'CardFooter'
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, cardVariants }
