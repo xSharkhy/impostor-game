@@ -33,6 +33,7 @@ interface GameState {
   updateVotes: (votes: Record<string, string>, twoThirdsReached: boolean) => void
   castVote: (targetId: string) => void
   setVoteResult: (eliminated?: string, wasImpostor?: boolean) => void
+  continueFromResults: () => void
   endGame: (winner: 'crew' | 'impostor', impostorId: string, word: string) => void
   reset: () => void
 }
@@ -62,12 +63,26 @@ export const useGameStore = create<GameState>((set) => ({
       isImpostor,
       turnOrder,
       currentRound: 1,
+      // Reset voting state
+      voteState: null,
+      hasVoted: false,
+      myVote: null,
+      // Reset results from previous game
+      lastEliminated: null,
+      wasImpostor: null,
+      winner: null,
+      revealedImpostorId: null,
+    }),
+
+  setRound: (round) =>
+    set({
+      currentRound: round,
+      phase: 'playing',
+      // Reset voting state for new round
       voteState: null,
       hasVoted: false,
       myVote: null,
     }),
-
-  setRound: (round) => set({ currentRound: round, phase: 'playing' }),
 
   startVoting: () =>
     set({
@@ -87,6 +102,16 @@ export const useGameStore = create<GameState>((set) => ({
       phase: 'results',
       lastEliminated: eliminated ?? null,
       wasImpostor: wasImpostor ?? null,
+    }),
+
+  continueFromResults: () =>
+    set({
+      phase: 'playing',
+      voteState: null,
+      hasVoted: false,
+      myVote: null,
+      lastEliminated: null,
+      wasImpostor: null,
     }),
 
   endGame: (winner, impostorId, word) =>

@@ -73,7 +73,7 @@ export function GameView() {
     return (
       <ResultsPanel
         onContinue={() => {
-          useGameStore.getState().setRound(useGameStore.getState().currentRound)
+          useGameStore.getState().continueFromResults()
         }}
       />
     )

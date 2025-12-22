@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { Button } from '@/components/ui'
 import { LoginForm } from '@/components/auth/LoginForm'
 import { JoinRoom } from '@/components/lobby/JoinRoom'
@@ -17,7 +17,6 @@ type View = 'home' | 'join' | 'suggest'
 
 function HomePage() {
   const [view, setView] = useState<View>('home')
-  const navigate = useNavigate()
   const { user, isAuthenticated, isLoading } = useUserStore()
   const { room } = useRoomStore()
   const { phase } = useGameStore()
@@ -88,24 +87,14 @@ function HomePage() {
                   Unirse
                 </Button>
               </div>
-              <div className="flex gap-2 justify-center">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-[--color-text-muted]"
-                  onClick={() => setView('suggest')}
-                >
-                  Sugerir palabra
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-[--color-text-muted]"
-                  onClick={() => navigate({ to: '/admin' })}
-                >
-                  Admin
-                </Button>
-              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-[--color-text-muted]"
+                onClick={() => setView('suggest')}
+              >
+                Sugerir palabra
+              </Button>
               <Button
                 variant="ghost"
                 className="text-[--color-text-muted]"

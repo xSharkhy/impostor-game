@@ -4,11 +4,32 @@ import { Button } from '@/components/ui'
 import { useNavigate } from '@tanstack/react-router'
 import { useUserStore } from '@/stores'
 
+/**
+ * Whitelist de emails con acceso al panel de administración.
+ * Añade aquí los emails de los administradores autorizados.
+ */
+const ADMIN_EMAILS = [
+  'ismobla@gmail.com',
+  // Añadir más emails de admins aquí
+]
+
+/**
+ * Verifica si un email tiene permisos de administrador.
+ */
+function isAdmin(email: string | undefined): boolean {
+  if (!email) return false
+  return ADMIN_EMAILS.includes(email.toLowerCase())
+}
+
 export const Route = createFileRoute('/admin')({
   beforeLoad: () => {
-    const { isAuthenticated, isLoading } = useUserStore.getState()
+    const { isAuthenticated, isLoading, user } = useUserStore.getState()
     // If not authenticated and not loading, redirect to home
     if (!isAuthenticated && !isLoading) {
+      throw redirect({ to: '/' })
+    }
+    // If authenticated but not admin, redirect to home
+    if (isAuthenticated && !isAdmin(user?.email)) {
       throw redirect({ to: '/' })
     }
   },
@@ -17,10 +38,10 @@ export const Route = createFileRoute('/admin')({
 
 function AdminPage() {
   const navigate = useNavigate()
-  const { isAuthenticated } = useUserStore()
+  const { isAuthenticated, user } = useUserStore()
 
-  // Double-check auth (handles edge cases during hydration)
-  if (!isAuthenticated) {
+  // Double-check auth and admin status (handles edge cases during hydration)
+  if (!isAuthenticated || !isAdmin(user?.email)) {
     navigate({ to: '/' })
     return null
   }

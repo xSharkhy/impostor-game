@@ -2,6 +2,25 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
+/**
+ * GUÍA DE USO DE VARIANTES:
+ *
+ * ESTÁNDAR:
+ * - default     : Acción principal (blanco sobre negro, estilo Vercel)
+ * - secondary   : Acción secundaria con borde
+ * - outline     : Acción terciaria, solo borde
+ * - ghost       : Acción mínima, sin fondo ni borde
+ * - link        : Estilo de enlace
+ * - danger      : Acciones destructivas (eliminar, expulsar)
+ * - success     : Confirmaciones positivas
+ *
+ * PARTY/NEON (usar con moderación):
+ * - neon            : CTAs importantes del juego (cyan glow)
+ * - neon-pink       : Acciones relacionadas con impostor
+ * - neon-outline    : CTAs secundarios con glow (cyan)
+ * - neon-outline-pink: CTAs secundarios con glow (pink)
+ * - gradient        : Solo para momentos de celebración
+ */
 const buttonVariants = cva(
   [
     'inline-flex items-center justify-center gap-2',
@@ -58,18 +77,18 @@ const buttonVariants = cva(
           'shadow-sm',
         ],
         // === PARTY / GLOW VARIANTS ===
-        // Neon Cyan (Crew)
+        // Neon Cyan (Crew) - Glow reducido para mejor legibilidad
         neon: [
           'bg-[--color-neon-cyan] text-black font-semibold',
-          'shadow-[0_0_20px_rgba(0,240,255,0.4)]',
-          'hover:shadow-[0_0_30px_rgba(0,240,255,0.6)]',
+          'shadow-[0_0_15px_rgba(0,240,255,0.3)]',
+          'hover:shadow-[0_0_25px_rgba(0,240,255,0.5)]',
           'hover:bg-[--color-neon-cyan]/90',
         ],
-        // Neon Pink (Impostor)
+        // Neon Pink (Impostor) - Glow reducido para mejor legibilidad
         'neon-pink': [
           'bg-[--color-neon-pink] text-white font-semibold',
-          'shadow-[0_0_20px_rgba(255,45,106,0.4)]',
-          'hover:shadow-[0_0_30px_rgba(255,45,106,0.6)]',
+          'shadow-[0_0_15px_rgba(255,45,106,0.3)]',
+          'hover:shadow-[0_0_25px_rgba(255,45,106,0.5)]',
           'hover:bg-[--color-neon-pink]/90',
         ],
         // Neon outline (fills on hover for better contrast)
