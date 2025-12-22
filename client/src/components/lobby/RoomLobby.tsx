@@ -6,7 +6,7 @@ import { CONSTANTS } from '@impostor/shared'
 export function RoomLobby() {
   const { room } = useRoomStore()
   const { user } = useUserStore()
-  const { leaveRoom, kickPlayer } = useSocket()
+  const { leaveRoom, kickPlayer, startGame } = useSocket()
 
   if (!room || !user) return null
 
@@ -71,7 +71,11 @@ export function RoomLobby() {
 
       <div className="space-y-3">
         {isAdmin && (
-          <Button className="w-full" disabled={!canStart}>
+          <Button
+            className="w-full"
+            disabled={!canStart}
+            onClick={() => startGame()}
+          >
             {canStart ? 'Iniciar Partida' : `Esperando jugadores...`}
           </Button>
         )}

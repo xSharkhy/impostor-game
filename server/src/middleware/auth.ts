@@ -50,3 +50,30 @@ export async function authMiddleware(
     next(new Error('Authentication failed'))
   }
 }
+
+// Verify token for REST API requests
+export async function verifyToken(token: string): Promise<{
+  id: string
+  displayName: string
+  email?: string
+} | null> {
+  try {
+    const { data, error } = await supabase.auth.getUser(token)
+
+    if (error || !data.user) {
+      return null
+    }
+
+    return {
+      id: data.user.id,
+      displayName:
+        data.user.user_metadata?.full_name ||
+        data.user.user_metadata?.name ||
+        data.user.email?.split('@')[0] ||
+        'Jugador',
+      email: data.user.email,
+    }
+  } catch {
+    return null
+  }
+}

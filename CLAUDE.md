@@ -43,15 +43,15 @@ Plan detallado: `~/.claude/plans/enchanted-jingling-toast.md`
 **Estado: 100%**
 
 ### Fase 4: Lógica del Juego
-- [ ] WordService (query a Supabase por categoría)
-- [ ] GameManager (state machine)
-- [ ] Selección de impostor (random, oculto)
-- [ ] Generación de orden de turnos
-- [ ] WordDisplay component (palabra o "???")
-- [ ] TurnOrder component
-- [ ] PlayerList con estados
+- [x] WordService (query a Supabase por categoría)
+- [x] GameManager (state machine)
+- [x] Selección de impostor (random, oculto)
+- [x] Generación de orden de turnos
+- [x] GameView component (palabra o "???")
+- [x] TurnOrder display
+- [x] Admin controls (iniciar votación, siguiente ronda)
 
-**Estado: 0%**
+**Estado: 100%**
 
 ### Fase 5: Sistema de Votación
 - [ ] Implementar emisión de votos
@@ -123,7 +123,7 @@ Plan detallado: `~/.claude/plans/enchanted-jingling-toast.md`
 | 1 | Setup del Proyecto | 100% |
 | 2 | Autenticación | 100% |
 | 3 | Gestión de Salas | 100% |
-| 4 | Lógica del Juego | 0% |
+| 4 | Lógica del Juego | 100% |
 | 5 | Sistema de Votación | 0% |
 | 6 | Condiciones de Victoria | 0% |
 | 7 | Sistema de Palabras | 0% |
@@ -131,7 +131,7 @@ Plan detallado: `~/.claude/plans/enchanted-jingling-toast.md`
 | 9 | Infraestructura Pi 5 | 0% |
 | 10 | Deploy y Portfolio | 0% |
 
-**Progreso total: ~30%**
+**Progreso total: ~40%**
 
 ---
 
