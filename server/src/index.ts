@@ -51,7 +51,22 @@ const io = createSocketServer(httpServer, {
 httpServer.listen(env.port, () => {
   console.log(`🎮 El Impostor server running on port ${env.port}`)
   console.log(`📡 Allowed origins: ${ALLOWED_ORIGINS.join(', ')}`)
-  console.log(`🏗️  Architecture: Clean Architecture with Supabase`)
+  console.log(`🏗️  Architecture: Clean Architecture`)
 })
+
+// Periodic cleanup of inactive rooms (every 60 seconds)
+// Rooms are deleted after 5 minutes of inactivity
+const CLEANUP_INTERVAL_MS = 60 * 1000
+const ROOM_MAX_INACTIVE_MS = 5 * 60 * 1000
+
+setInterval(async () => {
+  const roomRepo = container.roomRepository as any
+  if (typeof roomRepo.cleanupInactive === 'function') {
+    const cleaned = await roomRepo.cleanupInactive(ROOM_MAX_INACTIVE_MS)
+    if (cleaned > 0) {
+      console.log(`🧹 Cleaned up ${cleaned} inactive room(s)`)
+    }
+  }
+}, CLEANUP_INTERVAL_MS)
 
 export { io }

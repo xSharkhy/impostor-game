@@ -9,70 +9,54 @@ import {
 export class SupabaseWordRepository implements IWordRepository {
   constructor(private readonly supabase: SupabaseClient) {}
 
-  async getRandomWord(categoryId?: string, lang?: string): Promise<WordResult | null> {
+  async getRandomWord(categoryId?: string, lang: string = 'es'): Promise<WordResult | null> {
     let query = this.supabase
       .from('words')
-      .select(
-        `
-        id,
-        word,
-        category_id,
-        categories!inner (
-          id,
-          name
-        )
-      `
-      )
-      .eq('is_approved', true)
+      .select('id, word, category_id')
+      .eq('approved', true)
+      .eq('lang', lang)
 
     if (categoryId) {
       query = query.eq('category_id', categoryId)
     }
 
-    if (lang) {
-      query = query.eq('lang', lang)
-    }
+    const { data, error } = await query
 
-    // Get count first
-    const { count } = await this.supabase
-      .from('words')
-      .select('*', { count: 'exact', head: true })
-      .eq('is_approved', true)
-      .then((res) => res)
-
-    if (!count || count === 0) {
+    if (error || !data || data.length === 0) {
+      console.error('Error fetching words:', error)
       return null
     }
 
-    // Get random offset
-    const randomOffset = Math.floor(Math.random() * count)
+    // Pick random word
+    const randomIndex = Math.floor(Math.random() * data.length)
+    const selected = data[randomIndex]
 
-    const { data, error } = await query.range(randomOffset, randomOffset).single()
-
-    if (error || !data) {
-      return null
-    }
-
-    const category = data.categories as unknown as { id: string; name: string }
+    // Get category name
+    const { data: categoryData } = await this.supabase
+      .from('categories')
+      .select('name_es')
+      .eq('id', selected.category_id)
+      .single()
 
     return {
-      id: data.id,
-      word: data.word,
-      categoryId: data.category_id,
-      categoryName: category.name,
+      id: selected.id,
+      word: selected.word,
+      categoryId: selected.category_id,
+      categoryName: categoryData?.name_es || selected.category_id,
     }
   }
 
   async getCategories(): Promise<Category[]> {
-    const { data, error } = await this.supabase.from('categories').select('id, name').order('name')
+    const { data, error } = await this.supabase.from('categories').select('id, name_es').order('name_es')
 
     if (error || !data) {
+      console.error('Error fetching categories:', error)
       return []
     }
 
     return data.map((c) => ({
       id: c.id,
-      name: c.name,
+      name: c.name_es,
     }))
   }
 
@@ -94,12 +78,13 @@ export class SupabaseWordRepository implements IWordRepository {
   }
 
   async createSuggestion(word: string, categoryId: string, suggestedBy: string): Promise<void> {
-    const normalizedWord = word.trim().toLowerCase()
+    const normalizedWord = word.trim()
 
     const { error } = await this.supabase.from('words').insert({
       word: normalizedWord,
       category_id: categoryId,
-      is_approved: false,
+      lang: 'es',
+      approved: false,
       suggested_by: suggestedBy,
     })
 
@@ -118,25 +103,23 @@ export class SupabaseWordRepository implements IWordRepository {
         category_id,
         suggested_by,
         created_at,
-        categories!inner (
-          name
-        )
+        categories(name_es)
       `
       )
-      .eq('is_approved', false)
+      .eq('approved', false)
       .order('created_at', { ascending: false })
 
     if (error || !data) {
+      console.error('Error fetching suggestions:', error)
       return []
     }
 
-    return data.map((row) => {
-      const category = row.categories as unknown as { name: string }
+    return data.map((row: any) => {
       return {
         id: row.id,
         word: row.word,
         categoryId: row.category_id,
-        categoryName: category.name,
+        categoryName: row.categories?.name_es || row.category_id,
         suggestedBy: row.suggested_by ?? 'unknown',
         createdAt: new Date(row.created_at),
       }
@@ -146,9 +129,12 @@ export class SupabaseWordRepository implements IWordRepository {
   async approveWord(wordId: string): Promise<boolean> {
     const { error } = await this.supabase
       .from('words')
-      .update({ is_approved: true })
+      .update({ approved: true })
       .eq('id', wordId)
 
+    if (error) {
+      console.error('Error approving word:', error)
+    }
     return !error
   }
 

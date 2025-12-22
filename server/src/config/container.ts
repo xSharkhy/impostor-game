@@ -2,9 +2,8 @@ import { getSupabaseClient } from './supabase.js'
 import { env } from './env.js'
 
 // Repositories
-import { SupabaseRoomRepository } from '../infrastructure/persistence/supabase/SupabaseRoomRepository.js'
+import { InMemoryRoomRepository } from '../infrastructure/persistence/memory/InMemoryRoomRepository.js'
 import { SupabaseWordRepository } from '../infrastructure/persistence/supabase/SupabaseWordRepository.js'
-import { SupabaseRealtimeSubscriber } from '../infrastructure/persistence/supabase/SupabaseRealtimeSubscriber.js'
 
 // Services
 import { SupabaseAuthService } from '../infrastructure/services/SupabaseAuthService.js'
@@ -47,7 +46,6 @@ export interface Container {
   wordRepository: IWordRepository
   authService: IAuthService
   emailService: IEmailService | null
-  realtimeSubscriber: SupabaseRealtimeSubscriber
 
   // Use Cases - Room
   createRoomUseCase: CreateRoomUseCase
@@ -84,15 +82,14 @@ export function createContainer(): Container {
   const supabase = getSupabaseClient()
 
   // Infrastructure - Repositories
-  const roomRepository = new SupabaseRoomRepository(supabase)
+  // Rooms are kept in memory (as per original plan)
+  const roomRepository = new InMemoryRoomRepository()
+  // Words come from Supabase
   const wordRepository = new SupabaseWordRepository(supabase)
 
   // Infrastructure - Services
   const authService = new SupabaseAuthService(supabase)
   const emailService = env.resendApiKey ? new ResendEmailService(env.resendApiKey) : null
-
-  // Infrastructure - Realtime
-  const realtimeSubscriber = new SupabaseRealtimeSubscriber(supabase)
 
   // Use Cases - Room
   const createRoomUseCase = new CreateRoomUseCase(roomRepository)
@@ -121,7 +118,6 @@ export function createContainer(): Container {
     wordRepository,
     authService,
     emailService,
-    realtimeSubscriber,
 
     // Use Cases - Room
     createRoomUseCase,
