@@ -21,12 +21,13 @@ Plan detallado: `~/.claude/plans/enchanted-jingling-toast.md`
 **Estado: 100%**
 
 ### Fase 2: Autenticación
-- [ ] Implementar Supabase Auth en cliente
-- [ ] Crear UI de login (Google, GitHub, Phone OTP)
-- [ ] Middleware de auth para sockets (JWT validation)
-- [ ] Manejo de sesiones y userStore
+- [x] Implementar Supabase Auth en cliente (useAuth hook)
+- [x] Crear UI de login (Google, GitHub)
+- [x] Middleware de auth para sockets (JWT validation)
+- [x] Manejo de sesiones y userStore
+- [x] Hook useSocket para conexión autenticada
 
-**Estado: 0%**
+**Estado: 100%**
 
 ### Fase 3: Gestión de Salas
 - [ ] Implementar RoomManager service
@@ -119,7 +120,7 @@ Plan detallado: `~/.claude/plans/enchanted-jingling-toast.md`
 | Fase | Descripción | Estado |
 |------|-------------|--------|
 | 1 | Setup del Proyecto | 100% |
-| 2 | Autenticación | 0% |
+| 2 | Autenticación | 100% |
 | 3 | Gestión de Salas | 0% |
 | 4 | Lógica del Juego | 0% |
 | 5 | Sistema de Votación | 0% |
@@ -129,7 +130,7 @@ Plan detallado: `~/.claude/plans/enchanted-jingling-toast.md`
 | 9 | Infraestructura Pi 5 | 0% |
 | 10 | Deploy y Portfolio | 0% |
 
-**Progreso total: ~10%**
+**Progreso total: ~20%**
 
 ---
 
