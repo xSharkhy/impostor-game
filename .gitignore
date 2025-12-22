@@ -30,3 +30,7 @@ coverage/
 
 # Misc
 *.tsbuildinfo
+
+# Generated vite config files
+client/vite.config.d.ts
+client/vite.config.js
