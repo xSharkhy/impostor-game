@@ -21,14 +21,14 @@ export const env = {
 
   // Supabase
   supabaseUrl: requireEnv('SUPABASE_URL'),
-  supabaseAnonKey: requireEnv('SUPABASE_ANON_KEY'),
-  supabaseServiceKey: optionalEnv('SUPABASE_SERVICE_KEY', ''),
+  supabaseAnonKey: requireEnv('SUPABASE_PUBLISHABLE_KEY'),
+  supabaseServiceKey: optionalEnv('SUPABASE_SECRET_KEY', ''),
 
   // Email (Resend)
   resendApiKey: optionalEnv('RESEND_API_KEY', ''),
 
-  // Admin
-  adminEmails: optionalEnv('ADMIN_EMAILS', '').split(',').filter(Boolean),
+  // Admin (supports both ADMIN_EMAIL and ADMIN_EMAILS)
+  adminEmails: (optionalEnv('ADMIN_EMAILS', '') || optionalEnv('ADMIN_EMAIL', '')).split(',').filter(Boolean),
 
   // Feature flags
   enableRealtime: optionalEnv('ENABLE_REALTIME', 'false') === 'true',
