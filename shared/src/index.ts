@@ -37,13 +37,14 @@ export interface ClientToServerEvents {
   'room:join': (data: { code: string }) => void
   'room:leave': () => void
   'room:kick': (data: { playerId: string }) => void
-  'game:start': (data: { category: string }) => void
+  'game:start': (data: { category?: string }) => void
   'game:nextRound': () => void
   'game:startVoting': () => void
   'vote:cast': (data: { targetId: string }) => void
   'vote:confirm': (data: { eliminate: boolean }) => void
   'game:playAgain': () => void
   'word:suggest': (data: { word: string; categoryId: string }) => void
+  'word:getCategories': () => void
 }
 
 // Socket events - Server to Client
@@ -60,7 +61,8 @@ export interface ServerToClientEvents {
   'vote:update': (data: { votes: Record<string, string>; twoThirdsReached: boolean }) => void
   'vote:result': (data: { eliminated?: string; wasImpostor?: boolean }) => void
   'game:ended': (data: { winner: 'crew' | 'impostor'; impostorId: string }) => void
-  'word:suggested': (data: { word: string; categoryId: string }) => void
+  'word:suggested': (data: { success: boolean; error?: string }) => void
+  'word:categories': (data: { id: string; name: string }[]) => void
   'error': (data: { code: string; message: string }) => void
 }
 
