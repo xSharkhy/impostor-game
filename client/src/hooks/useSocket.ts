@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { io, Socket } from 'socket.io-client'
+import { toast } from 'sonner'
 import { supabase } from '@/lib/supabase'
 import { useRoomStore, useGameStore } from '@/stores'
 import type { ClientToServerEvents, ServerToClientEvents } from '@impostor/shared'
@@ -69,30 +70,54 @@ export function useSocket() {
       socket.on('connect_error', (err) => {
         setError(err.message)
         setIsConnected(false)
+        toast.error('Error de conexión', {
+          description: err.message,
+        })
       })
 
       socket.on('room:state', (room) => {
         useRoomStore.getState().setRoom(room)
+        // Reset game state when room goes back to lobby (e.g., after playAgain)
+        if (room.status === 'lobby') {
+          useGameStore.getState().reset()
+        }
       })
 
       socket.on('room:playerJoined', (player) => {
         useRoomStore.getState().addPlayer(player)
+        toast.info(`${player.displayName} se ha unido`)
       })
 
       socket.on('room:playerLeft', ({ playerId }) => {
+        const room = useRoomStore.getState().room
+        const player = room?.players.find((p) => p.id === playerId)
         useRoomStore.getState().removePlayer(playerId)
+        if (player) {
+          toast.info(`${player.displayName} ha salido`)
+        }
       })
 
       socket.on('room:playerKicked', ({ playerId }) => {
+        const room = useRoomStore.getState().room
+        const player = room?.players.find((p) => p.id === playerId)
         useRoomStore.getState().removePlayer(playerId)
+        if (player) {
+          toast.warning(`${player.displayName} ha sido expulsado`)
+        }
       })
 
       socket.on('room:adminChanged', ({ newAdminId }) => {
+        const room = useRoomStore.getState().room
+        const newAdmin = room?.players.find((p) => p.id === newAdminId)
         useRoomStore.getState().setAdmin(newAdminId)
+        if (newAdmin) {
+          toast.info(`${newAdmin.displayName} es el nuevo admin`)
+        }
       })
 
       socket.on('error', ({ message }) => {
         useRoomStore.getState().setError(message)
+        toast.error(message)
       })
 
       // Game events
@@ -116,8 +141,8 @@ export function useSocket() {
         useGameStore.getState().setVoteResult(eliminated, wasImpostor)
       })
 
-      socket.on('game:ended', ({ winner, impostorId }) => {
-        useGameStore.getState().endGame(winner, impostorId)
+      socket.on('game:ended', ({ winner, impostorId, word }) => {
+        useGameStore.getState().endGame(winner, impostorId, word)
       })
 
       if (socket.connected) {

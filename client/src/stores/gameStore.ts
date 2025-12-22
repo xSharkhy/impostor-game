@@ -33,7 +33,7 @@ interface GameState {
   updateVotes: (votes: Record<string, string>, twoThirdsReached: boolean) => void
   castVote: (targetId: string) => void
   setVoteResult: (eliminated?: string, wasImpostor?: boolean) => void
-  endGame: (winner: 'crew' | 'impostor', impostorId: string) => void
+  endGame: (winner: 'crew' | 'impostor', impostorId: string, word: string) => void
   reset: () => void
 }
 
@@ -89,11 +89,12 @@ export const useGameStore = create<GameState>((set) => ({
       wasImpostor: wasImpostor ?? null,
     }),
 
-  endGame: (winner, impostorId) =>
+  endGame: (winner, impostorId, word) =>
     set({
       phase: 'finished',
       winner,
       revealedImpostorId: impostorId,
+      word, // Reveal word to all players including impostor
     }),
 
   reset: () => set(initialState),
