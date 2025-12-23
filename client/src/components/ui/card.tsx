@@ -8,33 +8,33 @@ const cardVariants = cva(
     variants: {
       variant: {
         default: [
-          'bg-[--color-bg-elevated]',
+          'bg-bg-elevated',
           'shadow-lg',
         ],
         glass: [
-          'bg-[--glass-bg]',
+          'bg-[var(--glass-bg)]',
           'backdrop-blur-xl',
           'shadow-xl',
         ],
         outline: [
           'bg-transparent',
-          'border border-[--color-border]',
+          'border border-border',
         ],
         ghost: [
           'bg-transparent',
         ],
         glow: [
-          'bg-[--color-bg-elevated]',
+          'bg-bg-elevated',
           'shadow-lg',
           'border border-transparent',
-          'hover:border-[--color-neon-cyan]/30',
+          'hover:border-neon-cyan/30',
           'hover:shadow-[0_0_30px_rgba(0,240,255,0.15)]',
         ],
         'glow-pink': [
-          'bg-[--color-bg-elevated]',
+          'bg-bg-elevated',
           'shadow-lg',
           'border border-transparent',
-          'hover:border-[--color-neon-pink]/30',
+          'hover:border-neon-pink/30',
           'hover:shadow-[0_0_30px_rgba(255,45,106,0.15)]',
         ],
       },
@@ -46,8 +46,8 @@ const cardVariants = cva(
       },
       hoverable: {
         true: [
-          'hover:bg-[--glass-bg-hover]',
-          'hover:border-[--glass-border-hover]',
+          'hover:bg-[var(--glass-bg-hover)]',
+          'hover:border-[var(--glass-border-hover)]',
           'cursor-pointer',
         ],
         false: '',
@@ -95,7 +95,7 @@ const CardTitle = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      'text-lg font-semibold leading-none tracking-tight text-[--color-text-primary]',
+      'text-lg font-semibold leading-none tracking-tight text-text-primary',
       className
     )}
     {...props}
@@ -109,7 +109,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn('text-sm text-[--color-text-secondary]', className)}
+    className={cn('text-sm text-text-secondary', className)}
     {...props}
   />
 ))

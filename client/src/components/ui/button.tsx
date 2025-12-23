@@ -27,7 +27,7 @@ const buttonVariants = cva(
     'whitespace-nowrap rounded-lg',
     'text-sm font-medium',
     'transition-all duration-200',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[--color-neon-cyan] focus-visible:ring-offset-2 focus-visible:ring-offset-[--color-bg-primary]',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary',
     'disabled:pointer-events-none disabled:opacity-50',
     'active:scale-[0.98]',
     '[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
@@ -37,78 +37,78 @@ const buttonVariants = cva(
       variant: {
         // Primary - White on black (Vercel style)
         default: [
-          'bg-[--color-text-primary] text-[--color-bg-primary]',
-          'hover:bg-[--color-text-primary]/90',
+          'bg-text-primary text-bg-primary',
+          'hover:bg-text-primary/90',
           'shadow-sm',
         ],
         // Secondary - Subtle background
         secondary: [
-          'bg-[--color-bg-elevated] text-[--color-text-primary]',
-          'border border-[--color-border]',
-          'hover:bg-[--color-bg-tertiary] hover:border-[--color-border-hover]',
+          'bg-bg-elevated text-text-primary',
+          'border border-border',
+          'hover:bg-bg-tertiary hover:border-border-hover',
         ],
         // Outline - Transparent with border
         outline: [
-          'bg-transparent text-[--color-text-primary]',
-          'border border-[--color-border]',
-          'hover:bg-[--color-bg-elevated] hover:border-[--color-border-hover]',
+          'bg-transparent text-text-primary',
+          'border border-border',
+          'hover:bg-bg-elevated hover:border-border-hover',
         ],
         // Ghost - No background
         ghost: [
-          'bg-transparent text-[--color-text-secondary]',
-          'hover:bg-[--color-bg-elevated] hover:text-[--color-text-primary]',
+          'bg-transparent text-text-secondary',
+          'hover:bg-bg-elevated hover:text-text-primary',
         ],
         // Link style
         link: [
-          'bg-transparent text-[--color-neon-cyan]',
+          'bg-transparent text-neon-cyan',
           'underline-offset-4 hover:underline',
           'p-0 h-auto',
         ],
         // Danger
         danger: [
-          'bg-[--color-danger] text-white',
-          'hover:bg-[--color-danger]/90',
+          'bg-danger text-white',
+          'hover:bg-danger/90',
           'shadow-sm',
         ],
         // Success
         success: [
-          'bg-[--color-success] text-white',
-          'hover:bg-[--color-success]/90',
+          'bg-success text-white',
+          'hover:bg-success/90',
           'shadow-sm',
         ],
         // === PARTY / GLOW VARIANTS ===
-        // Neon Cyan (Crew) - Glow reducido para mejor legibilidad
+        // Neon Cyan (Crew)
         neon: [
-          'bg-[--color-neon-cyan] text-black font-semibold',
+          'bg-neon-cyan text-black font-semibold',
           'shadow-[0_0_15px_rgba(0,240,255,0.3)]',
           'hover:shadow-[0_0_25px_rgba(0,240,255,0.5)]',
-          'hover:bg-[--color-neon-cyan]/90',
+          'hover:bg-neon-cyan/90',
         ],
-        // Neon Pink (Impostor) - Glow reducido para mejor legibilidad
+        // Neon Pink (Impostor)
         'neon-pink': [
-          'bg-[--color-neon-pink] text-white font-semibold',
+          'bg-neon-pink text-white font-semibold',
           'shadow-[0_0_15px_rgba(255,45,106,0.3)]',
           'hover:shadow-[0_0_25px_rgba(255,45,106,0.5)]',
-          'hover:bg-[--color-neon-pink]/90',
+          'hover:bg-neon-pink/90',
         ],
         // Neon outline (fills on hover for better contrast)
         'neon-outline': [
-          'bg-transparent text-[--color-neon-cyan]',
-          'border border-[--color-neon-cyan]/50',
-          'hover:border-[--color-neon-cyan]',
+          'bg-transparent text-neon-cyan',
+          'border border-neon-cyan/50',
+          'hover:border-neon-cyan',
           'hover:shadow-[0_0_20px_rgba(0,240,255,0.4)]',
-          'hover:bg-[--color-neon-cyan] hover:text-black',
+          'hover:bg-neon-cyan hover:text-black',
         ],
         'neon-outline-pink': [
-          'bg-transparent text-[--color-neon-pink]',
-          'border border-[--color-neon-pink]/50',
-          'hover:border-[--color-neon-pink]',
+          'bg-transparent text-neon-pink',
+          'border border-neon-pink/50',
+          'hover:border-neon-pink',
           'hover:shadow-[0_0_20px_rgba(255,45,106,0.4)]',
-          'hover:bg-[--color-neon-pink] hover:text-white',
+          'hover:bg-neon-pink hover:text-white',
         ],
         // Gradient party button
         gradient: [
-          'bg-gradient-to-r from-[--color-neon-cyan] via-[--color-neon-purple] to-[--color-neon-pink]',
+          'bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink',
           'text-white font-semibold',
           'shadow-lg',
           'hover:opacity-90',

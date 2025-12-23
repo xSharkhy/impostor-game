@@ -104,8 +104,8 @@ export function AlertDialogContent({
           {/* Content */}
           <motion.div
             className={cn(
-              'relative z-10 w-full max-w-md rounded-2xl bg-[--color-bg-elevated] p-6 shadow-xl',
-              'border border-[--color-border]',
+              'relative z-10 w-full max-w-md rounded-2xl bg-bg-elevated p-6 shadow-xl',
+              'border border-border',
               className
             )}
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -142,7 +142,7 @@ export function AlertDialogTitle({
   return (
     <h2
       className={cn(
-        'text-lg font-semibold text-[--color-text-primary]',
+        'text-lg font-semibold text-text-primary',
         className
       )}
     >
@@ -159,7 +159,7 @@ export function AlertDialogDescription({
   className?: string
 }) {
   return (
-    <p className={cn('mt-2 text-sm text-[--color-text-secondary]', className)}>
+    <p className={cn('mt-2 text-sm text-text-secondary', className)}>
       {children}
     </p>
   )
