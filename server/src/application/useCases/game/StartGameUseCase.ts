@@ -44,8 +44,8 @@ export class StartGameUseCase {
       throw new NotEnoughPlayersError(3)
     }
 
-    // Get random word
-    const wordResult = await this.wordRepository.getRandomWord(input.categoryId)
+    // Get random word filtered by room language
+    const wordResult = await this.wordRepository.getRandomWord(input.categoryId, room.language)
     if (!wordResult) {
       throw new Error('No words available')
     }
