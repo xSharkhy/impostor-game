@@ -196,13 +196,13 @@ export const shakeAnimation: Variants = {
 
 export const pulseGlow: Variants = {
   initial: {
-    boxShadow: '0 0 0 rgba(0, 240, 255, 0)'
+    boxShadow: '0 0 0 rgba(168, 85, 247, 0)'
   },
   animate: {
     boxShadow: [
-      '0 0 20px rgba(0, 240, 255, 0.4)',
-      '0 0 40px rgba(0, 240, 255, 0.6)',
-      '0 0 20px rgba(0, 240, 255, 0.4)',
+      '0 0 20px rgba(168, 85, 247, 0.4)',
+      '0 0 40px rgba(168, 85, 247, 0.6)',
+      '0 0 20px rgba(168, 85, 247, 0.4)',
     ],
     transition: {
       duration: 2,
@@ -360,8 +360,8 @@ export const cardHover: Variants = {
     borderColor: 'rgba(255, 255, 255, 0.08)',
   },
   hover: {
-    borderColor: 'rgba(0, 240, 255, 0.3)',
-    boxShadow: '0 0 30px rgba(0, 240, 255, 0.1)',
+    borderColor: 'rgba(168, 85, 247, 0.3)',
+    boxShadow: '0 0 30px rgba(168, 85, 247, 0.1)',
     transition: { duration: 0.3 },
   },
 }

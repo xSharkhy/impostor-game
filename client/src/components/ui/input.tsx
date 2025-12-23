@@ -11,8 +11,8 @@ const inputVariants = cva(
     'text-sm text-text-primary',
     'placeholder:text-text-tertiary',
     'transition-all duration-200',
-    'focus:outline-none focus:border-neon-cyan/50',
-    'focus:shadow-[0_0_0_3px_rgba(0,240,255,0.1)]',
+    'focus:outline-none focus:border-accent/50',
+    'focus:shadow-[0_0_0_3px_rgba(168,85,247,0.1)]',
     'hover:border-border-hover',
     'disabled:cursor-not-allowed disabled:opacity-50',
     'file:border-0 file:bg-transparent file:text-sm file:font-medium',
@@ -27,8 +27,8 @@ const inputVariants = cva(
           'border-[var(--glass-border)]',
         ],
         glow: [
-          'focus:border-neon-cyan',
-          'focus:shadow-[0_0_20px_rgba(0,240,255,0.2)]',
+          'focus:border-accent',
+          'focus:shadow-[0_0_20px_rgba(168,85,247,0.2)]',
         ],
         error: [
           'border-danger/50',

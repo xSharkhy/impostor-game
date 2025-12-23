@@ -21,7 +21,7 @@ const SelectTrigger = React.forwardRef<
       'border border-border bg-bg-secondary px-3 py-2 text-sm text-text-primary',
       'ring-offset-bg-primary',
       'data-[placeholder]:text-text-tertiary',
-      'focus:outline-none focus:ring-2 focus:ring-neon-cyan focus:ring-offset-2',
+      'focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2',
       'hover:border-border-hover',
       'disabled:cursor-not-allowed disabled:opacity-50',
       '[&>span]:line-clamp-1',
@@ -143,7 +143,7 @@ const SelectItem = React.forwardRef<
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <Check className="h-4 w-4 text-neon-cyan" />
+        <Check className="h-4 w-4 text-accent" />
       </SelectPrimitive.ItemIndicator>
     </span>
 

@@ -28,7 +28,7 @@ function RootComponent() {
             success: 'border-success/50',
             error: 'border-danger/50',
             warning: 'border-neon-yellow/50',
-            info: 'border-neon-cyan/50',
+            info: 'border-accent/50',
           },
         }}
       />

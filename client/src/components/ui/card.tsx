@@ -27,8 +27,8 @@ const cardVariants = cva(
           'bg-bg-elevated',
           'shadow-lg',
           'border border-transparent',
-          'hover:border-neon-cyan/30',
-          'hover:shadow-[0_0_30px_rgba(0,240,255,0.15)]',
+          'hover:border-accent/30',
+          'hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]',
         ],
         'glow-pink': [
           'bg-bg-elevated',

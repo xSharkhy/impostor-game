@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
  * GUÍA DE USO DE VARIANTES:
  *
  * ESTÁNDAR:
- * - default     : Acción principal (blanco sobre negro, estilo Vercel)
+ * - default     : Acción principal (blanco sobre negro)
  * - secondary   : Acción secundaria con borde
  * - outline     : Acción terciaria, solo borde
  * - ghost       : Acción mínima, sin fondo ni borde
@@ -15,9 +15,9 @@ import { cn } from '@/lib/utils'
  * - success     : Confirmaciones positivas
  *
  * PARTY/NEON (usar con moderación):
- * - neon            : CTAs importantes del juego (cyan glow)
+ * - neon            : CTAs importantes del juego (purple glow)
  * - neon-pink       : Acciones relacionadas con impostor
- * - neon-outline    : CTAs secundarios con glow (cyan)
+ * - neon-outline    : CTAs secundarios con glow (purple)
  * - neon-outline-pink: CTAs secundarios con glow (pink)
  * - gradient        : Solo para momentos de celebración
  */
@@ -27,7 +27,7 @@ const buttonVariants = cva(
     'whitespace-nowrap rounded-lg',
     'text-sm font-medium',
     'transition-all duration-200',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neon-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary',
     'disabled:pointer-events-none disabled:opacity-50',
     'active:scale-[0.98]',
     '[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
@@ -60,7 +60,7 @@ const buttonVariants = cva(
         ],
         // Link style
         link: [
-          'bg-transparent text-neon-cyan',
+          'bg-transparent text-accent',
           'underline-offset-4 hover:underline',
           'p-0 h-auto',
         ],
@@ -77,12 +77,12 @@ const buttonVariants = cva(
           'shadow-sm',
         ],
         // === PARTY / GLOW VARIANTS ===
-        // Neon Cyan (Crew)
+        // Neon Purple (Main accent)
         neon: [
-          'bg-neon-cyan text-black font-semibold',
-          'shadow-[0_0_15px_rgba(0,240,255,0.3)]',
-          'hover:shadow-[0_0_25px_rgba(0,240,255,0.5)]',
-          'hover:bg-neon-cyan/90',
+          'bg-accent text-white font-semibold',
+          'shadow-[0_0_15px_rgba(168,85,247,0.3)]',
+          'hover:shadow-[0_0_25px_rgba(168,85,247,0.5)]',
+          'hover:bg-accent-dark',
         ],
         // Neon Pink (Impostor)
         'neon-pink': [
@@ -93,11 +93,11 @@ const buttonVariants = cva(
         ],
         // Neon outline (fills on hover for better contrast)
         'neon-outline': [
-          'bg-transparent text-neon-cyan',
-          'border border-neon-cyan/50',
-          'hover:border-neon-cyan',
-          'hover:shadow-[0_0_20px_rgba(0,240,255,0.4)]',
-          'hover:bg-neon-cyan hover:text-black',
+          'bg-transparent text-accent',
+          'border border-accent/50',
+          'hover:border-accent',
+          'hover:shadow-[0_0_20px_rgba(168,85,247,0.4)]',
+          'hover:bg-accent hover:text-white',
         ],
         'neon-outline-pink': [
           'bg-transparent text-neon-pink',
@@ -108,7 +108,7 @@ const buttonVariants = cva(
         ],
         // Gradient party button
         gradient: [
-          'bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink',
+          'bg-gradient-to-r from-accent via-neon-pink to-accent-light',
           'text-white font-semibold',
           'shadow-lg',
           'hover:opacity-90',
