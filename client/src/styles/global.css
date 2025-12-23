@@ -41,6 +41,16 @@
   --color-impostor: var(--color-neon-pink);
   --color-admin: var(--color-neon-yellow);
 
+  /* === COLORS: Player Accents (closed set, 8 colors) === */
+  --color-player-0: #00f0ff; /* Cyan */
+  --color-player-1: #ff2d6a; /* Pink */
+  --color-player-2: #a855f7; /* Purple */
+  --color-player-3: #22ff88; /* Green */
+  --color-player-4: #facc15; /* Yellow */
+  --color-player-5: #f97316; /* Orange */
+  --color-player-6: #3b82f6; /* Blue */
+  --color-player-7: #ec4899; /* Magenta */
+
   /* === GLASSMORPHISM (dark borders, no white) === */
   --glass-bg: rgba(255, 255, 255, 0.02);
   --glass-bg-hover: rgba(255, 255, 255, 0.04);
