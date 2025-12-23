@@ -33,12 +33,17 @@ export function LoginForm() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="text-center">
-        <h2 className="text-2xl font-bold">Iniciar sesión</h2>
+      <motion.div
+        className="text-center"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
+        <h2 className="text-2xl font-bold">Bienvenido</h2>
         <p className="mt-1 text-sm text-text-secondary">
-          Elige tu método de autenticación
+          Inicia sesión para jugar
         </p>
-      </div>
+      </motion.div>
 
       {/* Login Card */}
       <Card variant="glass">
