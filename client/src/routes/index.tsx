@@ -1,23 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { createFileRoute } from '@tanstack/react-router'
-import {
-  Button,
-  Skeleton,
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogCancel,
-  AlertDialogAction,
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from '@/components/ui'
+import { Button, Skeleton } from '@/components/ui'
 import { LoginForm } from '@/components/auth/LoginForm'
 import { JoinRoom } from '@/components/lobby/JoinRoom'
 import { RoomLobby } from '@/components/lobby/RoomLobby'
@@ -26,7 +10,7 @@ import { GameView } from '@/components/game/GameView'
 import { SuggestWord } from '@/components/words/SuggestWord'
 import { useUserStore, useRoomStore, useGameStore } from '@/stores'
 import { useAuth, useSocket } from '@/hooks'
-import { getCurrentLanguage, SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/lib/i18n'
+import { getCurrentLanguage } from '@/lib/i18n'
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -37,8 +21,6 @@ type View = 'home' | 'join' | 'suggest'
 function HomePage() {
   const { t } = useTranslation()
   const [view, setView] = useState<View>('home')
-  const [showCreateRoom, setShowCreateRoom] = useState(false)
-  const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage>(getCurrentLanguage())
   const { isAuthenticated, isLoading } = useUserStore()
   const { room, isConnecting } = useRoomStore()
   const { phase } = useGameStore()
@@ -46,8 +28,7 @@ function HomePage() {
   const { createRoom, isConnected } = useSocket()
 
   const handleCreateRoom = () => {
-    createRoom(selectedLanguage)
-    setShowCreateRoom(false)
+    createRoom(getCurrentLanguage())
   }
 
   if (isLoading) {
@@ -136,7 +117,7 @@ function HomePage() {
                   variant="neon"
                   size="lg"
                   className="w-full"
-                  onClick={() => setShowCreateRoom(true)}
+                  onClick={handleCreateRoom}
                   disabled={isConnecting}
                   isLoading={isConnecting}
                 >
@@ -152,44 +133,6 @@ function HomePage() {
                   {t('home.joinRoom')}
                 </Button>
               </div>
-
-              {/* Create Room Dialog */}
-              <AlertDialog open={showCreateRoom} onOpenChange={setShowCreateRoom}>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>{t('home.createRoomTitle')}</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      {t('home.selectGameLanguage')}
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <div className="py-4">
-                    <Select value={selectedLanguage} onValueChange={(v) => setSelectedLanguage(v as SupportedLanguage)}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.entries(SUPPORTED_LANGUAGES).map(([code, { name, flag }]) => (
-                          <SelectItem key={code} value={code}>
-                            <span className="flex items-center gap-2">
-                              <span>{flag}</span>
-                              <span>{name}</span>
-                            </span>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <p className="mt-2 text-center text-xs text-text-tertiary">
-                      {t('home.gameLanguageHint')}
-                    </p>
-                  </div>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleCreateRoom}>
-                      {t('home.createRoom')}
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
 
               {/* Secondary actions */}
               <div className="flex flex-col items-center gap-2 pt-2">

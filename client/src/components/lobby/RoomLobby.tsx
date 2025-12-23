@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'motion/react'
 import {
@@ -15,20 +15,37 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
 } from '@/components/ui'
 import { useSocket } from '@/hooks'
 import { useRoomStore, useUserStore } from '@/stores'
-import { CONSTANTS } from '@impostor/shared'
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/lib/i18n'
+import { CONSTANTS, type GameMode } from '@impostor/shared'
 
 export function RoomLobby() {
   const { t } = useTranslation()
   const { room } = useRoomStore()
   const { user } = useUserStore()
-  const { leaveRoom, kickPlayer, startGame } = useSocket()
+  const { leaveRoom, kickPlayer, changeRoomLanguage, startGame } = useSocket()
   const [playerToKick, setPlayerToKick] = useState<{ id: string; name: string } | null>(null)
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false)
+  const [gameMode, setGameMode] = useState<GameMode>('classic')
+
+  // Reset to classic mode if current language doesn't support random
+  useEffect(() => {
+    if (gameMode === 'random' && room?.language !== 'es') {
+      setGameMode('classic')
+    }
+  }, [room?.language, gameMode])
 
   if (!room || !user) return null
+
+  // Check which modes are available for the current room language
+  const isRandomModeAvailable = room.language === 'es'
 
   const isAdmin = room.adminId === user.id
   const canStart = room.players.length >= CONSTANTS.MIN_PLAYERS
@@ -171,14 +188,60 @@ export function RoomLobby() {
       {/* Actions */}
       <div className="space-y-3">
         {isAdmin && (
-          <Button
-            variant={canStart ? 'neon' : 'outline'}
-            className="w-full"
-            disabled={!canStart}
-            onClick={() => startGame()}
-          >
-            {canStart ? t('room.startGame') : t('room.waitingForPlayers')}
-          </Button>
+          <>
+            {/* Game Settings */}
+            <div className="space-y-3 rounded-lg border border-border bg-bg-tertiary p-3">
+              {/* Mode Selector */}
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-3">
+                  <span className="w-16 text-sm text-text-secondary">{t('room.gameMode')}</span>
+                  <Select value={gameMode} onValueChange={(v) => setGameMode(v as GameMode)}>
+                    <SelectTrigger className="flex-1">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="classic">{t('room.modeClassic')}</SelectItem>
+                      <SelectItem value="random" disabled={!isRandomModeAvailable}>
+                        {t('room.modeRandom')}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <p className="text-xs text-text-tertiary">
+                  {gameMode === 'classic' ? t('room.modeClassicDesc') : t('room.modeRandomDesc')}
+                </p>
+              </div>
+
+              {/* Language Selector */}
+              <div className="flex items-center gap-3">
+                <span className="w-16 text-sm text-text-secondary">{t('room.language')}</span>
+                <Select
+                  value={room.language}
+                  onValueChange={(v) => changeRoomLanguage(v as SupportedLanguage)}
+                >
+                  <SelectTrigger className="flex-1">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(SUPPORTED_LANGUAGES).map(([code, { flag, name }]) => (
+                      <SelectItem key={code} value={code}>
+                        {flag} {name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <Button
+              variant={canStart ? 'neon' : 'outline'}
+              className="w-full"
+              disabled={!canStart}
+              onClick={() => startGame({ mode: gameMode })}
+            >
+              {canStart ? t('room.startGame') : t('room.waitingForPlayers')}
+            </Button>
+          </>
         )}
 
         {!isAdmin && (
