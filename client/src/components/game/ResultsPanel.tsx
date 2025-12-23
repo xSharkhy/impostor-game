@@ -144,7 +144,7 @@ export function ResultsPanel({ onContinue }: ResultsPanelProps) {
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-bg-elevated text-5xl">
+              <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-bg-elevated text-5xl" aria-hidden="true">
                 🤷
               </div>
               <p className="text-2xl font-bold text-text-primary">

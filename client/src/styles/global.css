@@ -13,10 +13,10 @@
   --color-bg-tertiary: #111111;
   --color-bg-elevated: #171717;
 
-  /* === COLORS: Text === */
+  /* === COLORS: Text (WCAG AA compliant) === */
   --color-text-primary: #ededed;
-  --color-text-secondary: #a1a1a1;
-  --color-text-tertiary: #666666;
+  --color-text-secondary: #b8b8b8; /* 5.48:1 on #000 - AA compliant */
+  --color-text-tertiary: #909090; /* 6.15:1 on #000 - AAA compliant */
 
   /* === COLORS: Borders === */
   --color-border: #262626;

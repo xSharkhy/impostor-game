@@ -36,7 +36,7 @@ export function VotingPanel() {
       {/* Compact Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-2xl">🗳️</span>
+          <span className="text-2xl" aria-hidden="true">🗳️</span>
           <h2 className="text-xl font-bold text-accent">¡A votar!</h2>
         </div>
         <span className="text-xs text-text-tertiary">

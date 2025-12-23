@@ -124,7 +124,7 @@ export function WordSuggestions() {
         </div>
         <Card variant="glass">
           <CardContent className="py-8 text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-danger/10 text-2xl">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-danger/10 text-2xl" aria-hidden="true">
               ⚠️
             </div>
             <p className="font-medium text-danger">{error}</p>
@@ -160,7 +160,7 @@ export function WordSuggestions() {
       {suggestions.length === 0 ? (
         <Card variant="glass">
           <CardContent className="py-10 text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-bg-elevated text-4xl">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-bg-elevated text-4xl" aria-hidden="true">
               ✨
             </div>
             <p className="font-medium text-text-primary">

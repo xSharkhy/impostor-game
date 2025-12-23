@@ -53,7 +53,7 @@ export function GameOverPanel() {
 
       {/* Victory/Defeat Header */}
       <div className="text-center">
-        <div className="mb-4 text-7xl">
+        <div className="mb-4 text-7xl" aria-hidden="true">
           {playerWon ? '🏆' : '💀'}
         </div>
         <h2 className="text-5xl font-black">

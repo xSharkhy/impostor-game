@@ -43,7 +43,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         <div className="flex min-h-[50vh] items-center justify-center p-6">
           <Card variant="glass" className="w-full max-w-md">
             <CardHeader className="text-center">
-              <div className="mb-4 text-6xl">💥</div>
+              <div className="mb-4 text-6xl" aria-hidden="true">💥</div>
               <CardTitle className="text-xl text-text-primary">
                 ¡Algo salió mal!
               </CardTitle>

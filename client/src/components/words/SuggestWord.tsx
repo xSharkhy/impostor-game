@@ -85,7 +85,7 @@ export function SuggestWord({ onClose }: SuggestWordProps) {
         <CardTitle className="flex items-center justify-between">
           <span>Sugerir palabra</span>
           {onClose && (
-            <Button variant="ghost" size="sm" onClick={onClose}>
+            <Button variant="ghost" size="sm" onClick={onClose} aria-label="Cerrar">
               ✕
             </Button>
           )}
