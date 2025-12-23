@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import type { GameMode } from '@impostor/shared'
 
 type GamePhase = 'waiting' | 'playing' | 'voting' | 'results' | 'finished'
 
@@ -10,6 +11,7 @@ interface VoteState {
 interface GameState {
   // Game state
   phase: GamePhase
+  mode: GameMode
   word: string | null // null if impostor
   isImpostor: boolean
   turnOrder: string[]
@@ -27,7 +29,7 @@ interface GameState {
   revealedImpostorId: string | null
 
   // Actions
-  startGame: (data: { word: string | null; isImpostor: boolean; turnOrder: string[] }) => void
+  startGame: (data: { word: string | null; isImpostor: boolean; turnOrder: string[]; mode: GameMode }) => void
   setRound: (round: number) => void
   startVoting: () => void
   updateVotes: (votes: Record<string, string>, twoThirdsReached: boolean) => void
@@ -40,6 +42,7 @@ interface GameState {
 
 const initialState = {
   phase: 'waiting' as GamePhase,
+  mode: 'classic' as GameMode,
   word: null,
   isImpostor: false,
   turnOrder: [],
@@ -56,9 +59,10 @@ const initialState = {
 export const useGameStore = create<GameState>((set) => ({
   ...initialState,
 
-  startGame: ({ word, isImpostor, turnOrder }) =>
+  startGame: ({ word, isImpostor, turnOrder, mode }) =>
     set({
       phase: 'playing',
+      mode,
       word,
       isImpostor,
       turnOrder,

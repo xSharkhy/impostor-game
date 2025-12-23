@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { ClientRoom, Player, RoomStatus } from '@impostor/shared'
+import type { ClientRoom, Player, RoomStatus, SupportedLanguage } from '@impostor/shared'
 
 interface RoomState {
   room: ClientRoom | null
@@ -13,6 +13,7 @@ interface RoomState {
   removePlayer: (playerId: string) => void
   updatePlayer: (playerId: string, updates: Partial<Player>) => void
   setAdmin: (adminId: string) => void
+  setLanguage: (language: SupportedLanguage) => void
   setError: (error: string | null) => void
   setConnecting: (connecting: boolean) => void
   reset: () => void
@@ -70,6 +71,11 @@ export const useRoomStore = create<RoomState>((set) => ({
   setAdmin: (adminId) =>
     set((state) =>
       state.room ? { room: { ...state.room, adminId } } : state
+    ),
+
+  setLanguage: (language) =>
+    set((state) =>
+      state.room ? { room: { ...state.room, language } } : state
     ),
 
   setError: (error) => set({ error }),
