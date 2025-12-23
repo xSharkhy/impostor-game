@@ -84,6 +84,8 @@ export function registerRoomHandlers(
 
     if (newAdmin) {
       io.to(room.id).emit('room:adminChanged', { newAdminId: newAdmin })
+      // Also send full room state to ensure UI updates
+      io.to(room.id).emit('room:state', toClientRoom(room))
     }
 
     console.log(`${user.displayName} left room ${room.code}`)
@@ -133,6 +135,8 @@ export function registerRoomHandlers(
           if (connectedPlayer) {
             room.adminId = connectedPlayer.id
             io.to(room.id).emit('room:adminChanged', { newAdminId: connectedPlayer.id })
+            // Also send full room state to ensure UI updates
+            io.to(room.id).emit('room:state', toClientRoom(room))
           }
         }
       }
