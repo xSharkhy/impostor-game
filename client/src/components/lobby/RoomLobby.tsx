@@ -20,6 +20,7 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
+  Input,
 } from '@/components/ui'
 import { useSocket } from '@/hooks'
 import { useRoomStore, useUserStore } from '@/stores'
@@ -33,7 +34,18 @@ export function RoomLobby() {
   const { leaveRoom, kickPlayer, changeRoomLanguage, startGame } = useSocket()
   const [playerToKick, setPlayerToKick] = useState<{ id: string; name: string } | null>(null)
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false)
-  const [gameMode, setGameMode] = useState<GameMode>('classic')
+  const [customWord, setCustomWord] = useState('')
+
+  // Restore last used mode from localStorage
+  const [gameMode, setGameMode] = useState<GameMode>(() => {
+    const saved = localStorage.getItem('lastGameMode') as GameMode | null
+    return saved && ['classic', 'random', 'custom', 'roulette'].includes(saved) ? saved : 'classic'
+  })
+
+  // Save mode to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem('lastGameMode', gameMode)
+  }, [gameMode])
 
   // Reset to classic mode if current language doesn't support random
   useEffect(() => {
@@ -48,8 +60,26 @@ export function RoomLobby() {
   const isRandomModeAvailable = room.language === 'es'
 
   const isAdmin = room.adminId === user.id
-  const canStart = room.players.length >= CONSTANTS.MIN_PLAYERS
+  const hasEnoughPlayers = room.players.length >= CONSTANTS.MIN_PLAYERS
   const playersNeeded = CONSTANTS.MIN_PLAYERS - room.players.length
+
+  // For custom mode, also need a word
+  const canStartCustom = gameMode === 'custom' ? customWord.trim().length > 0 : true
+  const canStart = hasEnoughPlayers && canStartCustom
+
+  // Get the mode description
+  const getModeDescription = () => {
+    switch (gameMode) {
+      case 'classic':
+        return t('room.modeClassicDesc')
+      case 'random':
+        return t('room.modeRandomDesc')
+      case 'custom':
+        return t('room.modeCustomDesc')
+      case 'roulette':
+        return t('room.modeRouletteDesc')
+    }
+  }
 
   return (
     <div className="mx-auto w-full max-w-md space-y-6">
@@ -163,7 +193,7 @@ export function RoomLobby() {
       </div>
 
       {/* Waiting indicator */}
-      {!canStart && (
+      {!hasEnoughPlayers && (
         <div className="flex items-center justify-center gap-3 rounded-lg border border-border bg-bg-tertiary px-4 py-3">
           <div className="flex gap-1">
             {[0, 1, 2].map((i) => (
@@ -204,13 +234,30 @@ export function RoomLobby() {
                       <SelectItem value="random" disabled={!isRandomModeAvailable}>
                         {t('room.modeRandom')}
                       </SelectItem>
+                      <SelectItem value="custom">{t('room.modeCustom')}</SelectItem>
+                      <SelectItem value="roulette">{t('room.modeRoulette')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <p className="text-xs text-text-tertiary">
-                  {gameMode === 'classic' ? t('room.modeClassicDesc') : t('room.modeRandomDesc')}
+                  {getModeDescription()}
                 </p>
               </div>
+
+              {/* Custom Word Input (only for custom mode) */}
+              {gameMode === 'custom' && (
+                <div className="space-y-1.5">
+                  <Input
+                    placeholder={t('room.customWordPlaceholder')}
+                    value={customWord}
+                    onChange={(e) => setCustomWord(e.target.value)}
+                    maxLength={30}
+                  />
+                  {!customWord.trim() && (
+                    <p className="text-xs text-warning">{t('room.customWordRequired')}</p>
+                  )}
+                </div>
+              )}
 
               {/* Language Selector */}
               <div className="flex items-center gap-3">
@@ -237,9 +284,12 @@ export function RoomLobby() {
               variant={canStart ? 'neon' : 'outline'}
               className="w-full"
               disabled={!canStart}
-              onClick={() => startGame({ mode: gameMode })}
+              onClick={() => startGame({
+                mode: gameMode,
+                customWord: gameMode === 'custom' ? customWord.trim() : undefined,
+              })}
             >
-              {canStart ? t('room.startGame') : t('room.waitingForPlayers')}
+              {hasEnoughPlayers ? t('room.startGame') : t('room.waitingForPlayers')}
             </Button>
           </>
         )}

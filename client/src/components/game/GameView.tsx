@@ -17,6 +17,7 @@ import {
 } from '@/components/ui'
 import { useSocket } from '@/hooks'
 import { useGameStore, useRoomStore, useUserStore } from '@/stores'
+import { WordCollectionPanel } from './WordCollectionPanel'
 import { VotingPanel } from './VotingPanel'
 import { ResultsPanel } from './ResultsPanel'
 import { GameOverPanel } from './GameOverPanel'
@@ -31,6 +32,15 @@ export function GameView() {
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false)
 
   if (!room || !user) return null
+
+  // Show WordCollectionPanel during collecting phase (roulette mode)
+  if (phase === 'collecting') {
+    return (
+      <div className="flex h-full w-full flex-col">
+        <WordCollectionPanel />
+      </div>
+    )
+  }
 
   // Show VotingPanel during voting phase
   if (phase === 'voting') {
