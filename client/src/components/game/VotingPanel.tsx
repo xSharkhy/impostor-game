@@ -122,7 +122,7 @@ export function VotingPanel() {
                     size="sm"
                     variant="neon-outline"
                     onClick={() => castVote(player.id)}
-                    className="h-7 px-2 text-xs"
+                    className="h-9 min-w-[52px] px-3 text-xs"
                   >
                     Votar
                   </Button>
