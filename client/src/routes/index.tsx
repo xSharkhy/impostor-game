@@ -26,7 +26,7 @@ function HomePage() {
   if (isLoading) {
     return (
       <div className="flex min-h-[100dvh] items-center justify-center">
-        <p className="text-[--color-text-muted]">Cargando...</p>
+        <p className="text-text-tertiary">Cargando...</p>
       </div>
     )
   }
@@ -34,8 +34,10 @@ function HomePage() {
   // If game is in progress, show game view
   if (room && phase !== 'waiting') {
     return (
-      <div className="flex min-h-[100dvh] flex-col items-center justify-center px-6 py-12">
-        <GameView />
+      <div className="flex h-[100dvh] flex-col px-4 py-4">
+        <div className="mx-auto flex h-full w-full max-w-md flex-col">
+          <GameView />
+        </div>
       </div>
     )
   }
@@ -43,7 +45,7 @@ function HomePage() {
   // If in a room lobby, show lobby
   if (room) {
     return (
-      <div className="flex min-h-[100dvh] flex-col items-center justify-center px-6 py-12">
+      <div className="flex h-[100dvh] flex-col items-center justify-center px-4 py-4">
         <RoomLobby />
       </div>
     )
@@ -56,7 +58,7 @@ function HomePage() {
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
             El Impostor
           </h1>
-          <p className="text-sm text-[--color-text-muted]">
+          <p className="text-sm text-text-tertiary">
             Juego de deducción social con palabras
           </p>
         </div>
@@ -68,10 +70,10 @@ function HomePage() {
             <SuggestWord onClose={() => setView('home')} />
           ) : (
             <div className="space-y-6">
-              <p className="text-sm text-[--color-text-muted]">
-                Hola, <span className="text-[--color-text]">{user?.displayName}</span>
+              <p className="text-sm text-text-tertiary">
+                Hola, <span className="text-text-primary">{user?.displayName}</span>
                 {isConnected && (
-                  <span className="ml-2 inline-block h-2 w-2 rounded-full bg-[--color-success]" />
+                  <span className="ml-2 inline-block h-2 w-2 rounded-full bg-success" />
                 )}
               </p>
               <div className="flex flex-col gap-3">
@@ -90,14 +92,14 @@ function HomePage() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-[--color-text-muted]"
+                className="text-text-tertiary"
                 onClick={() => setView('suggest')}
               >
                 Sugerir palabra
               </Button>
               <Button
                 variant="ghost"
-                className="text-[--color-text-muted]"
+                className="text-text-tertiary"
                 onClick={signOut}
               >
                 Cerrar sesión
@@ -106,7 +108,7 @@ function HomePage() {
           )
         ) : (
           <div className="space-y-4">
-            <p className="text-sm text-[--color-text-muted]">
+            <p className="text-sm text-text-tertiary">
               Inicia sesión para jugar
             </p>
             <LoginForm />
