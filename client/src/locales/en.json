@@ -1,0 +1,192 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "back": "Back",
+    "close": "Close",
+    "you": "(you)",
+    "admin": "Admin",
+    "player": "Player",
+    "unknown": "Unknown",
+    "or": "or",
+    "connected": "Connected"
+  },
+  "app": {
+    "title": "The Impostor",
+    "subtitle": "Social deduction game"
+  },
+  "auth": {
+    "welcome": "Welcome",
+    "loginPrompt": "Sign in to play",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithGitHub": "Continue with GitHub",
+    "connecting": "Connecting...",
+    "termsAccept": "By signing in, you accept the game rules",
+    "logout": "Sign out",
+    "errorGoogle": "Error signing in with Google",
+    "errorGitHub": "Error signing in with GitHub"
+  },
+  "home": {
+    "greeting": "Hi,",
+    "createRoom": "Create Room",
+    "creating": "Creating...",
+    "joinRoom": "Join Room",
+    "suggestWord": "Suggest word",
+    "createRoomTitle": "Create new room",
+    "selectGameLanguage": "Select game language",
+    "gameLanguageHint": "Words will be shown in this language"
+  },
+  "room": {
+    "code": "Room code",
+    "shareCode": "Share this code with your friends",
+    "players": "Players",
+    "minimum": "Minimum {{count}}",
+    "waitingPlayers_one": "Waiting for {{count}} more player...",
+    "waitingPlayers_other": "Waiting for {{count}} more players...",
+    "waitingAdmin": "Waiting for admin...",
+    "startGame": "Start Game",
+    "waitingForPlayers": "Waiting for players...",
+    "leaveRoom": "Leave room",
+    "kick": "Kick",
+    "kickPlayer": "Kick player",
+    "kickConfirm": "Are you sure you want to kick <strong>{{name}}</strong> from the room?",
+    "leaveConfirm": "Are you sure you want to leave the room?",
+    "leaveAdminWarning": "You are the admin. If you leave, another player will become admin.",
+    "leave": "Leave"
+  },
+  "join": {
+    "title": "Join room",
+    "enterCode": "Enter the {{length}}-letter code",
+    "enterAs": "You'll join as",
+    "join": "Join",
+    "connecting": "Connecting...",
+    "codeHint": "The code appears on the admin's screen"
+  },
+  "game": {
+    "youAreImpostor": "You are the impostor",
+    "yourWord": "Your word",
+    "discoverWord": "Discover the word by listening to others",
+    "round": "Round {{number}}",
+    "turnOrder": "Turn order",
+    "spectator": "Spectator",
+    "startVoting": "Start Voting",
+    "nextRound": "Next Round",
+    "leaveGame": "Leave game",
+    "leaveGameConfirm": "Are you sure you want to leave the current game?",
+    "leaveGameAdminWarning": "You are the admin! If you leave, the game will continue with another admin.",
+    "abandon": "Leave"
+  },
+  "voting": {
+    "title": "Time to vote!",
+    "voted": "✓ Voted",
+    "threshold": "{{count}} = eliminate",
+    "votesCount": "{{current}} of {{total}} votes",
+    "yourVote": "Your vote",
+    "vote": "Vote",
+    "tie": "Tie!",
+    "continue": "Continue",
+    "eliminate": "Eliminate!",
+    "eliminateVotes": "Eliminate ({{count}} votes)",
+    "forgive": "Forgive",
+    "waitingVotes": "Waiting for votes...",
+    "waitingAdmin": "Waiting for admin..."
+  },
+  "results": {
+    "title": "Result",
+    "eliminated": "was eliminated",
+    "wasImpostor": "WAS THE IMPOSTOR!",
+    "wasInnocent": "Innocent...",
+    "goodJob": "Good job, team!",
+    "impostorRemains": "The impostor is still among you...",
+    "noElimination": "Nobody was eliminated",
+    "notEnoughVotes": "Not enough votes",
+    "continuing": "Continuing automatically...",
+    "skip": "Skip"
+  },
+  "gameOver": {
+    "victory": "VICTORY!",
+    "defeat": "DEFEAT!",
+    "crewWon": "The crew won!",
+    "impostorWon": "The impostor won!",
+    "impostorWas": "The impostor was",
+    "wordWas": "The word was",
+    "playAgain": "Play again!",
+    "backToStart": "Back to start",
+    "waitingNewGame": "Waiting for admin to start new game..."
+  },
+  "suggest": {
+    "title": "Suggest word",
+    "category": "Category",
+    "selectCategory": "Select a category",
+    "word": "Word",
+    "wordPlaceholder": "Type a word...",
+    "submit": "Suggest",
+    "submitting": "Submitting...",
+    "success": "Word suggested successfully",
+    "reviewNote": "Suggestions will be reviewed before being added to the game",
+    "errorCategories": "Error loading categories",
+    "noCategories": "No categories available"
+  },
+  "admin": {
+    "suggestions": "Word Suggestions",
+    "pendingCount": "{{count}} pending suggestions",
+    "allCaughtUp": "All caught up!",
+    "noPending": "No pending suggestions to review",
+    "approve": "Approve",
+    "reject": "Reject",
+    "refresh": "Refresh",
+    "backToHome": "Back to home",
+    "notAuthenticated": "Not authenticated",
+    "noPermission": "You don't have admin permissions",
+    "errorLoading": "Error loading suggestions",
+    "translateWord": "Translate word",
+    "translateDescription": "Add translations for \"{{word}}\" ({{category}}) in all languages",
+    "original": "original",
+    "approveAll": "Approve in all languages"
+  },
+  "profile": {
+    "namePlaceholder": "Your name",
+    "nameLength": "2-20 characters",
+    "errorSaving": "Error saving name",
+    "errorLength": "Name must be between 2 and 20 characters"
+  },
+  "connection": {
+    "restored": "Connection restored",
+    "lost": "Connection lost",
+    "reconnecting": "Trying to reconnect...",
+    "error": "Connection error",
+    "noServer": "No server connection"
+  },
+  "notifications": {
+    "playerJoined": "{{name}} joined",
+    "playerLeft": "{{name}} left",
+    "youWereKicked": "You were kicked from the room",
+    "playerKicked": "{{name}} was kicked",
+    "newAdmin": "{{name}} is the new admin"
+  },
+  "error": {
+    "title": "Something went wrong!",
+    "description": "An unexpected error occurred. You can try reloading the page.",
+    "reload": "Reload"
+  },
+  "language": {
+    "title": "Language",
+    "change": "Change language",
+    "roomLanguage": "Room language",
+    "differentLanguage": "The room is in {{language}}",
+    "willChange": "Your language will change automatically when you join.",
+    "joinAnyway": "Join"
+  },
+  "categories": {
+    "animals": "Animals",
+    "food": "Food",
+    "places": "Places",
+    "objects": "Objects",
+    "professions": "Professions",
+    "sports": "Sports"
+  }
+}

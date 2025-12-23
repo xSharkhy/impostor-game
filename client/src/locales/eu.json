@@ -1,0 +1,192 @@
+{
+  "common": {
+    "loading": "Kargatzen...",
+    "error": "Errorea",
+    "retry": "Berriro saiatu",
+    "cancel": "Utzi",
+    "confirm": "Baieztatu",
+    "save": "Gorde",
+    "back": "Atzera",
+    "close": "Itxi",
+    "you": "(zu)",
+    "admin": "Admin",
+    "player": "Jokalaria",
+    "unknown": "Ezezaguna",
+    "or": "edo",
+    "connected": "Konektatuta"
+  },
+  "app": {
+    "title": "Inpostorrea",
+    "subtitle": "Dedukzio sozialeko jokoa"
+  },
+  "auth": {
+    "welcome": "Ongi etorri",
+    "loginPrompt": "Hasi saioa jokatzeko",
+    "continueWithGoogle": "Google-rekin jarraitu",
+    "continueWithGitHub": "GitHub-ekin jarraitu",
+    "connecting": "Konektatzen...",
+    "termsAccept": "Saioa hastean, jokoaren arauak onartzen dituzu",
+    "logout": "Saioa itxi",
+    "errorGoogle": "Errorea Google-rekin saioa hastean",
+    "errorGitHub": "Errorea GitHub-ekin saioa hastean"
+  },
+  "home": {
+    "greeting": "Kaixo,",
+    "createRoom": "Gela Sortu",
+    "creating": "Sortzen...",
+    "joinRoom": "Gelara Sartu",
+    "suggestWord": "Hitza proposatu",
+    "createRoomTitle": "Gela berria sortu",
+    "selectGameLanguage": "Aukeratu jokoaren hizkuntza",
+    "gameLanguageHint": "Hitzak hizkuntza honetan agertuko dira"
+  },
+  "room": {
+    "code": "Gelaren kodea",
+    "shareCode": "Partekatu kode hau zure lagunekin",
+    "players": "Jokalariak",
+    "minimum": "Gutxienez {{count}}",
+    "waitingPlayers_one": "{{count}} jokalari gehiagoren zain...",
+    "waitingPlayers_other": "{{count}} jokalari gehiagoren zain...",
+    "waitingAdmin": "Adminaren zain...",
+    "startGame": "Jokoa Hasi",
+    "waitingForPlayers": "Jokalarien zain...",
+    "leaveRoom": "Gelatik irten",
+    "kick": "Kanporatu",
+    "kickPlayer": "Jokalaria kanporatu",
+    "kickConfirm": "Ziur zaude <strong>{{name}}</strong> gelatik kanporatu nahi duzula?",
+    "leaveConfirm": "Ziur zaude gelatik irten nahi duzula?",
+    "leaveAdminWarning": "Admin zara. Irteten bazara, beste jokalari bat izendatuko da admin gisa.",
+    "leave": "Irten"
+  },
+  "join": {
+    "title": "Gelara sartu",
+    "enterCode": "Sartu {{length}} letrako kodea",
+    "enterAs": "Honela sartuko zara",
+    "join": "Sartu",
+    "connecting": "Konektatzen...",
+    "codeHint": "Kodea adminaren pantailan agertzen da"
+  },
+  "game": {
+    "youAreImpostor": "Inpostorrea zara",
+    "yourWord": "Zure hitza",
+    "discoverWord": "Aurkitu hitza besteei entzunez",
+    "round": "{{number}}. txanda",
+    "turnOrder": "Txanden ordena",
+    "spectator": "Ikuslea",
+    "startVoting": "Bozketa Hasi",
+    "nextRound": "Hurrengo Txanda",
+    "leaveGame": "Jokoa utzi",
+    "leaveGameConfirm": "Ziur zaude uneko jokoa utzi nahi duzula?",
+    "leaveGameAdminWarning": "Admin zara! Joaten bazara, jokoak beste admin batekin jarraituko du.",
+    "abandon": "Utzi"
+  },
+  "voting": {
+    "title": "Bozkatzera!",
+    "voted": "✓ Bozkatuta",
+    "threshold": "{{count}} = kanporatu",
+    "votesCount": "{{current}} / {{total}} boto",
+    "yourVote": "Zure botoa",
+    "vote": "Bozkatu",
+    "tie": "Berdinketa!",
+    "continue": "Jarraitu",
+    "eliminate": "Kanporatu!",
+    "eliminateVotes": "Kanporatu ({{count}} boto)",
+    "forgive": "Barkatu",
+    "waitingVotes": "Botoen zain...",
+    "waitingAdmin": "Adminaren zain..."
+  },
+  "results": {
+    "title": "Emaitza",
+    "eliminated": "kanporatua izan da",
+    "wasImpostor": "INPOSTORREA ZEN!",
+    "wasInnocent": "Errugabea...",
+    "goodJob": "Lan ona, taldea!",
+    "impostorRemains": "Inpostorrea oraindik zuen artean dago...",
+    "noElimination": "Inor ez da kanporatu",
+    "notEnoughVotes": "Ez dago boto nahikorik",
+    "continuing": "Automatikoki jarraituz...",
+    "skip": "Saltatu"
+  },
+  "gameOver": {
+    "victory": "GARAIPENA!",
+    "defeat": "PORROTA!",
+    "crewWon": "Zibilek irabazi dute!",
+    "impostorWon": "Inpostorreak irabazi du!",
+    "impostorWas": "Inpostorrea zen",
+    "wordWas": "Hitza zen",
+    "playAgain": "Beste partida bat!",
+    "backToStart": "Hasierara itzuli",
+    "waitingNewGame": "Adminaren zain partida berri baterako..."
+  },
+  "suggest": {
+    "title": "Hitza proposatu",
+    "category": "Kategoria",
+    "selectCategory": "Hautatu kategoria bat",
+    "word": "Hitza",
+    "wordPlaceholder": "Idatzi hitz bat...",
+    "submit": "Proposatu",
+    "submitting": "Bidaltzen...",
+    "success": "Hitza ondo proposatuta",
+    "reviewNote": "Proposamenak berrikusiko dira jokoan gehitu aurretik",
+    "errorCategories": "Errorea kategoriak kargatzean",
+    "noCategories": "Ez dago kategoriarik eskuragarri"
+  },
+  "admin": {
+    "suggestions": "Hitzen Proposamenak",
+    "pendingCount": "{{count}} proposamen zain",
+    "allCaughtUp": "Dena eguneratuta!",
+    "noPending": "Ez dago berrikusteko proposamenik",
+    "approve": "Onartu",
+    "reject": "Baztertu",
+    "refresh": "Eguneratu",
+    "backToHome": "Hasierara itzuli",
+    "notAuthenticated": "Autentifikatu gabe",
+    "noPermission": "Ez duzu admin baimenik",
+    "errorLoading": "Errorea proposamenak kargatzean",
+    "translateWord": "Hitza itzuli",
+    "translateDescription": "Gehitu \"{{word}}\" ({{category}}) hitzaren itzulpenak hizkuntza guztietan",
+    "original": "jatorrizkoa",
+    "approveAll": "Onartu hizkuntza guztietan"
+  },
+  "profile": {
+    "namePlaceholder": "Zure izena",
+    "nameLength": "2-20 karaktere",
+    "errorSaving": "Errorea izena gordetzean",
+    "errorLength": "Izenak 2 eta 20 karaktere artean izan behar ditu"
+  },
+  "connection": {
+    "restored": "Konexioa berrezarrita",
+    "lost": "Konexioa galduta",
+    "reconnecting": "Berriz konektatzen saiatzen...",
+    "error": "Konexio errorea",
+    "noServer": "Ez dago zerbitzariarekin konexiorik"
+  },
+  "notifications": {
+    "playerJoined": "{{name}} sartu da",
+    "playerLeft": "{{name}} irten da",
+    "youWereKicked": "Gelatik kanporatu zaituzte",
+    "playerKicked": "{{name}} kanporatua izan da",
+    "newAdmin": "{{name}} admin berria da"
+  },
+  "error": {
+    "title": "Zerbait gaizki joan da!",
+    "description": "Ustekabeko errore bat gertatu da. Orria birkargatu dezakezu.",
+    "reload": "Birkargatu"
+  },
+  "language": {
+    "title": "Hizkuntza",
+    "change": "Hizkuntza aldatu",
+    "roomLanguage": "Gelaren hizkuntza",
+    "differentLanguage": "Gela {{language}} hizkuntzan dago",
+    "willChange": "Zure hizkuntza automatikoki aldatuko da sartzean.",
+    "joinAnyway": "Sartu"
+  },
+  "categories": {
+    "animals": "Animaliak",
+    "food": "Janaria",
+    "places": "Lekuak",
+    "objects": "Objektuak",
+    "professions": "Lanbideak",
+    "sports": "Kirolak"
+  }
+}

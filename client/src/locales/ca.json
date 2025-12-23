@@ -1,0 +1,192 @@
+{
+  "common": {
+    "loading": "Carregant...",
+    "error": "Error",
+    "retry": "Reintentar",
+    "cancel": "Cancel·lar",
+    "confirm": "Confirmar",
+    "save": "Desar",
+    "back": "Tornar",
+    "close": "Tancar",
+    "you": "(tu)",
+    "admin": "Admin",
+    "player": "Jugador",
+    "unknown": "Desconegut",
+    "or": "o",
+    "connected": "Connectat"
+  },
+  "app": {
+    "title": "L'Impostor",
+    "subtitle": "Joc de deducció social"
+  },
+  "auth": {
+    "welcome": "Benvingut",
+    "loginPrompt": "Inicia sessió per jugar",
+    "continueWithGoogle": "Continuar amb Google",
+    "continueWithGitHub": "Continuar amb GitHub",
+    "connecting": "Connectant...",
+    "termsAccept": "En iniciar sessió, acceptes les regles del joc",
+    "logout": "Tancar sessió",
+    "errorGoogle": "Error en iniciar sessió amb Google",
+    "errorGitHub": "Error en iniciar sessió amb GitHub"
+  },
+  "home": {
+    "greeting": "Hola,",
+    "createRoom": "Crear Sala",
+    "creating": "Creant...",
+    "joinRoom": "Unir-se a Sala",
+    "suggestWord": "Suggerir paraula",
+    "createRoomTitle": "Crear nova sala",
+    "selectGameLanguage": "Selecciona l'idioma del joc",
+    "gameLanguageHint": "Les paraules es mostraran en aquest idioma"
+  },
+  "room": {
+    "code": "Codi de sala",
+    "shareCode": "Comparteix aquest codi amb els teus amics",
+    "players": "Jugadors",
+    "minimum": "Mínim {{count}}",
+    "waitingPlayers_one": "Esperant {{count}} jugador més...",
+    "waitingPlayers_other": "Esperant {{count}} jugadors més...",
+    "waitingAdmin": "Esperant l'admin...",
+    "startGame": "Iniciar Partida",
+    "waitingForPlayers": "Esperant jugadors...",
+    "leaveRoom": "Sortir de la sala",
+    "kick": "Expulsar",
+    "kickPlayer": "Expulsar jugador",
+    "kickConfirm": "Estàs segur que vols expulsar <strong>{{name}}</strong> de la sala?",
+    "leaveConfirm": "Estàs segur que vols sortir de la sala?",
+    "leaveAdminWarning": "Ets l'admin. Si surts, un altre jugador serà assignat com a admin.",
+    "leave": "Sortir"
+  },
+  "join": {
+    "title": "Unir-se a sala",
+    "enterCode": "Introdueix el codi de {{length}} lletres",
+    "enterAs": "Entraràs com",
+    "join": "Unir-se",
+    "connecting": "Connectant...",
+    "codeHint": "El codi apareix a la pantalla de l'admin"
+  },
+  "game": {
+    "youAreImpostor": "Ets l'impostor",
+    "yourWord": "La teva paraula",
+    "discoverWord": "Descobreix la paraula escoltant els altres",
+    "round": "Ronda {{number}}",
+    "turnOrder": "Ordre de torns",
+    "spectator": "Espectador",
+    "startVoting": "Iniciar Votació",
+    "nextRound": "Següent Ronda",
+    "leaveGame": "Abandonar partida",
+    "leaveGameConfirm": "Segur que vols abandonar la partida en curs?",
+    "leaveGameAdminWarning": "Ets l'admin! Si abandones, la partida continuarà amb un altre admin.",
+    "abandon": "Abandonar"
+  },
+  "voting": {
+    "title": "A votar!",
+    "voted": "✓ Has votat",
+    "threshold": "{{count}} = eliminar",
+    "votesCount": "{{current}} de {{total}} vots",
+    "yourVote": "El teu vot",
+    "vote": "Votar",
+    "tie": "Empat!",
+    "continue": "Continuar",
+    "eliminate": "Eliminar!",
+    "eliminateVotes": "Eliminar ({{count}} vots)",
+    "forgive": "Perdonar",
+    "waitingVotes": "Esperant vots...",
+    "waitingAdmin": "Esperant l'admin..."
+  },
+  "results": {
+    "title": "Resultat",
+    "eliminated": "ha estat eliminat",
+    "wasImpostor": "ERA L'IMPOSTOR!",
+    "wasInnocent": "Innocent...",
+    "goodJob": "Bona feina, equip!",
+    "impostorRemains": "L'impostor segueix entre vosaltres...",
+    "noElimination": "Ningú ha estat eliminat",
+    "notEnoughVotes": "No hi ha hagut prou vots",
+    "continuing": "Continuant automàticament...",
+    "skip": "Saltar"
+  },
+  "gameOver": {
+    "victory": "VICTÒRIA!",
+    "defeat": "DERROTA!",
+    "crewWon": "Els civils han guanyat!",
+    "impostorWon": "L'impostor ha guanyat!",
+    "impostorWas": "L'impostor era",
+    "wordWas": "La paraula era",
+    "playAgain": "Una altra partida!",
+    "backToStart": "Tornar a l'inici",
+    "waitingNewGame": "Esperant l'admin per nova partida..."
+  },
+  "suggest": {
+    "title": "Suggerir paraula",
+    "category": "Categoria",
+    "selectCategory": "Selecciona una categoria",
+    "word": "Paraula",
+    "wordPlaceholder": "Escriu una paraula...",
+    "submit": "Suggerir",
+    "submitting": "Enviant...",
+    "success": "Paraula suggerida correctament",
+    "reviewNote": "Els suggeriments seran revisats abans d'afegir-se al joc",
+    "errorCategories": "Error en carregar categories",
+    "noCategories": "No hi ha categories disponibles"
+  },
+  "admin": {
+    "suggestions": "Suggeriments de Paraules",
+    "pendingCount": "{{count}} suggeriments pendents",
+    "allCaughtUp": "Tot al dia!",
+    "noPending": "No hi ha suggeriments pendents de revisar",
+    "approve": "Aprovar",
+    "reject": "Rebutjar",
+    "refresh": "Actualitzar",
+    "backToHome": "Tornar a l'inici",
+    "notAuthenticated": "No autenticat",
+    "noPermission": "No tens permisos d'administrador",
+    "errorLoading": "Error en carregar suggeriments",
+    "translateWord": "Traduir paraula",
+    "translateDescription": "Afegeix les traduccions per a \"{{word}}\" ({{category}}) en tots els idiomes",
+    "original": "original",
+    "approveAll": "Aprovar en tots els idiomes"
+  },
+  "profile": {
+    "namePlaceholder": "El teu nom",
+    "nameLength": "2-20 caràcters",
+    "errorSaving": "Error en desar el nom",
+    "errorLength": "El nom ha de tenir entre 2 i 20 caràcters"
+  },
+  "connection": {
+    "restored": "Connexió restablerta",
+    "lost": "Connexió perduda",
+    "reconnecting": "Intentant reconnectar...",
+    "error": "Error de connexió",
+    "noServer": "No hi ha connexió amb el servidor"
+  },
+  "notifications": {
+    "playerJoined": "{{name}} s'ha unit",
+    "playerLeft": "{{name}} ha sortit",
+    "youWereKicked": "Has estat expulsat de la sala",
+    "playerKicked": "{{name}} ha estat expulsat",
+    "newAdmin": "{{name}} és el nou admin"
+  },
+  "error": {
+    "title": "Alguna cosa ha anat malament!",
+    "description": "Ha ocorregut un error inesperat. Pots intentar recarregar la pàgina.",
+    "reload": "Recarregar"
+  },
+  "language": {
+    "title": "Idioma",
+    "change": "Canviar idioma",
+    "roomLanguage": "Idioma de la sala",
+    "differentLanguage": "La sala està en {{language}}",
+    "willChange": "El teu idioma es canviarà automàticament en unir-te.",
+    "joinAnyway": "Unir-se"
+  },
+  "categories": {
+    "animals": "Animals",
+    "food": "Menjar",
+    "places": "Llocs",
+    "objects": "Objectes",
+    "professions": "Professions",
+    "sports": "Esports"
+  }
+}

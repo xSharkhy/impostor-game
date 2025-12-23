@@ -1,0 +1,192 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Erro",
+    "retry": "Reintentar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Gardar",
+    "back": "Volver",
+    "close": "Pechar",
+    "you": "(ti)",
+    "admin": "Admin",
+    "player": "Xogador",
+    "unknown": "Descoñecido",
+    "or": "ou",
+    "connected": "Conectado"
+  },
+  "app": {
+    "title": "O Impostor",
+    "subtitle": "Xogo de dedución social"
+  },
+  "auth": {
+    "welcome": "Benvido",
+    "loginPrompt": "Inicia sesión para xogar",
+    "continueWithGoogle": "Continuar con Google",
+    "continueWithGitHub": "Continuar con GitHub",
+    "connecting": "Conectando...",
+    "termsAccept": "Ao iniciar sesión, aceptas as regras do xogo",
+    "logout": "Pechar sesión",
+    "errorGoogle": "Erro ao iniciar sesión con Google",
+    "errorGitHub": "Erro ao iniciar sesión con GitHub"
+  },
+  "home": {
+    "greeting": "Ola,",
+    "createRoom": "Crear Sala",
+    "creating": "Creando...",
+    "joinRoom": "Unirse a Sala",
+    "suggestWord": "Suxerir palabra",
+    "createRoomTitle": "Crear nova sala",
+    "selectGameLanguage": "Selecciona o idioma do xogo",
+    "gameLanguageHint": "As palabras amosaranse neste idioma"
+  },
+  "room": {
+    "code": "Código da sala",
+    "shareCode": "Comparte este código cos teus amigos",
+    "players": "Xogadores",
+    "minimum": "Mínimo {{count}}",
+    "waitingPlayers_one": "Agardando {{count}} xogador máis...",
+    "waitingPlayers_other": "Agardando {{count}} xogadores máis...",
+    "waitingAdmin": "Agardando ao admin...",
+    "startGame": "Iniciar Partida",
+    "waitingForPlayers": "Agardando xogadores...",
+    "leaveRoom": "Saír da sala",
+    "kick": "Expulsar",
+    "kickPlayer": "Expulsar xogador",
+    "kickConfirm": "Estás seguro de que queres expulsar a <strong>{{name}}</strong> da sala?",
+    "leaveConfirm": "Estás seguro de que queres saír da sala?",
+    "leaveAdminWarning": "Es o admin. Se saes, outro xogador será asignado como admin.",
+    "leave": "Saír"
+  },
+  "join": {
+    "title": "Unirse a sala",
+    "enterCode": "Introduce o código de {{length}} letras",
+    "enterAs": "Entrarás como",
+    "join": "Unirse",
+    "connecting": "Conectando...",
+    "codeHint": "O código aparece na pantalla do admin"
+  },
+  "game": {
+    "youAreImpostor": "Es o impostor",
+    "yourWord": "A túa palabra",
+    "discoverWord": "Descubre a palabra escoitando aos demais",
+    "round": "Rolda {{number}}",
+    "turnOrder": "Orde de quendas",
+    "spectator": "Espectador",
+    "startVoting": "Iniciar Votación",
+    "nextRound": "Seguinte Rolda",
+    "leaveGame": "Abandonar partida",
+    "leaveGameConfirm": "Seguro que queres abandonar a partida en curso?",
+    "leaveGameAdminWarning": "Es o admin! Se abandonas, a partida continuará con outro admin.",
+    "abandon": "Abandonar"
+  },
+  "voting": {
+    "title": "A votar!",
+    "voted": "✓ Votaches",
+    "threshold": "{{count}} = eliminar",
+    "votesCount": "{{current}} de {{total}} votos",
+    "yourVote": "O teu voto",
+    "vote": "Votar",
+    "tie": "Empate!",
+    "continue": "Continuar",
+    "eliminate": "Eliminar!",
+    "eliminateVotes": "Eliminar ({{count}} votos)",
+    "forgive": "Perdoar",
+    "waitingVotes": "Agardando votos...",
+    "waitingAdmin": "Agardando ao admin..."
+  },
+  "results": {
+    "title": "Resultado",
+    "eliminated": "foi eliminado",
+    "wasImpostor": "ERA O IMPOSTOR!",
+    "wasInnocent": "Inocente...",
+    "goodJob": "Bo traballo, equipo!",
+    "impostorRemains": "O impostor segue entre vós...",
+    "noElimination": "Ninguén foi eliminado",
+    "notEnoughVotes": "Non houbo votos suficientes",
+    "continuing": "Continuando automaticamente...",
+    "skip": "Saltar"
+  },
+  "gameOver": {
+    "victory": "VITORIA!",
+    "defeat": "DERROTA!",
+    "crewWon": "Os civís gañaron!",
+    "impostorWon": "O impostor gañou!",
+    "impostorWas": "O impostor era",
+    "wordWas": "A palabra era",
+    "playAgain": "Outra partida!",
+    "backToStart": "Volver ao inicio",
+    "waitingNewGame": "Agardando ao admin para nova partida..."
+  },
+  "suggest": {
+    "title": "Suxerir palabra",
+    "category": "Categoría",
+    "selectCategory": "Selecciona unha categoría",
+    "word": "Palabra",
+    "wordPlaceholder": "Escribe unha palabra...",
+    "submit": "Suxerir",
+    "submitting": "Enviando...",
+    "success": "Palabra suxerida correctamente",
+    "reviewNote": "As suxestións serán revisadas antes de engadirse ao xogo",
+    "errorCategories": "Erro ao cargar categorías",
+    "noCategories": "Non hai categorías dispoñibles"
+  },
+  "admin": {
+    "suggestions": "Suxestións de Palabras",
+    "pendingCount": "{{count}} suxestións pendentes",
+    "allCaughtUp": "Todo ao día!",
+    "noPending": "Non hai suxestións pendentes de revisar",
+    "approve": "Aprobar",
+    "reject": "Rexeitar",
+    "refresh": "Actualizar",
+    "backToHome": "Volver ao inicio",
+    "notAuthenticated": "Non autenticado",
+    "noPermission": "Non tes permisos de administrador",
+    "errorLoading": "Erro ao cargar suxestións",
+    "translateWord": "Traducir palabra",
+    "translateDescription": "Engade as traducións para \"{{word}}\" ({{category}}) en todos os idiomas",
+    "original": "orixinal",
+    "approveAll": "Aprobar en todos os idiomas"
+  },
+  "profile": {
+    "namePlaceholder": "O teu nome",
+    "nameLength": "2-20 caracteres",
+    "errorSaving": "Erro ao gardar o nome",
+    "errorLength": "O nome debe ter entre 2 e 20 caracteres"
+  },
+  "connection": {
+    "restored": "Conexión restablecida",
+    "lost": "Conexión perdida",
+    "reconnecting": "Intentando reconectar...",
+    "error": "Erro de conexión",
+    "noServer": "Non hai conexión co servidor"
+  },
+  "notifications": {
+    "playerJoined": "{{name}} uniuse",
+    "playerLeft": "{{name}} saíu",
+    "youWereKicked": "Foches expulsado da sala",
+    "playerKicked": "{{name}} foi expulsado",
+    "newAdmin": "{{name}} é o novo admin"
+  },
+  "error": {
+    "title": "Algo saíu mal!",
+    "description": "Ocorreu un erro inesperado. Podes intentar recargar a páxina.",
+    "reload": "Recargar"
+  },
+  "language": {
+    "title": "Idioma",
+    "change": "Cambiar idioma",
+    "roomLanguage": "Idioma da sala",
+    "differentLanguage": "A sala está en {{language}}",
+    "willChange": "O teu idioma cambiarase automaticamente ao unirte.",
+    "joinAnyway": "Unirse"
+  },
+  "categories": {
+    "animals": "Animais",
+    "food": "Comida",
+    "places": "Lugares",
+    "objects": "Obxectos",
+    "professions": "Profesións",
+    "sports": "Deportes"
+  }
+}
