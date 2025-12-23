@@ -13,12 +13,14 @@ export type RoomId = string
 export type RoomCode = string
 export type RoomStatus = 'lobby' | 'playing' | 'voting' | 'finished'
 export type WinCondition = 'impostor_caught' | 'impostor_survived'
+export type RoomLanguage = 'es' | 'en' | 'ca' | 'eu' | 'gl'
 
 export interface RoomProps {
   id: RoomId
   code: RoomCode
   adminId: PlayerId
   status: RoomStatus
+  language: RoomLanguage
   players: PlayerProps[]
   currentWord?: string
   impostorId?: PlayerId
@@ -37,6 +39,7 @@ const CODE_LENGTH = 4
 export class Room {
   readonly id: RoomId
   readonly code: RoomCode
+  readonly language: RoomLanguage
   readonly createdAt: Date
 
   private _adminId: PlayerId
@@ -53,6 +56,7 @@ export class Room {
   private constructor(props: RoomProps) {
     this.id = props.id
     this.code = props.code
+    this.language = props.language
     this.createdAt = props.createdAt
     this._adminId = props.adminId
     this._status = props.status
@@ -75,13 +79,14 @@ export class Room {
     ).join('')
   }
 
-  static create(id: RoomId, code: RoomCode, adminId: PlayerId, adminName: string): Room {
+  static create(id: RoomId, code: RoomCode, adminId: PlayerId, adminName: string, language: RoomLanguage = 'es'): Room {
     const now = new Date()
     return new Room({
       id,
       code,
       adminId,
       status: 'lobby',
+      language,
       players: [{
         id: adminId,
         displayName: adminName,
@@ -405,6 +410,7 @@ export class Room {
       code: this.code,
       adminId: updates.adminId ?? this._adminId,
       status: updates.status ?? this._status,
+      language: this.language,
       players: playerArray,
       currentWord: 'currentWord' in updates ? updates.currentWord : this._currentWord,
       impostorId: 'impostorId' in updates ? updates.impostorId : this._impostorId,
@@ -423,6 +429,7 @@ export class Room {
       code: this.code,
       adminId: this._adminId,
       status: this._status,
+      language: this.language,
       players: this.players.map(p => p.toProps()),
       currentWord: this._currentWord,
       impostorId: this._impostorId,

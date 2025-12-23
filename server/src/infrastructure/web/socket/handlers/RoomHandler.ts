@@ -22,11 +22,12 @@ export function createRoomHandler(
     const { user } = socket
 
     // Create room
-    socket.on('room:create', async () => {
+    socket.on('room:create', async ({ language }) => {
       try {
         const result = await createRoomUseCase.execute({
           userId: user.id,
           displayName: user.displayName,
+          language: language || 'es',
         })
 
         // Join socket room

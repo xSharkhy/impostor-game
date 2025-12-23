@@ -1,6 +1,9 @@
 // Room status enum
 export type RoomStatus = 'lobby' | 'playing' | 'voting' | 'finished'
 
+// Supported languages
+export type SupportedLanguage = 'es' | 'en' | 'ca' | 'eu' | 'gl'
+
 // Room interface
 export interface Room {
   id: string
@@ -8,6 +11,7 @@ export interface Room {
   adminId: string
   players: Player[]
   status: RoomStatus
+  language: SupportedLanguage
   currentWord?: string
   turnOrder?: string[]
   currentRound: number
@@ -33,7 +37,7 @@ export interface ClientRoom extends Omit<Room, 'currentWord'> {
 
 // Socket events - Client to Server
 export interface ClientToServerEvents {
-  'room:create': () => void
+  'room:create': (data: { language: SupportedLanguage }) => void
   'room:join': (data: { code: string }) => void
   'room:leave': () => void
   'room:kick': (data: { playerId: string }) => void
@@ -43,7 +47,7 @@ export interface ClientToServerEvents {
   'vote:cast': (data: { targetId: string }) => void
   'vote:confirm': (data: { eliminate: boolean }) => void
   'game:playAgain': () => void
-  'word:suggest': (data: { word: string; categoryId: string }) => void
+  'word:suggest': (data: { word: string; categoryId: string; lang: SupportedLanguage }) => void
   'word:getCategories': () => void
 }
 

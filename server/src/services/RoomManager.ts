@@ -48,6 +48,7 @@ class RoomManager {
       id: crypto.randomUUID(),
       code,
       adminId,
+      language: 'es',
       players: [
         {
           id: adminId,

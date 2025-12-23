@@ -1,4 +1,4 @@
-import { Room } from '../../../domain/entities/Room.js'
+import { Room, RoomLanguage } from '../../../domain/entities/Room.js'
 import { MaxRoomsReachedError, AlreadyInRoomError } from '../../../domain/errors/DomainError.js'
 import { IRoomRepository } from '../../ports/repositories/IRoomRepository.js'
 
@@ -7,6 +7,7 @@ const MAX_ROOMS = 5
 export interface CreateRoomInput {
   userId: string
   displayName: string
+  language: RoomLanguage
 }
 
 export interface CreateRoomOutput {
@@ -37,7 +38,7 @@ export class CreateRoomUseCase {
 
     // Create room
     const roomId = crypto.randomUUID()
-    const room = Room.create(roomId, code, input.userId, input.displayName)
+    const room = Room.create(roomId, code, input.userId, input.displayName, input.language)
 
     await this.roomRepository.save(room)
 

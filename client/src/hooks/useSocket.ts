@@ -3,6 +3,7 @@ import { io, Socket } from 'socket.io-client'
 import { toast } from 'sonner'
 import { supabase } from '@/lib/supabase'
 import { useRoomStore, useGameStore, useUserStore } from '@/stores'
+import { getCurrentLanguage, changeLanguage, SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/lib/i18n'
 import type { ClientToServerEvents, ServerToClientEvents } from '@impostor/shared'
 
 type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>
@@ -93,9 +94,21 @@ export function useSocket() {
         })
       })
 
-      socket.on('room:state', (room) => {
+      socket.on('room:state', async (room) => {
         useRoomStore.getState().setRoom(room)
         useRoomStore.getState().setConnecting(false)
+
+        // Check if room language differs from current language
+        const currentLang = getCurrentLanguage()
+        const roomLang = room.language as SupportedLanguage
+        if (roomLang && roomLang !== currentLang && SUPPORTED_LANGUAGES[roomLang]) {
+          await changeLanguage(roomLang)
+          const langName = SUPPORTED_LANGUAGES[roomLang].name
+          toast.info(`Idioma cambiado a ${langName}`, {
+            description: 'El idioma de la sala es diferente al tuyo',
+          })
+        }
+
         // Reset game state when room goes back to lobby (e.g., after playAgain)
         if (room.status === 'lobby') {
           useGameStore.getState().reset()
@@ -185,13 +198,13 @@ export function useSocket() {
     setupSocket()
   }, [])
 
-  const createRoom = useCallback(() => {
+  const createRoom = useCallback((language?: SupportedLanguage) => {
     if (!socketInstance?.connected) {
       toast.error('No hay conexión con el servidor')
       return
     }
     useRoomStore.getState().setConnecting(true)
-    socketInstance.emit('room:create')
+    socketInstance.emit('room:create', { language: language || getCurrentLanguage() })
   }, [])
 
   const joinRoom = useCallback((code: string) => {

@@ -1,13 +1,32 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { createFileRoute } from '@tanstack/react-router'
-import { Button, Skeleton } from '@/components/ui'
+import {
+  Button,
+  Skeleton,
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui'
 import { LoginForm } from '@/components/auth/LoginForm'
 import { JoinRoom } from '@/components/lobby/JoinRoom'
 import { RoomLobby } from '@/components/lobby/RoomLobby'
+import { EditDisplayName } from '@/components/lobby/EditDisplayName'
 import { GameView } from '@/components/game/GameView'
 import { SuggestWord } from '@/components/words/SuggestWord'
 import { useUserStore, useRoomStore, useGameStore } from '@/stores'
 import { useAuth, useSocket } from '@/hooks'
+import { getCurrentLanguage, SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/lib/i18n'
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -16,12 +35,20 @@ export const Route = createFileRoute('/')({
 type View = 'home' | 'join' | 'suggest'
 
 function HomePage() {
+  const { t } = useTranslation()
   const [view, setView] = useState<View>('home')
-  const { user, isAuthenticated, isLoading } = useUserStore()
+  const [showCreateRoom, setShowCreateRoom] = useState(false)
+  const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage>(getCurrentLanguage())
+  const { isAuthenticated, isLoading } = useUserStore()
   const { room, isConnecting } = useRoomStore()
   const { phase } = useGameStore()
   const { signOut } = useAuth()
   const { createRoom, isConnected } = useSocket()
+
+  const handleCreateRoom = () => {
+    createRoom(selectedLanguage)
+    setShowCreateRoom(false)
+  }
 
   if (isLoading) {
     return (
@@ -68,7 +95,7 @@ function HomePage() {
       <div className="mx-auto w-full max-w-sm space-y-8 text-center">
         {/* Logo & Title */}
         <div className="space-y-3">
-          <div className="text-6xl">🕵️</div>
+          <div className="text-6xl" aria-hidden="true">🕵️</div>
           <h1
             className="text-4xl font-black tracking-tight sm:text-5xl"
             style={{
@@ -78,10 +105,10 @@ function HomePage() {
               backgroundClip: 'text',
             }}
           >
-            El Impostor
+            {t('app.title')}
           </h1>
           <p className="text-sm text-text-secondary">
-            Juego de deducción social
+            {t('app.subtitle')}
           </p>
         </div>
 
@@ -92,13 +119,15 @@ function HomePage() {
             <SuggestWord onClose={() => setView('home')} />
           ) : (
             <div className="space-y-6">
-              {/* User greeting */}
-              <div className="flex items-center justify-center gap-2 text-sm text-text-secondary">
-                <span>Hola,</span>
-                <span className="font-medium text-text-primary">{user?.displayName}</span>
-                {isConnected && (
-                  <span className="h-2 w-2 rounded-full bg-success" />
-                )}
+              {/* User greeting with editable name */}
+              <div className="flex flex-col items-center gap-1">
+                <div className="flex items-center gap-2 text-sm text-text-secondary">
+                  <span>{t('home.greeting')}</span>
+                  {isConnected && (
+                    <span className="h-2 w-2 rounded-full bg-success" title={t('common.connected')} />
+                  )}
+                </div>
+                <EditDisplayName />
               </div>
 
               {/* Main actions */}
@@ -107,11 +136,11 @@ function HomePage() {
                   variant="neon"
                   size="lg"
                   className="w-full"
-                  onClick={createRoom}
+                  onClick={() => setShowCreateRoom(true)}
                   disabled={isConnecting}
                   isLoading={isConnecting}
                 >
-                  {isConnecting ? 'Creando...' : 'Crear Sala'}
+                  {isConnecting ? t('home.creating') : t('home.createRoom')}
                 </Button>
                 <Button
                   variant="outline"
@@ -120,9 +149,47 @@ function HomePage() {
                   onClick={() => setView('join')}
                   disabled={isConnecting}
                 >
-                  Unirse a Sala
+                  {t('home.joinRoom')}
                 </Button>
               </div>
+
+              {/* Create Room Dialog */}
+              <AlertDialog open={showCreateRoom} onOpenChange={setShowCreateRoom}>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>{t('home.createRoomTitle')}</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {t('home.selectGameLanguage')}
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <div className="py-4">
+                    <Select value={selectedLanguage} onValueChange={(v) => setSelectedLanguage(v as SupportedLanguage)}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Object.entries(SUPPORTED_LANGUAGES).map(([code, { name, flag }]) => (
+                          <SelectItem key={code} value={code}>
+                            <span className="flex items-center gap-2">
+                              <span>{flag}</span>
+                              <span>{name}</span>
+                            </span>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <p className="mt-2 text-center text-xs text-text-tertiary">
+                      {t('home.gameLanguageHint')}
+                    </p>
+                  </div>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleCreateRoom}>
+                      {t('home.createRoom')}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
 
               {/* Secondary actions */}
               <div className="flex flex-col items-center gap-2 pt-2">
@@ -132,7 +199,7 @@ function HomePage() {
                   className="text-text-tertiary"
                   onClick={() => setView('suggest')}
                 >
-                  Sugerir palabra
+                  {t('home.suggestWord')}
                 </Button>
                 <Button
                   variant="ghost"
@@ -140,7 +207,7 @@ function HomePage() {
                   className="text-text-tertiary"
                   onClick={signOut}
                 >
-                  Cerrar sesión
+                  {t('auth.logout')}
                 </Button>
               </div>
             </div>
