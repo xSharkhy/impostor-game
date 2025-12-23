@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Button,
   Card,
@@ -12,59 +13,29 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-  Skeleton,
 } from '@/components/ui'
-import { supabase } from '@/lib/supabase'
+import { CATEGORIES, type CategoryId } from '@/lib/categories'
+import { getCurrentLanguage } from '@/lib/i18n'
 import { useSocket } from '@/hooks'
-
-interface Category {
-  id: string
-  name_es: string
-}
 
 interface SuggestWordProps {
   onClose?: () => void
 }
 
 export function SuggestWord({ onClose }: SuggestWordProps) {
+  const { t } = useTranslation()
   const [word, setWord] = useState('')
-  const [categoryId, setCategoryId] = useState('')
-  const [categories, setCategories] = useState<Category[]>([])
-  const [isLoadingCategories, setIsLoadingCategories] = useState(true)
-  const [categoriesError, setCategoriesError] = useState(false)
+  const [categoryId, setCategoryId] = useState<CategoryId>(CATEGORIES[0].id)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
   const { socket } = useSocket()
-
-  const loadCategories = async () => {
-    setIsLoadingCategories(true)
-    setCategoriesError(false)
-    try {
-      const { data, error } = await supabase.from('categories').select('id, name_es')
-      if (error) throw error
-      if (data) {
-        setCategories(data)
-        if (data.length > 0) {
-          setCategoryId(data[0].id)
-        }
-      }
-    } catch {
-      setCategoriesError(true)
-    } finally {
-      setIsLoadingCategories(false)
-    }
-  }
-
-  useEffect(() => {
-    loadCategories()
-  }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!word.trim() || !categoryId || !socket) return
 
     setIsSubmitting(true)
-    socket.emit('word:suggest', { word: word.trim(), categoryId })
+    socket.emit('word:suggest', { word: word.trim(), categoryId, lang: getCurrentLanguage() })
 
     // Listen for response
     socket.once('word:suggested', () => {
@@ -83,9 +54,9 @@ export function SuggestWord({ onClose }: SuggestWordProps) {
     <Card className="w-full max-w-md">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          <span>Sugerir palabra</span>
+          <span>{t('suggest.title')}</span>
           {onClose && (
-            <Button variant="ghost" size="sm" onClick={onClose} aria-label="Cerrar">
+            <Button variant="ghost" size="sm" onClick={onClose} aria-label={t('common.close')}>
               ✕
             </Button>
           )}
@@ -94,68 +65,47 @@ export function SuggestWord({ onClose }: SuggestWordProps) {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label>Categoría</Label>
-            {isLoadingCategories ? (
-              <Skeleton className="h-10 w-full rounded-lg" />
-            ) : categoriesError ? (
-              <div className="flex items-center gap-2 rounded-lg border border-danger/30 bg-danger/5 px-3 py-2">
-                <span className="text-sm text-danger">Error al cargar categorías</span>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  className="ml-auto text-xs"
-                  onClick={loadCategories}
-                >
-                  Reintentar
-                </Button>
-              </div>
-            ) : categories.length === 0 ? (
-              <div className="rounded-lg border border-border bg-bg-tertiary px-3 py-2 text-sm text-text-tertiary">
-                No hay categorías disponibles
-              </div>
-            ) : (
-              <Select value={categoryId} onValueChange={setCategoryId}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecciona una categoría" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((cat) => (
-                    <SelectItem key={cat.id} value={cat.id}>
-                      {cat.name_es}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
+            <Label>{t('suggest.category')}</Label>
+            <Select value={categoryId} onValueChange={(v) => setCategoryId(v as CategoryId)}>
+              <SelectTrigger>
+                <SelectValue placeholder={t('suggest.selectCategory')} />
+              </SelectTrigger>
+              <SelectContent>
+                {CATEGORIES.map((cat) => (
+                  <SelectItem key={cat.id} value={cat.id}>
+                    {t(cat.translationKey)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">
-            <Label>Palabra</Label>
+            <Label>{t('suggest.word')}</Label>
             <Input
               value={word}
               onChange={(e) => setWord(e.target.value)}
-              placeholder="Escribe una palabra..."
+              placeholder={t('suggest.wordPlaceholder')}
               maxLength={50}
             />
           </div>
 
           {success && (
             <p className="text-sm text-success">
-              Palabra sugerida correctamente
+              {t('suggest.success')}
             </p>
           )}
 
           <Button
             type="submit"
             className="w-full"
-            disabled={!word.trim() || !categoryId || isSubmitting || isLoadingCategories}
+            disabled={!word.trim() || !categoryId || isSubmitting}
           >
-            {isSubmitting ? 'Enviando...' : 'Sugerir'}
+            {isSubmitting ? t('suggest.submitting') : t('suggest.submit')}
           </Button>
 
           <p className="text-center text-xs text-text-tertiary">
-            Las sugerencias serán revisadas antes de añadirse al juego
+            {t('suggest.reviewNote')}
           </p>
         </form>
       </CardContent>

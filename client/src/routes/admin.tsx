@@ -1,6 +1,7 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { useEffect } from 'react'
+import { createFileRoute } from '@tanstack/react-router'
 import { WordSuggestions } from '@/components/admin/WordSuggestions'
-import { Button } from '@/components/ui'
+import { Button, Skeleton } from '@/components/ui'
 import { useNavigate } from '@tanstack/react-router'
 import { useUserStore } from '@/stores'
 
@@ -10,6 +11,9 @@ import { useUserStore } from '@/stores'
  */
 const ADMIN_EMAILS = [
   'ismobla@gmail.com',
+  'ismamoreblas@gmail.com',
+  'ismael.morejon@wenalyze.com',
+  'sharkhyacc@gmail.com',
   // Añadir más emails de admins aquí
 ]
 
@@ -22,32 +26,39 @@ function isAdmin(email: string | undefined): boolean {
 }
 
 export const Route = createFileRoute('/admin')({
-  beforeLoad: () => {
-    const { isAuthenticated, isLoading, user } = useUserStore.getState()
-    // If not authenticated and not loading, redirect to home
-    if (!isAuthenticated && !isLoading) {
-      throw redirect({ to: '/' })
-    }
-    // If authenticated but not admin, redirect to home
-    if (isAuthenticated && !isAdmin(user?.email)) {
-      throw redirect({ to: '/' })
-    }
-  },
   component: AdminPage,
 })
 
 function AdminPage() {
   const navigate = useNavigate()
-  const { isAuthenticated, user } = useUserStore()
+  const { isAuthenticated, isLoading, user } = useUserStore()
 
-  // Double-check auth and admin status (handles edge cases during hydration)
+  // Redirect after auth check completes
+  useEffect(() => {
+    if (!isLoading && (!isAuthenticated || !isAdmin(user?.email))) {
+      navigate({ to: '/' })
+    }
+  }, [isLoading, isAuthenticated, user?.email, navigate])
+
+  // Show loading while checking auth
+  if (isLoading) {
+    return (
+      <div className="flex min-h-dvh flex-col items-center justify-center px-6 py-12">
+        <div className="mx-auto w-full max-w-md space-y-6">
+          <Skeleton className="h-64 w-full rounded-xl" />
+          <Skeleton className="h-10 w-full rounded-lg" />
+        </div>
+      </div>
+    )
+  }
+
+  // Not authorized
   if (!isAuthenticated || !isAdmin(user?.email)) {
-    navigate({ to: '/' })
     return null
   }
 
   return (
-    <div className="flex min-h-[100dvh] flex-col items-center justify-center px-6 py-12">
+    <div className="flex min-h-dvh flex-col items-center justify-center px-6 py-12">
       <div className="mx-auto w-full max-w-md space-y-6">
         <WordSuggestions />
 
