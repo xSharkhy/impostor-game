@@ -11,7 +11,7 @@ export function registerWordHandlers(
   const { user } = socket
 
   // Suggest a word
-  socket.on('word:suggest', async ({ word, categoryId }) => {
+  socket.on('word:suggest', async ({ word, categoryId, lang }) => {
     if (!word || !categoryId) {
       socket.emit('error', {
         code: 'INVALID_INPUT',
@@ -20,7 +20,7 @@ export function registerWordHandlers(
       return
     }
 
-    const result = await wordService.suggestWord(word, categoryId, user.id)
+    const result = await wordService.suggestWord(word, categoryId, user.id, lang)
 
     if (!result.success) {
       socket.emit('error', {

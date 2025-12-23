@@ -27,12 +27,13 @@ export function createWordHandler(
     })
 
     // Suggest word
-    socket.on('word:suggest', async ({ word, categoryId }) => {
+    socket.on('word:suggest', async ({ word, categoryId, lang }) => {
       try {
         const result = await suggestWordUseCase.execute({
           word,
           categoryId,
           suggestedBy: user.id,
+          lang,
         })
 
         if (result.alreadyExists) {

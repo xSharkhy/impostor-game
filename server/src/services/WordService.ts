@@ -63,7 +63,8 @@ class WordService {
   async suggestWord(
     word: string,
     categoryId: string,
-    userId: string
+    userId: string,
+    lang: string = 'es'
   ): Promise<{ success: boolean; error?: string }> {
     // Check if word already exists
     const { data: existing } = await supabase
@@ -80,7 +81,7 @@ class WordService {
     const { error } = await supabase.from('words').insert({
       word: word.trim(),
       category_id: categoryId,
-      lang: 'es',
+      lang: lang || 'es',
       approved: false,
       suggested_by: userId,
     })

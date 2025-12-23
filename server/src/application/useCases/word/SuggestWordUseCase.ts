@@ -4,6 +4,7 @@ export interface SuggestWordInput {
   word: string
   categoryId: string
   suggestedBy: string
+  lang: string
 }
 
 export interface SuggestWordOutput {
@@ -29,7 +30,7 @@ export class SuggestWordUseCase {
     }
 
     // Create suggestion
-    await this.wordRepository.createSuggestion(normalizedWord, input.categoryId, input.suggestedBy)
+    await this.wordRepository.createSuggestion(normalizedWord, input.categoryId, input.suggestedBy, input.lang)
 
     return { success: true, alreadyExists: false }
   }
