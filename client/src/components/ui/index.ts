@@ -38,6 +38,9 @@ export { Skeleton, SkeletonText, SkeletonAvatar, SkeletonCard } from './skeleton
 // Audio
 export { SoundToggle } from './sound-toggle'
 
+// Language
+export { LanguageSelector } from './language-selector'
+
 // Dialogs
 export {
   AlertDialog,
