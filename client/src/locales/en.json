@@ -56,7 +56,13 @@
     "kickConfirm": "Are you sure you want to kick <strong>{{name}}</strong> from the room?",
     "leaveConfirm": "Are you sure you want to leave the room?",
     "leaveAdminWarning": "You are the admin. If you leave, another player will become admin.",
-    "leave": "Leave"
+    "leave": "Leave",
+    "language": "Language",
+    "gameMode": "Mode",
+    "modeClassic": "Classic",
+    "modeClassicDesc": "Words from our database by category",
+    "modeRandom": "Random (RAE)",
+    "modeRandomDesc": "Random word from RAE dictionary (Spanish only)"
   },
   "join": {
     "title": "Join room",

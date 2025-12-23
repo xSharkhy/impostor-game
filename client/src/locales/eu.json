@@ -56,7 +56,13 @@
     "kickConfirm": "Ziur zaude <strong>{{name}}</strong> gelatik kanporatu nahi duzula?",
     "leaveConfirm": "Ziur zaude gelatik irten nahi duzula?",
     "leaveAdminWarning": "Admin zara. Irteten bazara, beste jokalari bat izendatuko da admin gisa.",
-    "leave": "Irten"
+    "leave": "Irten",
+    "language": "Hizkuntza",
+    "gameMode": "Modua",
+    "modeClassic": "Klasikoa",
+    "modeClassicDesc": "Gure datu-baseko hitzak kategorien arabera",
+    "modeRandom": "Ausazkoa (RAE)",
+    "modeRandomDesc": "RAE hiztegiaren ausazko hitza (gaztelaniaz soilik)"
   },
   "join": {
     "title": "Gelara sartu",

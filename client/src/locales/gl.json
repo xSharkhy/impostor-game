@@ -56,7 +56,13 @@
     "kickConfirm": "Estás seguro de que queres expulsar a <strong>{{name}}</strong> da sala?",
     "leaveConfirm": "Estás seguro de que queres saír da sala?",
     "leaveAdminWarning": "Es o admin. Se saes, outro xogador será asignado como admin.",
-    "leave": "Saír"
+    "leave": "Saír",
+    "language": "Idioma",
+    "gameMode": "Modo",
+    "modeClassic": "Clásico",
+    "modeClassicDesc": "Palabras da nosa base de datos por categorías",
+    "modeRandom": "Aleatorio (RAE)",
+    "modeRandomDesc": "Palabra aleatoria do dicionario da RAE (só castelán)"
   },
   "join": {
     "title": "Unirse a sala",
