@@ -1,5 +1,18 @@
 import { useState, useEffect } from 'react'
-import { Button, Card, CardContent, CardHeader, CardTitle, Input } from '@/components/ui'
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui'
 import { supabase } from '@/lib/supabase'
 import { useSocket } from '@/hooks'
 
@@ -53,6 +66,8 @@ export function SuggestWord({ onClose }: SuggestWordProps) {
     })
   }
 
+  const selectedCategory = categories.find((c) => c.id === categoryId)
+
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
@@ -68,22 +83,25 @@ export function SuggestWord({ onClose }: SuggestWordProps) {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <label className="text-sm text-text-tertiary">Categoría</label>
-            <select
-              value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
-              className="w-full rounded-md border border-border bg-bg-primary px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neon-cyan"
-            >
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name_es}
-                </option>
-              ))}
-            </select>
+            <Label>Categoría</Label>
+            <Select value={categoryId} onValueChange={setCategoryId}>
+              <SelectTrigger>
+                <SelectValue placeholder="Selecciona una categoría">
+                  {selectedCategory?.name_es}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((cat) => (
+                  <SelectItem key={cat.id} value={cat.id}>
+                    {cat.name_es}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm text-text-tertiary">Palabra</label>
+            <Label>Palabra</Label>
             <Input
               value={word}
               onChange={(e) => setWord(e.target.value)}
@@ -106,7 +124,7 @@ export function SuggestWord({ onClose }: SuggestWordProps) {
             {isSubmitting ? 'Enviando...' : 'Sugerir'}
           </Button>
 
-          <p className="text-xs text-text-tertiary text-center">
+          <p className="text-center text-xs text-text-tertiary">
             Las sugerencias serán revisadas antes de añadirse al juego
           </p>
         </form>
