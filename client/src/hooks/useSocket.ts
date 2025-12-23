@@ -186,13 +186,21 @@ export function useSocket() {
   }, [])
 
   const createRoom = useCallback(() => {
+    if (!socketInstance?.connected) {
+      toast.error('No hay conexión con el servidor')
+      return
+    }
     useRoomStore.getState().setConnecting(true)
-    socketInstance?.emit('room:create')
+    socketInstance.emit('room:create')
   }, [])
 
   const joinRoom = useCallback((code: string) => {
+    if (!socketInstance?.connected) {
+      toast.error('No hay conexión con el servidor')
+      return
+    }
     useRoomStore.getState().setConnecting(true)
-    socketInstance?.emit('room:join', { code })
+    socketInstance.emit('room:join', { code })
   }, [])
 
   const leaveRoom = useCallback(() => {

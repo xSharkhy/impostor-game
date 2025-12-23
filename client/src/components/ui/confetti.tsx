@@ -20,11 +20,11 @@ interface ConfettiProps {
 }
 
 const defaultColors = [
-  '#00f0ff', // cyan
-  '#ff2d6a', // pink
-  '#a855f7', // purple
+  '#a855f7', // purple (accent)
+  '#c084fc', // purple light
+  '#ff2d6a', // pink (impostor)
   '#facc15', // yellow
-  '#22ff88', // green
+  '#22ff88', // green (crew)
   '#ffffff', // white
 ]
 
@@ -231,7 +231,7 @@ interface SparklesProps {
 export function Sparkles({
   children,
   isActive = true,
-  color = '#00f0ff',
+  color = '#a855f7',
 }: SparklesProps) {
   const [sparkles, setSparkles] = useState<
     Array<{ id: number; x: number; y: number; size: number; delay: number }>

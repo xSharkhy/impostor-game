@@ -38,7 +38,7 @@ export function GameOverPanel() {
           isActive={showConfetti}
           particleCount={100}
           colors={crewWon
-            ? ['#22ff88', '#a855f7', '#00f0ff']
+            ? ['#22ff88', '#a855f7', '#c084fc']
             : ['#ff2d6a', '#a855f7', '#facc15']
           }
         />

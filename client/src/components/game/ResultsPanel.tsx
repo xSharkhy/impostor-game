@@ -64,7 +64,7 @@ export function ResultsPanel({ onContinue }: ResultsPanelProps) {
         <Confetti
           isActive={showEffects}
           particleCount={80}
-          colors={['#22c55e', '#00f0ff', '#facc15']}
+          colors={['#22c55e', '#a855f7', '#facc15']}
         />
       )}
 
