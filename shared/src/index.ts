@@ -1,8 +1,8 @@
 // Room status enum
-export type RoomStatus = 'lobby' | 'playing' | 'voting' | 'finished'
+export type RoomStatus = 'lobby' | 'collecting_words' | 'playing' | 'voting' | 'finished'
 
 // Game modes
-export type GameMode = 'classic' | 'random'
+export type GameMode = 'classic' | 'random' | 'custom' | 'roulette'
 
 // Supported languages
 export type SupportedLanguage = 'es' | 'en' | 'ca' | 'eu' | 'gl'
@@ -36,6 +36,7 @@ export interface Player {
 // Client room state (without sensitive data)
 export interface ClientRoom extends Omit<Room, 'currentWord'> {
   currentWord?: string | null // null for impostor, string for crew
+  wordCount?: number // number of words submitted in roulette mode
 }
 
 // Socket events - Client to Server
@@ -45,8 +46,10 @@ export interface ClientToServerEvents {
   'room:leave': () => void
   'room:kick': (data: { playerId: string }) => void
   'room:changeLanguage': (data: { language: SupportedLanguage }) => void
-  'game:start': (data: { mode?: GameMode; category?: string }) => void
+  'game:start': (data: { mode?: GameMode; category?: string; customWord?: string }) => void
   'game:nextRound': () => void
+  'game:submitWord': (data: { word: string }) => void
+  'game:forceStart': () => void
   'game:startVoting': () => void
   'vote:cast': (data: { targetId: string }) => void
   'vote:confirm': (data: { eliminate: boolean }) => void
@@ -65,6 +68,8 @@ export interface ServerToClientEvents {
   'room:playerKicked': (data: { playerId: string }) => void
   'room:adminChanged': (data: { newAdminId: string }) => void
   'room:languageChanged': (data: { language: SupportedLanguage }) => void
+  'game:collectingStarted': (data: { timeLimit: number; minWords: number; playerCount: number }) => void
+  'game:wordCollected': (data: { count: number }) => void
   'game:started': (data: { word: string | null; isImpostor: boolean; turnOrder: string[]; mode: GameMode }) => void
   'game:newRound': (data: { round: number }) => void
   'game:votingStarted': () => void
@@ -121,4 +126,5 @@ export const CONSTANTS = {
   ROOM_TIMEOUT_MS: 5 * 60 * 1000, // 5 minutes
   CODE_LENGTH: 4,
   RATE_LIMIT_ROOMS_PER_HOUR: 3,
+  ROULETTE_TIME_LIMIT: 30, // seconds
 } as const
