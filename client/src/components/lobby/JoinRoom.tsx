@@ -56,9 +56,9 @@ export function JoinRoom({ onBack }: { onBack: () => void }) {
                       key={i}
                       className={`relative flex h-16 w-14 items-center justify-center rounded-xl border-2 text-3xl font-bold transition-all duration-200 ${
                         isActive
-                          ? 'border-neon-cyan bg-neon-cyan/10 shadow-[0_0_20px_rgba(0,240,255,0.3)]'
+                          ? 'border-accent bg-accent/10 shadow-[0_0_20px_rgba(168,85,247,0.3)]'
                           : isFilled
-                            ? 'border-neon-cyan/50 bg-bg-elevated text-neon-cyan'
+                            ? 'border-accent/50 bg-bg-elevated text-accent'
                             : 'border-border bg-bg-tertiary text-text-tertiary'
                       }`}
                     >
@@ -71,7 +71,7 @@ export function JoinRoom({ onBack }: { onBack: () => void }) {
                             exit={{ scale: 0, y: -10 }}
                             className="font-mono"
                             style={isFilled ? {
-                              textShadow: '0 0 10px rgba(0, 240, 255, 0.5)',
+                              textShadow: '0 0 10px rgba(168, 85, 247, 0.5)',
                             } : undefined}
                           >
                             {char}
@@ -82,7 +82,7 @@ export function JoinRoom({ onBack }: { onBack: () => void }) {
                       {/* Cursor */}
                       {isActive && (
                         <motion.div
-                          className="absolute bottom-3 h-1 w-6 rounded-full bg-neon-cyan"
+                          className="absolute bottom-3 h-1 w-6 rounded-full bg-accent"
                           animate={{ opacity: [1, 0, 1] }}
                           transition={{ duration: 0.8, repeat: Infinity }}
                         />

@@ -41,9 +41,9 @@ export function RoomLobby() {
         </p>
         <div className="mt-2">
           <p
-            className="font-mono text-5xl font-bold tracking-[0.3em] text-neon-cyan"
+            className="font-mono text-5xl font-bold tracking-[0.3em] text-accent"
             style={{
-              textShadow: '0 0 30px rgba(0, 240, 255, 0.5), 0 0 60px rgba(0, 240, 255, 0.3)',
+              textShadow: '0 0 30px rgba(168, 85, 247, 0.5), 0 0 60px rgba(168, 85, 247, 0.3)',
             }}
           >
             {room.code}
@@ -83,7 +83,7 @@ export function RoomLobby() {
                     key={player.id}
                     className={`flex items-center justify-between rounded-lg px-3 py-2.5 transition-colors ${
                       isMe
-                        ? 'border border-neon-cyan/30 bg-neon-cyan/5'
+                        ? 'border border-accent/30 bg-accent/5'
                         : 'bg-bg-tertiary'
                     }`}
                   >
@@ -103,7 +103,7 @@ export function RoomLobby() {
                           isPlayerAdmin
                             ? 'bg-neon-yellow text-black'
                             : isMe
-                              ? 'bg-neon-cyan text-black'
+                              ? 'bg-accent text-white'
                               : 'bg-bg-elevated text-text-secondary'
                         }`}
                       >
@@ -112,7 +112,7 @@ export function RoomLobby() {
 
                       {/* Name */}
                       <div className="flex flex-col">
-                        <span className={`font-medium ${isMe ? 'text-neon-cyan' : 'text-text-primary'}`}>
+                        <span className={`font-medium ${isMe ? 'text-accent' : 'text-text-primary'}`}>
                           {player.displayName}
                           {isMe && (
                             <span className="ml-1.5 text-xs text-text-secondary">(tú)</span>
@@ -150,7 +150,7 @@ export function RoomLobby() {
             {[0, 1, 2].map((i) => (
               <motion.span
                 key={i}
-                className="h-2 w-2 rounded-full bg-neon-cyan"
+                className="h-2 w-2 rounded-full bg-accent"
                 animate={{ y: [0, -4, 0] }}
                 transition={{
                   duration: 0.6,
@@ -182,7 +182,7 @@ export function RoomLobby() {
         {!isAdmin && (
           <div className="flex items-center justify-center gap-2 text-sm text-text-tertiary">
             <motion.span
-              className="h-2 w-2 rounded-full bg-neon-cyan"
+              className="h-2 w-2 rounded-full bg-accent"
               animate={{ opacity: [0.3, 1, 0.3] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             />
