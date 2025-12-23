@@ -62,7 +62,28 @@
     "modeClassic": "Clàssic",
     "modeClassicDesc": "Paraules de la nostra base de dades per categories",
     "modeRandom": "Aleatori (RAE)",
-    "modeRandomDesc": "Paraula aleatòria del diccionari de la RAE (només espanyol)"
+    "modeRandomDesc": "Paraula aleatòria del diccionari de la RAE (només espanyol)",
+    "modeCustom": "Lliure",
+    "modeCustomDesc": "L'admin escriu la paraula",
+    "modeRoulette": "Ruleta",
+    "modeRouletteDesc": "Cada jugador aporta una paraula",
+    "customWordPlaceholder": "Escriu la paraula secreta...",
+    "customWordRequired": "Escriu una paraula per començar"
+  },
+  "collecting": {
+    "title": "Ruleta",
+    "wordPlaceholder": "La teva paraula...",
+    "submitWord": "Enviar paraula",
+    "wordsReceived": "{{count}} de {{total}} paraules",
+    "wordSent": "La teva paraula enviada",
+    "startNow": "Iniciar ja",
+    "minWordsNeeded": "Falten {{count}} paraules",
+    "languageHint": "La paraula ha d'estar en {{language}}",
+    "timerExpired": "Temps esgotat",
+    "timerExpiredNoWords": "No hi ha prou paraules per començar",
+    "notEnoughWords": "Només s'han rebut {{count}} de {{min}} paraules necessàries",
+    "waitingAdminAction": "Esperant que l'admin iniciï una altra partida",
+    "backToLobby": "Tornar al lobby"
   },
   "join": {
     "title": "Unir-se a sala",

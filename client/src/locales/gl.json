@@ -62,7 +62,28 @@
     "modeClassic": "Clásico",
     "modeClassicDesc": "Palabras da nosa base de datos por categorías",
     "modeRandom": "Aleatorio (RAE)",
-    "modeRandomDesc": "Palabra aleatoria do dicionario da RAE (só castelán)"
+    "modeRandomDesc": "Palabra aleatoria do dicionario da RAE (só castelán)",
+    "modeCustom": "Libre",
+    "modeCustomDesc": "O admin escribe a palabra",
+    "modeRoulette": "Ruleta",
+    "modeRouletteDesc": "Cada xogador aporta unha palabra",
+    "customWordPlaceholder": "Escribe a palabra secreta...",
+    "customWordRequired": "Escribe unha palabra para empezar"
+  },
+  "collecting": {
+    "title": "Ruleta",
+    "wordPlaceholder": "A túa palabra...",
+    "submitWord": "Enviar palabra",
+    "wordsReceived": "{{count}} de {{total}} palabras",
+    "wordSent": "A túa palabra enviada",
+    "startNow": "Iniciar xa",
+    "minWordsNeeded": "Faltan {{count}} palabras",
+    "languageHint": "A palabra debe estar en {{language}}",
+    "timerExpired": "Tempo esgotado",
+    "timerExpiredNoWords": "Non hai palabras abondo para empezar",
+    "notEnoughWords": "Só se recibiron {{count}} de {{min}} palabras necesarias",
+    "waitingAdminAction": "Agardando ao admin para iniciar outra partida",
+    "backToLobby": "Volver ao lobby"
   },
   "join": {
     "title": "Unirse a sala",

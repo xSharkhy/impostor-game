@@ -62,7 +62,28 @@
     "modeClassic": "Classic",
     "modeClassicDesc": "Words from our database by category",
     "modeRandom": "Random (RAE)",
-    "modeRandomDesc": "Random word from RAE dictionary (Spanish only)"
+    "modeRandomDesc": "Random word from RAE dictionary (Spanish only)",
+    "modeCustom": "Custom",
+    "modeCustomDesc": "The admin writes the word",
+    "modeRoulette": "Roulette",
+    "modeRouletteDesc": "Each player contributes a word",
+    "customWordPlaceholder": "Write the secret word...",
+    "customWordRequired": "Write a word to start"
+  },
+  "collecting": {
+    "title": "Roulette",
+    "wordPlaceholder": "Your word...",
+    "submitWord": "Submit word",
+    "wordsReceived": "{{count}} of {{total}} words",
+    "wordSent": "Your word sent",
+    "startNow": "Start now",
+    "minWordsNeeded": "{{count}} more words needed",
+    "languageHint": "The word should be in {{language}}",
+    "timerExpired": "Time's up",
+    "timerExpiredNoWords": "Not enough words to start",
+    "notEnoughWords": "Only {{count}} of {{min}} required words received",
+    "waitingAdminAction": "Waiting for admin to start another game",
+    "backToLobby": "Back to lobby"
   },
   "join": {
     "title": "Join room",

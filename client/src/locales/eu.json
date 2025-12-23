@@ -62,7 +62,28 @@
     "modeClassic": "Klasikoa",
     "modeClassicDesc": "Gure datu-baseko hitzak kategorien arabera",
     "modeRandom": "Ausazkoa (RAE)",
-    "modeRandomDesc": "RAE hiztegiaren ausazko hitza (gaztelaniaz soilik)"
+    "modeRandomDesc": "RAE hiztegiaren ausazko hitza (gaztelaniaz soilik)",
+    "modeCustom": "Librea",
+    "modeCustomDesc": "Adminak hitza idazten du",
+    "modeRoulette": "Ruleta",
+    "modeRouletteDesc": "Jokalari bakoitzak hitz bat ekartzen du",
+    "customWordPlaceholder": "Idatzi hitz sekretua...",
+    "customWordRequired": "Idatzi hitz bat hasteko"
+  },
+  "collecting": {
+    "title": "Ruleta",
+    "wordPlaceholder": "Zure hitza...",
+    "submitWord": "Hitza bidali",
+    "wordsReceived": "{{count}} / {{total}} hitz",
+    "wordSent": "Zure hitza bidalita",
+    "startNow": "Hasi orain",
+    "minWordsNeeded": "{{count}} hitz falta dira",
+    "languageHint": "Hitzak {{language}} hizkuntzan egon behar du",
+    "timerExpired": "Denbora agortu da",
+    "timerExpiredNoWords": "Ez dago hitz nahikorik hasteko",
+    "notEnoughWords": "{{count}} hitz jaso dira {{min}} beharrezkoetatik",
+    "waitingAdminAction": "Adminaren zain beste partida bat hasteko",
+    "backToLobby": "Lobbyra itzuli"
   },
   "join": {
     "title": "Gelara sartu",
