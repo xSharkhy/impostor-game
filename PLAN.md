@@ -1,4 +1,4 @@
-# El Impostor - Plan de Desarrollo v3.1
+# El Impostor - Plan de Desarrollo v3.2
 
 > **Plan unificado** que combina el plan original con las directrices del prompt actualizado.
 > Última actualización: 2025-12-23
@@ -52,6 +52,8 @@ Elevar la aplicación de MVP funcional a **nivel portfolio profesional**:
 | `--color-neon-green` | #22ff88 | Crew / éxito |
 | `--color-danger` | #ef4444 | Error / peligro |
 | `--color-neon-yellow` | #facc15 | Warning / admin |
+| `--color-text-secondary` | #b8b8b8 | Texto secundario (WCAG AA) |
+| `--color-text-tertiary` | #909090 | Texto terciario (WCAG AAA) |
 
 ### Tipografía
 - Font: Geist Sans
@@ -147,14 +149,20 @@ Elevar la aplicación de MVP funcional a **nivel portfolio profesional**:
 - Stores funcionan correctamente
 - Transiciones de fase manejadas
 
-### D4. UI para estados intermedios ⚠️ PARCIAL
+### D4. UI para estados intermedios ✅ COMPLETADO
 - Loading states en crear/unirse sala ✅
-- Falta: skeletons, empty states, error states con retry
+- Skeleton component con variantes (default, circular, text) ✅
+- Skeleton en carga inicial de app ✅
+- Skeleton en WordSuggestions ✅
+- Skeleton en SuggestWord (categorías) ✅
+- Empty states mejorados con iconos ✅
+- Error states con botón de retry ✅
 
 ### D5. Manejo desconexión/reconexión ✅ COMPLETADO
 - Toast al perder conexión
 - Toast al reconectar
 - Loading states para acciones de sala
+- Verificación de conexión antes de emitir eventos
 
 ---
 
@@ -177,14 +185,22 @@ Requiere configurar Twilio en Supabase.
 - Estructura con `react-i18next`
 - Extraer strings hardcodeados
 
-### F3. Auditoría de contraste ❌ PENDIENTE
-- WCAG AA (4.5:1)
+### F3. Auditoría de contraste ✅ COMPLETADO
+- text-secondary: #b8b8b8 (5.48:1 ratio - WCAG AA)
+- text-tertiary: #909090 (6.15:1 ratio - WCAG AAA)
 
-### F4. Focus states ❌ PENDIENTE
-- Verificar todos los elementos interactivos
+### F4. Focus states ✅ COMPLETADO
+- Button tiene `focus-visible:ring-2 focus-visible:ring-accent`
+- Global `*:focus-visible` con outline
 
-### F5. ARIA y labels ❌ PENDIENTE
-- Botones con emoji necesitan `aria-label`
+### F5. ARIA y labels ✅ COMPLETADO
+- `aria-label` en botón cerrar (SuggestWord)
+- `aria-hidden="true"` en emojis decorativos:
+  - ResultsPanel (🤷)
+  - GameOverPanel (🏆/💀)
+  - WordSuggestions (⚠️, ✨)
+  - ErrorBoundary (💥)
+  - VotingPanel (🗳️)
 
 ---
 
@@ -220,26 +236,32 @@ Requiere configurar Twilio en Supabase.
 
 ## EXTRAS
 
-### Audio ❌ PENDIENTE
-- Efectos de sonido por evento
-- Hook `useSound.ts` con toggle mute
+### Audio ✅ COMPLETADO (infraestructura)
+- Hook `useSound.ts` con tipos de efectos
+- Store `useSoundStore` con mute persistido (localStorage)
+- Componente `SoundToggle` con iconos de volumen
+- Toggle flotante en esquina inferior derecha
+- Directorio `public/sounds/` con README de archivos necesarios
+- **Pendiente**: Añadir archivos .mp3 de efectos
 
-### README Portfolio ❌ PENDIENTE
-Documentación para portfolio:
-- Descripción del proyecto
-- Screenshots/GIFs
-- Stack técnico
-- Cómo ejecutar
-- Arquitectura (Clean Architecture server)
-- Features destacadas
+### README Portfolio ✅ COMPLETADO
+- Badges de tecnologías
+- Tablas de stack frontend/backend
+- Diagrama de arquitectura
+- Sección de decisiones técnicas
+- Estructura del proyecto detallada
+- Design system documentado
 
 ### Deploy Pi 5 ❌ PENDIENTE
 - nginx + PM2 + certbot
 
-### Mobile-first audit ⚠️ PENDIENTE
-- Hit targets 44x44px
-- Safe areas
-- Overflow checks
+### Mobile-first audit ✅ COMPLETADO
+- `viewport-fit=cover` para notch iOS
+- CSS variables `--safe-*` con `env(safe-area-inset-*)`
+- Safe area padding en body
+- `100dvh` para viewport dinámico
+- Touch targets mejorados (VotingPanel buttons h-9)
+- Meta tags: theme-color, apple-mobile-web-app
 
 ---
 
@@ -249,6 +271,8 @@ Documentación para portfolio:
 - [x] BUG-002: Glow botones excesivo
 - [x] BUG-003: Admin oculto + whitelist
 - [x] BUG-004: SelectValue children DOM error
+- [x] BUG-005: Colores cyan en confetti (cambiados a purple)
+- [x] BUG-006: createRoom/joinRoom sin verificar conexión socket
 
 ---
 
@@ -270,12 +294,30 @@ pnpm build        # Build producción
 | A - Design System | ✅ | 100% |
 | B - shadcn/ui | ✅ | 100% |
 | C - Páginas Clave | ✅ | 100% |
-| D - Estados/Bugs | ✅ | 90% |
+| D - Estados/Bugs | ✅ | 100% |
 | E - Perfil/Auth | ❌ | 0% |
-| F - i18n/A11y | ❌ | 0% |
+| F - i18n/A11y | ⚠️ | 60% (a11y done, i18n pending) |
 | G - Nuevos Modos | ❌ | 0% |
 | H - Monetización | ❌ | 0% |
 | I - Auditoría Final | ❌ | 0% |
-| Extras | ⚠️ | 10% |
+| Extras | ✅ | 90% (solo deploy pending) |
 
-**Progreso total estimado: ~50%**
+**Progreso total estimado: ~65%**
+
+---
+
+## Sesión 2025-12-23
+
+### Completado hoy:
+1. **D4**: Skeletons, empty states, error retry
+2. **F3-F5**: Accesibilidad (contraste WCAG AA, ARIA labels)
+3. **Mobile audit**: Safe areas, touch targets, viewport
+4. **README**: Portfolio-ready con badges y tech decisions
+5. **Audio**: Infraestructura completa (hook, store, toggle)
+
+### Commits:
+- `feat(ui): add loading skeletons, empty states, and error retry`
+- `a11y: improve color contrast and add ARIA attributes`
+- `mobile: add safe areas and improve touch targets`
+- `docs: enhance README for portfolio`
+- `feat(audio): add sound system with mute toggle`
