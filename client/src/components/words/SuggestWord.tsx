@@ -12,6 +12,7 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
+  Skeleton,
 } from '@/components/ui'
 import { supabase } from '@/lib/supabase'
 import { useSocket } from '@/hooks'
@@ -29,20 +30,32 @@ export function SuggestWord({ onClose }: SuggestWordProps) {
   const [word, setWord] = useState('')
   const [categoryId, setCategoryId] = useState('')
   const [categories, setCategories] = useState<Category[]>([])
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true)
+  const [categoriesError, setCategoriesError] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
   const { socket } = useSocket()
 
-  useEffect(() => {
-    async function loadCategories() {
-      const { data } = await supabase.from('categories').select('id, name_es')
+  const loadCategories = async () => {
+    setIsLoadingCategories(true)
+    setCategoriesError(false)
+    try {
+      const { data, error } = await supabase.from('categories').select('id, name_es')
+      if (error) throw error
       if (data) {
         setCategories(data)
         if (data.length > 0) {
           setCategoryId(data[0].id)
         }
       }
+    } catch {
+      setCategoriesError(true)
+    } finally {
+      setIsLoadingCategories(false)
     }
+  }
+
+  useEffect(() => {
     loadCategories()
   }, [])
 
@@ -82,18 +95,39 @@ export function SuggestWord({ onClose }: SuggestWordProps) {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label>Categoría</Label>
-            <Select value={categoryId} onValueChange={setCategoryId}>
-              <SelectTrigger>
-                <SelectValue placeholder="Selecciona una categoría" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((cat) => (
-                  <SelectItem key={cat.id} value={cat.id}>
-                    {cat.name_es}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {isLoadingCategories ? (
+              <Skeleton className="h-10 w-full rounded-lg" />
+            ) : categoriesError ? (
+              <div className="flex items-center gap-2 rounded-lg border border-danger/30 bg-danger/5 px-3 py-2">
+                <span className="text-sm text-danger">Error al cargar categorías</span>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="ml-auto text-xs"
+                  onClick={loadCategories}
+                >
+                  Reintentar
+                </Button>
+              </div>
+            ) : categories.length === 0 ? (
+              <div className="rounded-lg border border-border bg-bg-tertiary px-3 py-2 text-sm text-text-tertiary">
+                No hay categorías disponibles
+              </div>
+            ) : (
+              <Select value={categoryId} onValueChange={setCategoryId}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecciona una categoría" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((cat) => (
+                    <SelectItem key={cat.id} value={cat.id}>
+                      {cat.name_es}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -115,7 +149,7 @@ export function SuggestWord({ onClose }: SuggestWordProps) {
           <Button
             type="submit"
             className="w-full"
-            disabled={!word.trim() || isSubmitting}
+            disabled={!word.trim() || !categoryId || isSubmitting || isLoadingCategories}
           >
             {isSubmitting ? 'Enviando...' : 'Sugerir'}
           </Button>

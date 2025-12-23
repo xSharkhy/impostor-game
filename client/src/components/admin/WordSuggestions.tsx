@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Button, Card, CardContent } from '@/components/ui'
+import { Button, Card, CardContent, Skeleton } from '@/components/ui'
 import { supabase } from '@/lib/supabase'
 
 interface WordSuggestion {
@@ -90,16 +90,60 @@ export function WordSuggestions() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center p-8">
-        <p className="text-text-tertiary">Cargando...</p>
+      <div className="space-y-6">
+        <div className="text-center">
+          <Skeleton className="mx-auto h-8 w-56" />
+          <Skeleton className="mx-auto mt-2 h-4 w-32" />
+        </div>
+        <div className="space-y-3">
+          {[1, 2, 3].map((i) => (
+            <Card key={i}>
+              <CardContent className="flex items-center justify-between py-4">
+                <div className="space-y-2">
+                  <Skeleton className="h-5 w-32" />
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-3 w-20" />
+                </div>
+                <div className="flex gap-2">
+                  <Skeleton className="h-8 w-20 rounded-lg" />
+                  <Skeleton className="h-8 w-20 rounded-lg" />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="flex items-center justify-center p-8">
-        <p className="text-danger">{error}</p>
+      <div className="space-y-6">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold">Sugerencias de Palabras</h1>
+        </div>
+        <Card variant="glass">
+          <CardContent className="py-8 text-center">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-danger/10 text-2xl">
+              ⚠️
+            </div>
+            <p className="font-medium text-danger">{error}</p>
+            <p className="mt-1 text-sm text-text-tertiary">
+              No se pudieron cargar las sugerencias
+            </p>
+            <Button
+              variant="outline"
+              className="mt-4"
+              onClick={() => {
+                setError(null)
+                setLoading(true)
+                fetchSuggestions()
+              }}
+            >
+              Reintentar
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     )
   }
@@ -114,9 +158,17 @@ export function WordSuggestions() {
       </div>
 
       {suggestions.length === 0 ? (
-        <Card>
-          <CardContent className="py-8 text-center">
-            <p className="text-text-tertiary">No hay sugerencias pendientes</p>
+        <Card variant="glass">
+          <CardContent className="py-10 text-center">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-bg-elevated text-4xl">
+              ✨
+            </div>
+            <p className="font-medium text-text-primary">
+              ¡Todo al día!
+            </p>
+            <p className="mt-1 text-sm text-text-tertiary">
+              No hay sugerencias pendientes de revisar
+            </p>
           </CardContent>
         </Card>
       ) : (

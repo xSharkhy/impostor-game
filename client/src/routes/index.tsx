@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import { Button } from '@/components/ui'
+import { Button, Skeleton } from '@/components/ui'
 import { LoginForm } from '@/components/auth/LoginForm'
 import { JoinRoom } from '@/components/lobby/JoinRoom'
 import { RoomLobby } from '@/components/lobby/RoomLobby'
@@ -25,8 +25,20 @@ function HomePage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-[100dvh] items-center justify-center">
-        <p className="text-text-tertiary">Cargando...</p>
+      <div className="flex min-h-[100dvh] flex-col items-center justify-center px-6 py-12">
+        <div className="mx-auto w-full max-w-sm space-y-8 text-center">
+          {/* Logo skeleton */}
+          <div className="space-y-3">
+            <Skeleton className="mx-auto h-16 w-16 rounded-2xl" />
+            <Skeleton className="mx-auto h-10 w-48" />
+            <Skeleton className="mx-auto h-4 w-36" />
+          </div>
+          {/* Buttons skeleton */}
+          <div className="space-y-3 pt-4">
+            <Skeleton className="h-12 w-full rounded-lg" />
+            <Skeleton className="h-12 w-full rounded-lg" />
+          </div>
+        </div>
       </div>
     )
   }

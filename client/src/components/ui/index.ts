@@ -32,6 +32,9 @@ export type { CardProps } from './card'
 // Effects
 export { Confetti, EmojiBurst, Sparkles } from './confetti'
 
+// Skeletons
+export { Skeleton, SkeletonText, SkeletonAvatar, SkeletonCard } from './skeleton'
+
 // Dialogs
 export {
   AlertDialog,
