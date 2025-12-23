@@ -14,6 +14,11 @@ const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001'
 let socketInstance: TypedSocket | null = null
 let isInitializing = false
 
+// Export getter for socket instance (used by other hooks)
+export function getSocketInstance(): TypedSocket | null {
+  return socketInstance
+}
+
 async function getOrCreateSocket(): Promise<TypedSocket | null> {
   if (socketInstance?.connected) return socketInstance
   if (isInitializing) return null

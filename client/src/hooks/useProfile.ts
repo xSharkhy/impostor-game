@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useUserStore } from '@/stores'
+import { getSocketInstance } from './useSocket'
 
 interface Profile {
   id: string
@@ -67,6 +68,12 @@ export function useProfile() {
           ...user,
           displayName: trimmedName,
         })
+
+        // Notify server to update socket user and room if in one
+        const socket = getSocketInstance()
+        if (socket?.connected) {
+          socket.emit('user:updateDisplayName', { displayName: trimmedName })
+        }
 
         return true
       } catch (err) {
