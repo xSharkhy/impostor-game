@@ -1,6 +1,322 @@
 # El Impostor - Estado del Desarrollo
 
 Plan detallado: `~/.claude/plans/enchanted-jingling-toast.md`
+Prompt:
+
+### Rol
+
+Eres un **Staff Frontend Engineer & Product Designer** especializado en:
+
+* React 19 + Vite
+* Tailwind CSS 4
+* shadcn/ui (accesibilidad-first)
+* Animaciones con Motion
+* UX/UI para juegos sociales mobile-first
+* Arquitectura de estado con Zustand
+* i18n, accesibilidad WCAG 2.1 AA
+* Aplicaciones en tiempo real con Socket.io
+
+Actúas con **criterio de portfolio senior**: todo lo que no estaría bien en un portfolio profesional debe corregirse.
+
+---
+
+### Contexto del proyecto
+
+Proyecto: **El Impostor**, juego social multijugador en tiempo real.
+
+* Stack:
+
+  * Frontend: React 19 + Vite
+  * UI: Tailwind + shadcn/ui
+  * Router: TanStack Router
+  * State: Zustand
+  * Animations: Motion
+  * Backend: Node + Express + Socket.io
+  * Auth: Supabase Auth
+* Diseño **mobile-first**, foco en smartphones.
+* MVP funcional, pero con:
+
+  * Inconsistencias visuales
+  * UX debt
+  * Bugs de estado
+  * Falta de i18n y accesibilidad
+* Las animaciones existentes **deben mantenerse**.
+
+Dispones del plan original, la arquitectura y el estado actual del código.
+
+---
+
+### Objetivo global
+
+Elevar la aplicación a **nivel portfolio profesional**, manteniendo el espíritu party pero con una UI:
+
+* Elegante
+* Consistente
+* Accesible
+* Robusta ante estados reales (errores, desconexiones, flujos incompletos)
+
+---
+
+### Design System (obligatorio)
+
+* Base oscura, minimalista, elegante.
+* Acento principal global: **purple**.
+* Estilo: minimal pero juguetón (Revolut > Vercel).
+* “Party” solo en:
+
+  * Acentos
+  * Micro-interacciones
+  * Animaciones existentes
+* Cada jugador tiene un **color de acento propio** (de un set cerrado) aplicado solo a:
+
+  * Nombre
+  * Avatar/borde
+  * Highlights suaves
+* Nunca usar más de un acento dominante por pantalla.
+
+---
+
+### Scope de trabajo
+
+#### 1. Refactor UI con shadcn/ui
+
+* Auditar todos los componentes que no usen shadcn/ui:
+
+  * Formularios
+  * Inputs
+  * Selects
+  * Buttons
+  * Dialogs
+  * Toasts / Sonner
+* Refactorizarlos usando shadcn/ui.
+* Mantener animaciones existentes.
+* Usar como fuente oficial:
+
+  * [https://ui.shadcn.com/llms.txt](https://ui.shadcn.com/llms.txt)
+
+---
+
+#### 2. Unificación visual
+
+* Eliminar inconsistencias entre páginas.
+* Unificar:
+
+  * Espaciados
+  * Tipografía
+  * Jerarquía visual
+* Resultado: sensación de **un solo producto coherente**.
+
+---
+
+#### 3. Rediseño de páginas clave
+
+* Login:
+
+  * Mejorar impacto visual y copy
+  * Marketing suave
+* Home / base:
+
+  * Mejor narrativa visual
+* Eliminar botón visible de Admin:
+
+  * Acceso solo por ruta o autenticación.
+
+---
+
+#### 4. Bugs críticos UX/UI
+
+* Botones glowing:
+
+  * El glow no puede ocultar fondo ni texto.
+* Tras votación:
+
+  * UI queda bloqueada
+  * Revisar estados, stores y eventos.
+
+---
+
+#### 5. Auth y perfil
+
+* Añadir Phone Auth (OTP) con Supabase.
+* DisplayName:
+
+  * Persistido en Supabase
+  * Editable antes de crear/unirse a sala
+  * Input precargado con último valor usado.
+
+---
+
+#### 6. Estados y desconexiones
+
+* Auditar todos los estados posibles.
+* No debe existir ningún estado sin UI válida.
+* Manejar:
+
+  * Desconexiones a mitad de partida
+  * Reconexiones
+  * Cambio de admin
+* El flujo del juego siempre debe resolverse.
+
+---
+
+#### 7. Mobile-first real
+
+* Ajustar para distintos tamaños de smartphone.
+* Revisar:
+
+  * Hit targets
+  * Safe areas
+  * Overflows
+
+---
+
+#### 8. Accesibilidad
+
+* Auditoría WCAG:
+
+  * Contraste
+  * Focus
+  * ARIA
+  * Navegación por teclado
+
+---
+
+#### 9. Monetización (no intrusiva)
+
+* Cosméticos:
+
+  * Colores
+  * Animaciones visuales extra
+* Buy me a coffee
+* Premium:
+
+  * Crear salas cuando no haya slots disponibles
+* Opcional:
+
+  * Banner ad pequeño y no invasivo
+* Prohibido:
+
+  * Paywalls
+  * Ventajas competitivas
+  * Categorías exclusivas
+
+---
+
+#### 10. Nuevos modos de juego
+
+* Mantener modo clásico.
+* Añadir:
+
+  * Palabra aleatoria por API externa (i18n-ready)
+  * Modo colaborativo (palabras de jugadores)
+* Integrarlos sin romper el flujo existente.
+
+---
+
+#### 11. Git y roadmap
+
+* Revisar cambios no commiteados.
+* Crear commits pequeños y coherentes.
+* Refactorizar el plan original en un roadmap accionable.
+* Definir pasos post-MVP.
+
+---
+
+### Entregables
+
+* Roadmap refactorizado
+* Lista priorizada de tareas
+* Propuestas UX/UI
+* Lista de bugs y estados problemáticos
+* Ideas de monetización viables
+
+---
+
+## FASE A — Design System & Base UI
+
+A1. Definir tokens de color y tipografía en Tailwind
+A2. Crear sistema de acentos por jugador (map + util)
+A3. Normalizar spacing, radius y shadows globales
+A4. Definir variantes de Button (default, primary, glowing)
+A5. Fix definitivo del bug de botones glowing
+
+---
+
+## FASE B — Refactor a shadcn/ui
+
+B1. Auditar componentes no-shadcn
+B2. Refactor inputs a shadcn Input
+B3. Refactor forms a shadcn Form
+B4. Refactor selects a shadcn Select
+B5. Refactor dialogs y alerts
+B6. Normalizar Sonner / Toasts
+
+---
+
+## FASE C — Páginas clave
+
+C1. Rediseñar Login (layout + copy)
+C2. Rediseñar Home/base
+C3. Eliminar botón Admin visible
+C4. Proteger acceso admin por auth/ruta
+
+---
+
+## FASE D — Estados y Bugs
+
+D1. Debug bloqueo post-votación
+D2. Auditar Zustand stores
+D3. Mapear estados posibles/imposibles
+D4. UI para estados intermedios
+D5. Manejo de desconexión/reconexión
+
+---
+
+## FASE E — Perfil & Auth
+
+E1. Implementar Phone Auth (OTP)
+E2. Persistir displayName en Supabase
+E3. UI para editar nombre pre-sala
+E4. Precargar último displayName
+
+---
+
+## FASE F — i18n & Accesibilidad
+
+F1. Preparar estructura i18n
+F2. Extraer strings
+F3. Auditoría de contraste
+F4. Focus states
+F5. ARIA y labels
+
+---
+
+## FASE G — Nuevos Modos
+
+G1. Diseño conceptual de modos
+G2. Palabra aleatoria por API (i18n)
+G3. Modo colaborativo (input jugadores)
+G4. Integración en flujo actual
+
+---
+
+## FASE H — Monetización
+
+H1. Diseño cosméticos
+H2. Infra para colores/animaciones premium
+H3. Buy me a coffee UI
+H4. Premium slots UX
+
+---
+
+## FASE I — Auditoría Final
+
+I1. Usabilidad
+I2. UX
+I3. Accesibilidad
+I4. Lista final de mejoras
+
+---
 
 ## Arquitectura Actual
 
