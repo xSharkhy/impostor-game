@@ -3,6 +3,7 @@ import type { ClientToServerEvents, ServerToClientEvents } from '@impostor/share
 import { DomainError } from '../../../../domain/errors/DomainError.js'
 import { RoomMapper } from '../../../../application/dto/RoomDTO.js'
 import type { Container } from '../../../../config/container.js'
+import { getSupabaseClient } from '../../../../config/supabase.js'
 
 export interface AuthenticatedSocket extends Socket<ClientToServerEvents, ServerToClientEvents> {
   user: {
@@ -10,6 +11,25 @@ export interface AuthenticatedSocket extends Socket<ClientToServerEvents, Server
     displayName: string
     email?: string
   }
+}
+
+// Refresh display name from profiles table and update socket cache
+async function refreshDisplayName(socket: AuthenticatedSocket): Promise<string> {
+  const { user } = socket
+  const supabase = getSupabaseClient()
+
+  const { data } = await supabase
+    .from('profiles')
+    .select('display_name')
+    .eq('id', user.id)
+    .single()
+
+  if (data?.display_name && data.display_name !== user.displayName) {
+    console.log(`[refreshDisplayName] "${user.displayName}" -> "${data.display_name}"`)
+    user.displayName = data.display_name
+  }
+
+  return user.displayName
 }
 
 export function createRoomHandler(
@@ -24,9 +44,12 @@ export function createRoomHandler(
     // Create room
     socket.on('room:create', async ({ language }) => {
       try {
+        // Refresh display name from DB before creating room
+        const displayName = await refreshDisplayName(socket)
+
         const result = await createRoomUseCase.execute({
           userId: user.id,
-          displayName: user.displayName,
+          displayName,
           language: language || 'es',
         })
 
@@ -37,7 +60,7 @@ export function createRoomHandler(
         socket.emit('room:created', { code: result.room.code })
         socket.emit('room:state', RoomMapper.toDTO(result.room, user.id) as any)
 
-        console.log(`Room ${result.room.code} created by ${user.displayName}`)
+        console.log(`Room ${result.room.code} created by ${displayName}`)
       } catch (error) {
         if (error instanceof DomainError) {
           socket.emit('error', {
@@ -57,10 +80,13 @@ export function createRoomHandler(
     // Join room
     socket.on('room:join', async ({ code }) => {
       try {
+        // Refresh display name from DB before joining room
+        const displayName = await refreshDisplayName(socket)
+
         const result = await joinRoomUseCase.execute({
           code,
           userId: user.id,
-          displayName: user.displayName,
+          displayName,
         })
 
         // Join socket room
@@ -73,14 +99,14 @@ export function createRoomHandler(
         if (!result.isReconnect) {
           socket.to(result.room.id).emit('room:playerJoined', {
             id: user.id,
-            displayName: user.displayName,
+            displayName,
             isConnected: true,
             isEliminated: false,
             hasVoted: false,
           })
         }
 
-        console.log(`${user.displayName} joined room ${result.room.code}`)
+        console.log(`${displayName} joined room ${result.room.code}`)
       } catch (error) {
         if (error instanceof DomainError) {
           socket.emit('error', {
