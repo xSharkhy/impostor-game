@@ -3,8 +3,8 @@ import { io, Socket } from 'socket.io-client'
 import { toast } from 'sonner'
 import { supabase } from '@/lib/supabase'
 import { useRoomStore, useGameStore, useUserStore } from '@/stores'
-import { getCurrentLanguage, changeLanguage, SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/lib/i18n'
-import type { ClientToServerEvents, ServerToClientEvents } from '@impostor/shared'
+import { getCurrentLanguage, type SupportedLanguage } from '@/lib/i18n'
+import type { ClientToServerEvents, ServerToClientEvents, GameMode } from '@impostor/shared'
 
 type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>
 
@@ -63,6 +63,7 @@ export function useSocket() {
       socket.off('room:playerLeft')
       socket.off('room:playerKicked')
       socket.off('room:adminChanged')
+      socket.off('room:languageChanged')
       socket.off('error')
       socket.off('game:started')
       socket.off('game:newRound')
@@ -99,20 +100,9 @@ export function useSocket() {
         })
       })
 
-      socket.on('room:state', async (room) => {
+      socket.on('room:state', (room) => {
         useRoomStore.getState().setRoom(room)
         useRoomStore.getState().setConnecting(false)
-
-        // Check if room language differs from current language
-        const currentLang = getCurrentLanguage()
-        const roomLang = room.language as SupportedLanguage
-        if (roomLang && roomLang !== currentLang && SUPPORTED_LANGUAGES[roomLang]) {
-          await changeLanguage(roomLang)
-          const langName = SUPPORTED_LANGUAGES[roomLang].name
-          toast.info(`Idioma cambiado a ${langName}`, {
-            description: 'El idioma de la sala es diferente al tuyo',
-          })
-        }
 
         // Reset game state when room goes back to lobby (e.g., after playAgain)
         if (room.status === 'lobby') {
@@ -162,6 +152,12 @@ export function useSocket() {
         if (newAdmin) {
           toast.info(`${newAdmin.displayName} es el nuevo admin`)
         }
+      })
+
+      socket.on('room:languageChanged', ({ language }) => {
+        // Only update room state, not UI language
+        // Game language and UI language are independent
+        useRoomStore.getState().setLanguage(language as SupportedLanguage)
       })
 
       socket.on('error', ({ message }) => {
@@ -230,8 +226,15 @@ export function useSocket() {
     socketInstance?.emit('room:kick', { playerId })
   }, [])
 
-  const startGame = useCallback((category?: string) => {
-    socketInstance?.emit('game:start', { category: category || '' })
+  const changeRoomLanguage = useCallback((language: SupportedLanguage) => {
+    socketInstance?.emit('room:changeLanguage', { language })
+  }, [])
+
+  const startGame = useCallback((options?: { mode?: GameMode; category?: string }) => {
+    socketInstance?.emit('game:start', {
+      mode: options?.mode || 'classic',
+      category: options?.category || '',
+    })
   }, [])
 
   const nextRound = useCallback(() => {
@@ -264,6 +267,7 @@ export function useSocket() {
     joinRoom,
     leaveRoom,
     kickPlayer,
+    changeRoomLanguage,
     startGame,
     nextRound,
     startVoting,
