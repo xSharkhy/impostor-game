@@ -11,10 +11,13 @@
   },
   "dependencies": {
     "@impostor/shared": "workspace:*",
+    "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-select": "^2.2.6",
     "@supabase/supabase-js": "^2.47.10",
     "@tanstack/react-router": "^1.93.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "lucide-react": "^0.562.0",
     "motion": "^12.23.26",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

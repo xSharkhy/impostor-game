@@ -5,6 +5,19 @@ export type { ButtonProps } from './button'
 export { Input, inputVariants } from './input'
 export type { InputProps } from './input'
 
+export { Label } from './label'
+
+export {
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+} from './select'
+
 export {
   Card,
   CardHeader,
