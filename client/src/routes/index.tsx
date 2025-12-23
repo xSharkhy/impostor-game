@@ -18,7 +18,7 @@ type View = 'home' | 'join' | 'suggest'
 function HomePage() {
   const [view, setView] = useState<View>('home')
   const { user, isAuthenticated, isLoading } = useUserStore()
-  const { room } = useRoomStore()
+  const { room, isConnecting } = useRoomStore()
   const { phase } = useGameStore()
   const { signOut } = useAuth()
   const { createRoom, isConnected } = useSocket()
@@ -54,12 +54,22 @@ function HomePage() {
   return (
     <div className="flex min-h-[100dvh] flex-col items-center justify-center px-6 py-12">
       <div className="mx-auto w-full max-w-sm space-y-8 text-center">
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+        {/* Logo & Title */}
+        <div className="space-y-3">
+          <div className="text-6xl">🕵️</div>
+          <h1
+            className="text-4xl font-black tracking-tight sm:text-5xl"
+            style={{
+              background: 'linear-gradient(135deg, var(--color-text-primary), var(--color-accent))',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
             El Impostor
           </h1>
-          <p className="text-sm text-text-tertiary">
-            Juego de deducción social con palabras
+          <p className="text-sm text-text-secondary">
+            Juego de deducción social
           </p>
         </div>
 
@@ -70,49 +80,61 @@ function HomePage() {
             <SuggestWord onClose={() => setView('home')} />
           ) : (
             <div className="space-y-6">
-              <p className="text-sm text-text-tertiary">
-                Hola, <span className="text-text-primary">{user?.displayName}</span>
+              {/* User greeting */}
+              <div className="flex items-center justify-center gap-2 text-sm text-text-secondary">
+                <span>Hola,</span>
+                <span className="font-medium text-text-primary">{user?.displayName}</span>
                 {isConnected && (
-                  <span className="ml-2 inline-block h-2 w-2 rounded-full bg-success" />
+                  <span className="h-2 w-2 rounded-full bg-success" />
                 )}
-              </p>
+              </div>
+
+              {/* Main actions */}
               <div className="flex flex-col gap-3">
-                <Button size="lg" className="w-full" onClick={createRoom}>
-                  Crear Sala
+                <Button
+                  variant="neon"
+                  size="lg"
+                  className="w-full"
+                  onClick={createRoom}
+                  disabled={isConnecting}
+                  isLoading={isConnecting}
+                >
+                  {isConnecting ? 'Creando...' : 'Crear Sala'}
                 </Button>
                 <Button
                   variant="outline"
                   size="lg"
                   className="w-full"
                   onClick={() => setView('join')}
+                  disabled={isConnecting}
                 >
-                  Unirse
+                  Unirse a Sala
                 </Button>
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-text-tertiary"
-                onClick={() => setView('suggest')}
-              >
-                Sugerir palabra
-              </Button>
-              <Button
-                variant="ghost"
-                className="text-text-tertiary"
-                onClick={signOut}
-              >
-                Cerrar sesión
-              </Button>
+
+              {/* Secondary actions */}
+              <div className="flex flex-col items-center gap-2 pt-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-text-tertiary"
+                  onClick={() => setView('suggest')}
+                >
+                  Sugerir palabra
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-text-tertiary"
+                  onClick={signOut}
+                >
+                  Cerrar sesión
+                </Button>
+              </div>
             </div>
           )
         ) : (
-          <div className="space-y-4">
-            <p className="text-sm text-text-tertiary">
-              Inicia sesión para jugar
-            </p>
-            <LoginForm />
-          </div>
+          <LoginForm />
         )}
       </div>
     </div>
