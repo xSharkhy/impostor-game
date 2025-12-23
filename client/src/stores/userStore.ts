@@ -13,12 +13,13 @@ interface UserState {
   isLoading: boolean
   setUser: (user: User | null) => void
   setLoading: (loading: boolean) => void
+  updateDisplayName: (name: string) => void
   logout: () => void
 }
 
 export const useUserStore = create<UserState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       isAuthenticated: false,
       isLoading: true,
@@ -31,6 +32,13 @@ export const useUserStore = create<UserState>()(
         }),
 
       setLoading: (isLoading) => set({ isLoading }),
+
+      updateDisplayName: (displayName) => {
+        const { user } = get()
+        if (user) {
+          set({ user: { ...user, displayName } })
+        }
+      },
 
       logout: () =>
         set({
