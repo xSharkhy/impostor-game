@@ -8,12 +8,14 @@ import { SupabaseWordRepository } from '../infrastructure/persistence/supabase/S
 // Services
 import { SupabaseAuthService } from '../infrastructure/services/SupabaseAuthService.js'
 import { ResendEmailService } from '../infrastructure/services/ResendEmailService.js'
+import { RaeApiService } from '../infrastructure/services/RaeApiService.js'
 
 // Use Cases - Room
 import { CreateRoomUseCase } from '../application/useCases/room/CreateRoomUseCase.js'
 import { JoinRoomUseCase } from '../application/useCases/room/JoinRoomUseCase.js'
 import { LeaveRoomUseCase } from '../application/useCases/room/LeaveRoomUseCase.js'
 import { KickPlayerUseCase } from '../application/useCases/room/KickPlayerUseCase.js'
+import { ChangeRoomLanguageUseCase } from '../application/useCases/room/ChangeRoomLanguageUseCase.js'
 
 // Use Cases - Game
 import { StartGameUseCase } from '../application/useCases/game/StartGameUseCase.js'
@@ -52,6 +54,7 @@ export interface Container {
   joinRoomUseCase: JoinRoomUseCase
   leaveRoomUseCase: LeaveRoomUseCase
   kickPlayerUseCase: KickPlayerUseCase
+  changeRoomLanguageUseCase: ChangeRoomLanguageUseCase
 
   // Use Cases - Game
   startGameUseCase: StartGameUseCase
@@ -90,15 +93,17 @@ export function createContainer(): Container {
   // Infrastructure - Services
   const authService = new SupabaseAuthService(supabase)
   const emailService = env.resendApiKey ? new ResendEmailService(env.resendApiKey) : null
+  const randomWordService = new RaeApiService()
 
   // Use Cases - Room
   const createRoomUseCase = new CreateRoomUseCase(roomRepository)
   const joinRoomUseCase = new JoinRoomUseCase(roomRepository)
   const leaveRoomUseCase = new LeaveRoomUseCase(roomRepository)
   const kickPlayerUseCase = new KickPlayerUseCase(roomRepository)
+  const changeRoomLanguageUseCase = new ChangeRoomLanguageUseCase(roomRepository)
 
   // Use Cases - Game
-  const startGameUseCase = new StartGameUseCase(roomRepository, wordRepository)
+  const startGameUseCase = new StartGameUseCase(roomRepository, wordRepository, randomWordService)
   const nextRoundUseCase = new NextRoundUseCase(roomRepository)
   const playAgainUseCase = new PlayAgainUseCase(roomRepository)
 
@@ -124,6 +129,7 @@ export function createContainer(): Container {
     joinRoomUseCase,
     leaveRoomUseCase,
     kickPlayerUseCase,
+    changeRoomLanguageUseCase,
 
     // Use Cases - Game
     startGameUseCase,

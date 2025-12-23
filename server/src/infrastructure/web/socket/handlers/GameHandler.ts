@@ -15,10 +15,11 @@ export function createGameHandler(
     const { user } = socket
 
     // Start game (admin only)
-    socket.on('game:start', async ({ category }) => {
+    socket.on('game:start', async ({ mode, category }) => {
       try {
         const result = await startGameUseCase.execute({
           adminId: user.id,
+          mode: mode || 'classic',
           categoryId: category,
         })
 
@@ -32,10 +33,11 @@ export function createGameHandler(
             word: isImpostor ? null : result.word,
             isImpostor,
             turnOrder: result.room.turnOrder ?? [],
+            mode: result.mode,
           })
         }
 
-        console.log(`Game started in room ${result.room.code}`)
+        console.log(`Game started in room ${result.room.code} (mode: ${result.mode})`)
       } catch (error) {
         if (error instanceof DomainError) {
           socket.emit('error', {

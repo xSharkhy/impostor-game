@@ -36,7 +36,7 @@ export function createRoomHandler(
   io: Server<ClientToServerEvents, ServerToClientEvents>,
   container: Container
 ) {
-  const { createRoomUseCase, joinRoomUseCase, leaveRoomUseCase, kickPlayerUseCase } = container
+  const { createRoomUseCase, joinRoomUseCase, leaveRoomUseCase, kickPlayerUseCase, changeRoomLanguageUseCase } = container
 
   return function registerRoomHandlers(socket: AuthenticatedSocket) {
     const { user } = socket
@@ -181,6 +181,34 @@ export function createRoomHandler(
           socket.emit('error', {
             code: 'UNKNOWN_ERROR',
             message: 'Error al expulsar jugador',
+          })
+        }
+      }
+    })
+
+    // Change room language (admin only)
+    socket.on('room:changeLanguage', async ({ language }) => {
+      try {
+        const result = await changeRoomLanguageUseCase.execute({
+          playerId: user.id,
+          language: language as any,
+        })
+
+        // Notify all players in the room
+        io.to(result.room.id).emit('room:languageChanged', { language })
+
+        console.log(`Room ${result.room.code} language changed to ${language}`)
+      } catch (error) {
+        if (error instanceof DomainError) {
+          socket.emit('error', {
+            code: error.code,
+            message: error.message,
+          })
+        } else {
+          console.error('Error changing room language:', error)
+          socket.emit('error', {
+            code: 'UNKNOWN_ERROR',
+            message: 'Error al cambiar el idioma',
           })
         }
       }
