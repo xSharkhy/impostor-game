@@ -65,6 +65,8 @@ export function useSocket() {
       socket.off('room:adminChanged')
       socket.off('room:languageChanged')
       socket.off('error')
+      socket.off('game:collectingStarted')
+      socket.off('game:wordCollected')
       socket.off('game:started')
       socket.off('game:newRound')
       socket.off('game:votingStarted')
@@ -167,6 +169,14 @@ export function useSocket() {
       })
 
       // Game events
+      socket.on('game:collectingStarted', ({ timeLimit, minWords, playerCount }) => {
+        useGameStore.getState().startCollecting({ timeLimit, minWords, playerCount })
+      })
+
+      socket.on('game:wordCollected', ({ count }) => {
+        useGameStore.getState().updateWordCount(count)
+      })
+
       socket.on('game:started', (data) => {
         useGameStore.getState().startGame(data)
       })
@@ -230,11 +240,21 @@ export function useSocket() {
     socketInstance?.emit('room:changeLanguage', { language })
   }, [])
 
-  const startGame = useCallback((options?: { mode?: GameMode; category?: string }) => {
+  const startGame = useCallback((options?: { mode?: GameMode; category?: string; customWord?: string }) => {
     socketInstance?.emit('game:start', {
       mode: options?.mode || 'classic',
       category: options?.category || '',
+      customWord: options?.customWord,
     })
+  }, [])
+
+  const submitWord = useCallback((word: string) => {
+    socketInstance?.emit('game:submitWord', { word })
+    useGameStore.getState().markWordSubmitted()
+  }, [])
+
+  const forceStartRoulette = useCallback(() => {
+    socketInstance?.emit('game:forceStart')
   }, [])
 
   const nextRound = useCallback(() => {
@@ -269,6 +289,8 @@ export function useSocket() {
     kickPlayer,
     changeRoomLanguage,
     startGame,
+    submitWord,
+    forceStartRoulette,
     nextRound,
     startVoting,
     castVote,
