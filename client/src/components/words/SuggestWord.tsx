@@ -66,8 +66,6 @@ export function SuggestWord({ onClose }: SuggestWordProps) {
     })
   }
 
-  const selectedCategory = categories.find((c) => c.id === categoryId)
-
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
@@ -86,9 +84,7 @@ export function SuggestWord({ onClose }: SuggestWordProps) {
             <Label>Categoría</Label>
             <Select value={categoryId} onValueChange={setCategoryId}>
               <SelectTrigger>
-                <SelectValue placeholder="Selecciona una categoría">
-                  {selectedCategory?.name_es}
-                </SelectValue>
+                <SelectValue placeholder="Selecciona una categoría" />
               </SelectTrigger>
               <SelectContent>
                 {categories.map((cat) => (
