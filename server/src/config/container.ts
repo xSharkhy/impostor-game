@@ -21,6 +21,8 @@ import { ChangeRoomLanguageUseCase } from '../application/useCases/room/ChangeRo
 import { StartGameUseCase } from '../application/useCases/game/StartGameUseCase.js'
 import { NextRoundUseCase } from '../application/useCases/game/NextRoundUseCase.js'
 import { PlayAgainUseCase } from '../application/useCases/game/PlayAgainUseCase.js'
+import { SubmitWordUseCase } from '../application/useCases/game/SubmitWordUseCase.js'
+import { ForceStartRouletteUseCase } from '../application/useCases/game/ForceStartRouletteUseCase.js'
 
 // Use Cases - Voting
 import { StartVotingUseCase } from '../application/useCases/voting/StartVotingUseCase.js'
@@ -60,6 +62,8 @@ export interface Container {
   startGameUseCase: StartGameUseCase
   nextRoundUseCase: NextRoundUseCase
   playAgainUseCase: PlayAgainUseCase
+  submitWordUseCase: SubmitWordUseCase
+  forceStartRouletteUseCase: ForceStartRouletteUseCase
 
   // Use Cases - Voting
   startVotingUseCase: StartVotingUseCase
@@ -106,6 +110,8 @@ export function createContainer(): Container {
   const startGameUseCase = new StartGameUseCase(roomRepository, wordRepository, randomWordService)
   const nextRoundUseCase = new NextRoundUseCase(roomRepository)
   const playAgainUseCase = new PlayAgainUseCase(roomRepository)
+  const submitWordUseCase = new SubmitWordUseCase(roomRepository)
+  const forceStartRouletteUseCase = new ForceStartRouletteUseCase(roomRepository)
 
   // Use Cases - Voting
   const startVotingUseCase = new StartVotingUseCase(roomRepository)
@@ -135,6 +141,8 @@ export function createContainer(): Container {
     startGameUseCase,
     nextRoundUseCase,
     playAgainUseCase,
+    submitWordUseCase,
+    forceStartRouletteUseCase,
 
     // Use Cases - Voting
     startVotingUseCase,
