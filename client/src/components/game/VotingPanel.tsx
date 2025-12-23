@@ -37,7 +37,7 @@ export function VotingPanel() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-2xl">🗳️</span>
-          <h2 className="text-xl font-bold text-neon-cyan">¡A votar!</h2>
+          <h2 className="text-xl font-bold text-accent">¡A votar!</h2>
         </div>
         <span className="text-xs text-text-tertiary">
           {hasVoted ? '✓ Votaste' : `${threshold} = eliminar`}
@@ -47,7 +47,7 @@ export function VotingPanel() {
       {/* Progress bar */}
       <div className="h-1.5 overflow-hidden rounded-full bg-bg-tertiary">
         <motion.div
-          className="h-full bg-gradient-to-r from-neon-cyan to-neon-purple"
+          className="h-full bg-gradient-to-r from-accent to-neon-pink"
           initial={{ width: 0 }}
           animate={{ width: `${(totalVotes / activePlayers.length) * 100}%` }}
           transition={{ duration: 0.3 }}
@@ -91,7 +91,7 @@ export function VotingPanel() {
                 <div
                   className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold ${
                     isMe
-                      ? 'bg-neon-cyan text-black'
+                      ? 'bg-accent text-white'
                       : isMyVote
                         ? 'bg-neon-pink text-white'
                         : 'bg-bg-elevated text-text-secondary'
@@ -100,7 +100,7 @@ export function VotingPanel() {
                   {player.displayName.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex flex-col">
-                  <span className={`text-sm font-medium ${isMe ? 'text-neon-cyan' : 'text-text-primary'}`}>
+                  <span className={`text-sm font-medium ${isMe ? 'text-accent' : 'text-text-primary'}`}>
                     {player.displayName}
                     {isMe && <span className="ml-1 text-xs text-text-tertiary">(tú)</span>}
                   </span>
@@ -173,7 +173,7 @@ export function VotingPanel() {
 
         {isAdmin && !allVoted && (
           <div className="flex items-center justify-center gap-2 py-2 text-sm text-text-tertiary">
-            <span className="h-2 w-2 rounded-full bg-neon-cyan animate-pulse" />
+            <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
             Esperando votos...
           </div>
         )}

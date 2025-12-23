@@ -38,7 +38,7 @@ export function GameOverPanel() {
           isActive={showConfetti}
           particleCount={100}
           colors={crewWon
-            ? ['#00f0ff', '#22ff88', '#a855f7']
+            ? ['#22ff88', '#a855f7', '#00f0ff']
             : ['#ff2d6a', '#a855f7', '#facc15']
           }
         />
@@ -60,8 +60,8 @@ export function GameOverPanel() {
           <span
             className={`bg-gradient-to-r bg-clip-text text-transparent ${
               crewWon
-                ? 'from-neon-cyan via-neon-green to-neon-cyan'
-                : 'from-neon-pink via-neon-purple to-neon-pink'
+                ? 'from-neon-green via-accent to-neon-green'
+                : 'from-neon-pink via-accent to-neon-pink'
             }`}
             style={{
               backgroundSize: '200% auto',
@@ -73,7 +73,7 @@ export function GameOverPanel() {
         </h2>
         <p
           className={`mt-3 text-xl font-medium ${
-            crewWon ? 'text-neon-cyan' : 'text-neon-pink'
+            crewWon ? 'text-neon-green' : 'text-neon-pink'
           }`}
         >
           {crewWon ? '¡Los civiles han ganado!' : '¡El impostor ha ganado!'}
@@ -120,9 +120,9 @@ export function GameOverPanel() {
             </CardHeader>
             <CardContent className="pb-6">
               <p
-                className="text-center text-3xl font-bold text-neon-cyan"
+                className="text-center text-3xl font-bold text-neon-green"
                 style={{
-                  textShadow: '0 0 20px rgba(0, 240, 255, 0.5)',
+                  textShadow: '0 0 20px rgba(34, 255, 136, 0.5)',
                 }}
               >
                 {word}
@@ -155,7 +155,7 @@ export function GameOverPanel() {
       {/* Waiting message for non-admin */}
       {!isAdmin && (
         <div className="flex items-center justify-center gap-2 text-sm text-text-tertiary">
-          <span className="h-2 w-2 rounded-full bg-neon-cyan animate-pulse" />
+          <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
           Esperando al admin para nueva partida...
         </div>
       )}

@@ -172,18 +172,18 @@ export function ResultsPanel({ onContinue }: ResultsPanelProps) {
                       cy="32"
                       r="28"
                       fill="none"
-                      stroke="var(--color-neon-cyan)"
+                      stroke="var(--color-accent)"
                       strokeWidth="4"
                       strokeLinecap="round"
                       strokeDasharray={176}
                       strokeDashoffset={176 * (1 - countdown / AUTO_CONTINUE_SECONDS)}
                       style={{
-                        filter: 'drop-shadow(0 0 8px rgba(0, 240, 255, 0.5))',
+                        filter: 'drop-shadow(0 0 8px rgba(168, 85, 247, 0.5))',
                         transition: 'stroke-dashoffset 1s linear',
                       }}
                     />
                   </svg>
-                  <span className="absolute inset-0 flex items-center justify-center font-mono text-2xl font-bold text-neon-cyan">
+                  <span className="absolute inset-0 flex items-center justify-center font-mono text-2xl font-bold text-accent">
                     {countdown}
                   </span>
                 </div>

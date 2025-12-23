@@ -86,9 +86,9 @@ export function GameView() {
                 </p>
               ) : (
                 <p
-                  className="text-center text-4xl font-bold text-neon-cyan"
+                  className="text-center text-4xl font-bold text-neon-green"
                   style={{
-                    textShadow: '0 0 20px rgba(0, 240, 255, 0.5), 0 0 40px rgba(0, 240, 255, 0.3)',
+                    textShadow: '0 0 20px rgba(34, 255, 136, 0.5), 0 0 40px rgba(34, 255, 136, 0.3)',
                   }}
                 >
                   {word}
@@ -106,8 +106,8 @@ export function GameView() {
 
       {/* Round indicator - small badge */}
       <div className="text-center">
-        <span className="inline-flex items-center gap-2 rounded-full border border-neon-cyan/20 bg-bg-tertiary px-4 py-1.5 text-sm font-medium text-text-secondary">
-          <span className="h-2 w-2 rounded-full bg-neon-cyan" />
+        <span className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-bg-tertiary px-4 py-1.5 text-sm font-medium text-text-secondary">
+          <span className="h-2 w-2 rounded-full bg-accent" />
           Ronda {currentRound}
         </span>
       </div>
@@ -127,20 +127,20 @@ export function GameView() {
                     player.isEliminated
                       ? 'bg-danger/10 line-through opacity-50'
                       : player.isMe
-                        ? 'border border-neon-cyan/30 bg-neon-cyan/10'
+                        ? 'border border-accent/30 bg-accent/10'
                         : 'bg-bg-tertiary hover:bg-bg-elevated'
                   }`}
                 >
                   <span
                     className={`flex h-7 w-7 items-center justify-center rounded-full text-sm font-semibold ${
                       player.isMe
-                        ? 'bg-neon-cyan text-black'
+                        ? 'bg-accent text-white'
                         : 'bg-bg-elevated text-text-secondary'
                     }`}
                   >
                     {index + 1}
                   </span>
-                  <span className={player.isMe ? 'font-semibold text-neon-cyan' : 'text-text-primary'}>
+                  <span className={player.isMe ? 'font-semibold text-accent' : 'text-text-primary'}>
                     {player.name}
                     {player.isMe && (
                       <span className="ml-1.5 text-xs text-text-secondary">(tú)</span>
