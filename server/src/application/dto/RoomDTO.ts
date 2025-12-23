@@ -1,4 +1,4 @@
-import { Room, WinCondition } from '../../domain/entities/Room.js'
+import { Room, RoomStatus, WinCondition } from '../../domain/entities/Room.js'
 import { Player } from '../../domain/entities/Player.js'
 
 export interface PlayerDTO {
@@ -13,7 +13,7 @@ export interface RoomDTO {
   id: string
   code: string
   adminId: string
-  status: 'lobby' | 'playing' | 'voting' | 'finished'
+  status: RoomStatus
   players: PlayerDTO[]
   currentRound: number
   category: string | null

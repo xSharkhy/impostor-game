@@ -1,10 +1,11 @@
-import type { GameMode } from '@impostor/shared'
+import type { GameMode, CONSTANTS } from '@impostor/shared'
 import { Room } from '../../../domain/entities/Room.js'
 import {
   RoomNotFoundError,
   NotAdminError,
   NotEnoughPlayersError,
   GameAlreadyStartedError,
+  InvalidStateError,
 } from '../../../domain/errors/DomainError.js'
 import { IRoomRepository } from '../../ports/repositories/IRoomRepository.js'
 import { IWordRepository } from '../../ports/repositories/IWordRepository.js'
@@ -14,6 +15,7 @@ export interface StartGameInput {
   adminId: string
   mode?: GameMode
   categoryId?: string
+  customWord?: string
 }
 
 export interface StartGameOutput {
@@ -24,6 +26,14 @@ export interface StartGameOutput {
   impostorId: string
 }
 
+export interface StartCollectingOutput {
+  room: Room
+  mode: 'roulette'
+  timeLimit: number
+  minWords: number
+  playerCount: number
+}
+
 export class StartGameUseCase {
   constructor(
     private readonly roomRepository: IRoomRepository,
@@ -31,7 +41,7 @@ export class StartGameUseCase {
     private readonly randomWordService?: IRandomWordService
   ) {}
 
-  async execute(input: StartGameInput): Promise<StartGameOutput> {
+  async execute(input: StartGameInput): Promise<StartGameOutput | StartCollectingOutput> {
     const room = await this.roomRepository.findByPlayerId(input.adminId)
     if (!room) {
       throw new RoomNotFoundError()
@@ -50,10 +60,32 @@ export class StartGameUseCase {
     }
 
     const mode = input.mode || 'classic'
+
+    // Roulette mode: start collecting phase
+    if (mode === 'roulette') {
+      const updatedRoom = room.startCollecting()
+      await this.roomRepository.save(updatedRoom)
+
+      return {
+        room: updatedRoom,
+        mode: 'roulette',
+        timeLimit: 30, // ROULETTE_TIME_LIMIT from shared
+        minWords: updatedRoom.minWordsRequired,
+        playerCount: updatedRoom.playerCount,
+      }
+    }
+
     let word: string
     let category: string
 
-    if (mode === 'random') {
+    if (mode === 'custom') {
+      // Custom mode: use admin's word
+      if (!input.customWord?.trim()) {
+        throw new InvalidStateError('Custom word is required')
+      }
+      word = input.customWord.trim()
+      category = 'Libre'
+    } else if (mode === 'random') {
       // Get random word from RAE API
       if (!this.randomWordService) {
         throw new Error('Random word service not available')

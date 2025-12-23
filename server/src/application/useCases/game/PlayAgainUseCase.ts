@@ -23,7 +23,8 @@ export class PlayAgainUseCase {
       throw new NotAdminError()
     }
 
-    if (room.status !== 'finished') {
+    // Allow reset from finished or collecting_words (cancelled roulette)
+    if (room.status !== 'finished' && room.status !== 'collecting_words') {
       throw new InvalidStateError('Game is not finished')
     }
 

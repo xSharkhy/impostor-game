@@ -1,3 +1,5 @@
 export * from './StartGameUseCase.js'
 export * from './NextRoundUseCase.js'
 export * from './PlayAgainUseCase.js'
+export * from './SubmitWordUseCase.js'
+export * from './ForceStartRouletteUseCase.js'
