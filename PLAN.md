@@ -244,10 +244,18 @@ Requiere configurar Twilio en Supabase.
 
 ## FASE I — Auditoría Final
 
-### I1-I4. ❌ PENDIENTE
+### I1. Lighthouse & Performance ✅ COMPLETADO
+- Code splitting con manual chunks (bundle principal: 893KB → 335KB, -63%)
+- Lazy loading de ruta `/admin`
+- Chunks separados: react, router, motion, supabase, socket, i18n, radix, state
+- Favicon SVG creado
+- Meta tags SEO y Open Graph
+- Preconnect/dns-prefetch para fonts y Supabase
+- Fuente Geist optimizada (solo pesos necesarios)
+
+### I2-I4. ❌ PENDIENTE
 - Testing usabilidad
 - UX review
-- Lighthouse >90
 - Lista mejoras futuras
 
 ---
@@ -317,10 +325,10 @@ pnpm build        # Build producción
 | F - i18n/A11y | ✅ | 100% |
 | G - Nuevos Modos | ❌ | 0% |
 | H - Monetización | ❌ | 0% |
-| I - Auditoría Final | ❌ | 0% |
+| I - Auditoría Final | ⚠️ | 25% (Lighthouse done) |
 | Extras | ✅ | 90% (solo deploy pending) |
 
-**Progreso total estimado: ~75%**
+**Progreso total estimado: ~80%**
 
 ---
 

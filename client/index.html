@@ -2,17 +2,35 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <!-- PWA & Mobile -->
     <meta name="theme-color" content="#000000" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="description" content="El Impostor - Juego de deducción social con palabras" />
+    <meta name="apple-mobile-web-app-title" content="El Impostor" />
+
+    <!-- SEO -->
     <title>El Impostor</title>
-    <!-- Geist Font -->
+    <meta name="description" content="El Impostor - Juego de deducción social multijugador en tiempo real. Encuentra al impostor entre tus amigos." />
+    <meta name="keywords" content="juego, multijugador, deducción, social, impostor, palabras" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="El Impostor" />
+    <meta property="og:description" content="Juego de deducción social multijugador en tiempo real" />
+    <meta property="og:type" content="website" />
+
+    <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet" />
+    <link rel="dns-prefetch" href="https://supabase.co" />
+
+    <!-- Geist Font with display swap -->
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="root"></div>
