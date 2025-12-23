@@ -171,19 +171,37 @@ Elevar la aplicación de MVP funcional a **nivel portfolio profesional**:
 ### E1. Phone Auth (OTP) ❌ PENDIENTE
 Requiere configurar Twilio en Supabase.
 
-### E2. Persistir displayName ❌ PENDIENTE
+### E2. Persistir displayName ✅ COMPLETADO
+- Tabla `profiles` en Supabase con RLS
+- Trigger para crear perfil automático en signup
+- Schema: `supabase-profiles-schema.sql`
 
-### E3. UI editar nombre pre-sala ❌ PENDIENTE
+### E3. UI editar nombre pre-sala ✅ COMPLETADO
+- Componente `EditDisplayName` con animaciones
+- Visible en Home y JoinRoom
+- Validación 2-20 caracteres
 
-### E4. Precargar último displayName ❌ PENDIENTE
+### E4. Precargar último displayName ✅ COMPLETADO
+- `useAuth` fetch profile desde Supabase
+- Fallback a OAuth metadata si no existe
+- `useProfile` hook para updates
 
 ---
 
 ## FASE F — i18n & Accesibilidad
 
-### F1-F2. i18n ❌ PENDIENTE
-- Estructura con `react-i18next`
-- Extraer strings hardcodeados
+### F1-F2. i18n ✅ COMPLETADO
+- `react-i18next` + `i18next-browser-languagedetector`
+- 5 idiomas: ES, EN, CA, EU, GL
+- `LanguageSelector` componente (compacto/expandido)
+- Cambio automático al unirse a sala con idioma diferente
+- Room incluye `language` para sincronizar palabras
+- Traducciones completas en todos los componentes:
+  - LoginForm, Home (index.tsx), JoinRoom
+  - RoomLobby, GameView, VotingPanel
+  - ResultsPanel, GameOverPanel
+  - SuggestWord, WordSuggestions
+  - ErrorBoundary
 
 ### F3. Auditoría de contraste ✅ COMPLETADO
 - text-secondary: #b8b8b8 (5.48:1 ratio - WCAG AA)
@@ -295,14 +313,14 @@ pnpm build        # Build producción
 | B - shadcn/ui | ✅ | 100% |
 | C - Páginas Clave | ✅ | 100% |
 | D - Estados/Bugs | ✅ | 100% |
-| E - Perfil/Auth | ❌ | 0% |
-| F - i18n/A11y | ⚠️ | 60% (a11y done, i18n pending) |
+| E - Perfil/Auth | ⚠️ | 75% (E2-E4 done, OTP pending) |
+| F - i18n/A11y | ✅ | 100% |
 | G - Nuevos Modos | ❌ | 0% |
 | H - Monetización | ❌ | 0% |
 | I - Auditoría Final | ❌ | 0% |
 | Extras | ✅ | 90% (solo deploy pending) |
 
-**Progreso total estimado: ~65%**
+**Progreso total estimado: ~75%**
 
 ---
 
@@ -314,6 +332,15 @@ pnpm build        # Build producción
 3. **Mobile audit**: Safe areas, touch targets, viewport
 4. **README**: Portfolio-ready con badges y tech decisions
 5. **Audio**: Infraestructura completa (hook, store, toggle)
+6. **E2-E4**: Persistencia de displayName
+   - Schema `profiles` para Supabase
+   - Hook `useProfile` para gestión de perfil
+   - Componente `EditDisplayName` con animaciones
+   - Integración en Home y JoinRoom
+7. **F1-F2**: i18n completo en todos los componentes
+   - Traducciones integradas en: RoomLobby, GameView, VotingPanel
+   - Traducciones integradas en: ResultsPanel, GameOverPanel
+   - Traducciones integradas en: SuggestWord, WordSuggestions, ErrorBoundary
 
 ### Commits:
 - `feat(ui): add loading skeletons, empty states, and error retry`
@@ -321,3 +348,16 @@ pnpm build        # Build producción
 - `mobile: add safe areas and improve touch targets`
 - `docs: enhance README for portfolio`
 - `feat(audio): add sound system with mute toggle`
+
+### Archivos nuevos (E2-E4):
+- `supabase-profiles-schema.sql` - Schema para tabla profiles
+- `client/src/hooks/useProfile.ts` - Hook para gestión de perfil
+- `client/src/components/lobby/EditDisplayName.tsx` - UI edición nombre
+
+### i18n (F1-F2):
+- `client/src/lib/i18n.ts` - Configuración i18next
+- `client/src/locales/*.json` - 5 idiomas (ES, EN, CA, EU, GL)
+- `client/src/components/ui/language-selector.tsx` - Selector de idioma
+- Room.language en shared + server domain
+- Cambio automático de idioma al unirse a sala
+- Traducciones completas en TODOS los componentes de UI

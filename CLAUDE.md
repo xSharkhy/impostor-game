@@ -64,13 +64,17 @@ server/src/
 - [x] Componentes shadcn/ui auditados
 - [x] Estados de conexión/desconexión
 - [x] UI Login/Home rediseñada
+- [x] Skeletons, empty states, error retry
+- [x] Accesibilidad WCAG AA (contraste, ARIA, focus)
+- [x] Mobile-first (safe areas, touch targets)
+- [x] README portfolio
+- [x] Audio infraestructura (hook, store, toggle)
 
 ### Pendiente
 - [ ] Phone OTP (requiere Twilio)
-- [ ] i18n
-- [ ] Auditoría accesibilidad
-- [ ] Efectos de sonido
-- [ ] README portfolio
+- [ ] Persistir displayName en Supabase
+- [ ] i18n (ES/EN)
+- [ ] Archivos mp3 de sonido
 - [ ] Deploy Pi 5
 
 ## Comandos
