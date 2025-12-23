@@ -66,12 +66,23 @@ export function useSocket() {
       socket.off('game:ended')
 
       socket.on('connect', () => {
+        // Only show reconnection toast if we were previously connected
+        const wasConnected = socketInstance?.recovered
         setIsConnected(true)
         setError(null)
+        if (wasConnected) {
+          toast.success('Conexión restablecida')
+        }
       })
 
-      socket.on('disconnect', () => {
+      socket.on('disconnect', (reason) => {
         setIsConnected(false)
+        // Only show toast for unexpected disconnections
+        if (reason !== 'io client disconnect') {
+          toast.warning('Conexión perdida', {
+            description: 'Intentando reconectar...',
+          })
+        }
       })
 
       socket.on('connect_error', (err) => {
@@ -84,6 +95,7 @@ export function useSocket() {
 
       socket.on('room:state', (room) => {
         useRoomStore.getState().setRoom(room)
+        useRoomStore.getState().setConnecting(false)
         // Reset game state when room goes back to lobby (e.g., after playAgain)
         if (room.status === 'lobby') {
           useGameStore.getState().reset()
@@ -136,6 +148,7 @@ export function useSocket() {
 
       socket.on('error', ({ message }) => {
         useRoomStore.getState().setError(message)
+        useRoomStore.getState().setConnecting(false)
         toast.error(message)
       })
 
@@ -173,10 +186,12 @@ export function useSocket() {
   }, [])
 
   const createRoom = useCallback(() => {
+    useRoomStore.getState().setConnecting(true)
     socketInstance?.emit('room:create')
   }, [])
 
   const joinRoom = useCallback((code: string) => {
+    useRoomStore.getState().setConnecting(true)
     socketInstance?.emit('room:join', { code })
   }, [])
 
