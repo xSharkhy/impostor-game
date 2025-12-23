@@ -35,6 +35,9 @@ export { Confetti, EmojiBurst, Sparkles } from './confetti'
 // Skeletons
 export { Skeleton, SkeletonText, SkeletonAvatar, SkeletonCard } from './skeleton'
 
+// Audio
+export { SoundToggle } from './sound-toggle'
+
 // Dialogs
 export {
   AlertDialog,
