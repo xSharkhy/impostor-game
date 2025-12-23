@@ -1,3 +1,4 @@
+import { randomInt } from 'crypto'
 import { Player, PlayerId, PlayerProps } from './Player.js'
 import {
   AlreadyInRoomError,
@@ -11,7 +12,7 @@ import {
 
 export type RoomId = string
 export type RoomCode = string
-export type RoomStatus = 'lobby' | 'playing' | 'voting' | 'finished'
+export type RoomStatus = 'lobby' | 'collecting_words' | 'playing' | 'voting' | 'finished'
 export type WinCondition = 'impostor_caught' | 'impostor_survived'
 export type RoomLanguage = 'es' | 'en' | 'ca' | 'eu' | 'gl'
 
@@ -28,6 +29,7 @@ export interface RoomProps {
   currentRound: number
   category?: string
   winCondition?: WinCondition
+  submittedWords?: Record<PlayerId, string>
   createdAt: Date
   lastActivity: Date
 }
@@ -51,6 +53,7 @@ export class Room {
   private _currentRound: number
   private _category?: string
   private _winCondition?: WinCondition
+  private _submittedWords: Map<PlayerId, string>
   private _lastActivity: Date
 
   private constructor(props: RoomProps) {
@@ -69,13 +72,14 @@ export class Room {
     this._currentRound = props.currentRound
     this._category = props.category
     this._winCondition = props.winCondition
+    this._submittedWords = new Map(Object.entries(props.submittedWords ?? {}))
     this._lastActivity = props.lastActivity
   }
 
   static generateCode(): RoomCode {
     return Array.from(
       { length: CODE_LENGTH },
-      () => CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]
+      () => CODE_CHARS[randomInt(CODE_CHARS.length)]
     ).join('')
   }
 
@@ -114,6 +118,8 @@ export class Room {
   get currentRound(): number { return this._currentRound }
   get category(): string | undefined { return this._category }
   get winCondition(): WinCondition | undefined { return this._winCondition }
+  get submittedWords(): Map<PlayerId, string> { return this._submittedWords }
+  get wordCount(): number { return this._submittedWords.size }
   get lastActivity(): Date { return this._lastActivity }
 
   get currentTurnIndex(): number {
@@ -244,6 +250,94 @@ export class Room {
     return this.withUpdate({ language })
   }
 
+  // Roulette mode operations
+  startCollecting(): Room {
+    if (this._status !== 'lobby') {
+      throw new GameAlreadyStartedError()
+    }
+
+    if (this._players.size < MIN_PLAYERS) {
+      throw new NotEnoughPlayersError(MIN_PLAYERS)
+    }
+
+    return this.withUpdate({
+      status: 'collecting_words',
+      submittedWords: new Map(),
+    })
+  }
+
+  submitWord(playerId: PlayerId, word: string): Room {
+    if (this._status !== 'collecting_words') {
+      throw new InvalidStateError('Not in collecting words state')
+    }
+
+    if (!this._players.has(playerId)) {
+      throw new PlayerNotFoundError()
+    }
+
+    if (this._submittedWords.has(playerId)) {
+      throw new InvalidStateError('Already submitted a word')
+    }
+
+    const newSubmittedWords = new Map(this._submittedWords)
+    newSubmittedWords.set(playerId, word.trim())
+
+    return this.withUpdate({ submittedWords: newSubmittedWords })
+  }
+
+  hasSubmittedWord(playerId: PlayerId): boolean {
+    return this._submittedWords.has(playerId)
+  }
+
+  canStartFromCollecting(): boolean {
+    const minWords = Math.ceil(this._players.size / 2)
+    return this._submittedWords.size >= minWords
+  }
+
+  get minWordsRequired(): number {
+    return Math.ceil(this._players.size / 2)
+  }
+
+  allPlayersSubmitted(): boolean {
+    return this._submittedWords.size >= this._players.size
+  }
+
+  selectRandomWord(): string {
+    const words = Array.from(this._submittedWords.values())
+    if (words.length === 0) {
+      throw new InvalidStateError('No words submitted')
+    }
+    return words[randomInt(words.length)]
+  }
+
+  startGameFromCollecting(): Room {
+    if (this._status !== 'collecting_words') {
+      throw new InvalidStateError('Not in collecting words state')
+    }
+
+    if (!this.canStartFromCollecting()) {
+      throw new NotEnoughPlayersError(this.minWordsRequired)
+    }
+
+    const word = this.selectRandomWord()
+
+    // Generate random turn order
+    const playerIds = Array.from(this._players.keys())
+    const shuffled = this.shuffle(playerIds)
+
+    // Select random impostor
+    const impostorId = shuffled[randomInt(shuffled.length)]
+
+    return this.withUpdate({
+      status: 'playing',
+      currentWord: word,
+      impostorId,
+      turnOrder: shuffled,
+      currentRound: 1,
+      submittedWords: new Map(), // Clear submitted words
+    })
+  }
+
   // Game operations
   startGame(word: string, category?: string): Room {
     if (this._status !== 'lobby') {
@@ -259,7 +353,7 @@ export class Room {
     const shuffled = this.shuffle(playerIds)
 
     // Select random impostor
-    const impostorId = shuffled[Math.floor(Math.random() * shuffled.length)]
+    const impostorId = shuffled[randomInt(shuffled.length)]
 
     return this.withUpdate({
       status: 'playing',
@@ -398,6 +492,7 @@ export class Room {
       currentRound: 0,
       category: undefined,
       winCondition: undefined,
+      submittedWords: new Map(),
     })
   }
 
@@ -405,7 +500,7 @@ export class Room {
   private shuffle<T>(array: T[]): T[] {
     const result = [...array]
     for (let i = result.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
+      const j = randomInt(i + 1)
       ;[result[i], result[j]] = [result[j], result[i]]
     }
     return result
@@ -422,10 +517,15 @@ export class Room {
     currentRound: number
     category: string | undefined
     winCondition: WinCondition | undefined
+    submittedWords: Map<PlayerId, string>
   }>): Room {
     const playerArray = updates.players
       ? Array.from(updates.players.values()).map(p => p.toProps())
       : this.players.map(p => p.toProps())
+
+    const submittedWordsRecord = 'submittedWords' in updates
+      ? Object.fromEntries(updates.submittedWords!)
+      : Object.fromEntries(this._submittedWords)
 
     return new Room({
       id: this.id,
@@ -440,6 +540,7 @@ export class Room {
       currentRound: updates.currentRound ?? this._currentRound,
       category: 'category' in updates ? updates.category : this._category,
       winCondition: 'winCondition' in updates ? updates.winCondition : this._winCondition,
+      submittedWords: submittedWordsRecord,
       createdAt: this.createdAt,
       lastActivity: new Date(),
     })
@@ -459,6 +560,7 @@ export class Room {
       currentRound: this._currentRound,
       category: this._category,
       winCondition: this._winCondition,
+      submittedWords: Object.fromEntries(this._submittedWords),
       createdAt: this.createdAt,
       lastActivity: this._lastActivity,
     }
