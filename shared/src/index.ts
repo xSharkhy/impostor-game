@@ -1,6 +1,9 @@
 // Room status enum
 export type RoomStatus = 'lobby' | 'playing' | 'voting' | 'finished'
 
+// Game modes
+export type GameMode = 'classic' | 'random'
+
 // Supported languages
 export type SupportedLanguage = 'es' | 'en' | 'ca' | 'eu' | 'gl'
 
@@ -41,7 +44,8 @@ export interface ClientToServerEvents {
   'room:join': (data: { code: string }) => void
   'room:leave': () => void
   'room:kick': (data: { playerId: string }) => void
-  'game:start': (data: { category?: string }) => void
+  'room:changeLanguage': (data: { language: SupportedLanguage }) => void
+  'game:start': (data: { mode?: GameMode; category?: string }) => void
   'game:nextRound': () => void
   'game:startVoting': () => void
   'vote:cast': (data: { targetId: string }) => void
@@ -60,7 +64,8 @@ export interface ServerToClientEvents {
   'room:playerLeft': (data: { playerId: string }) => void
   'room:playerKicked': (data: { playerId: string }) => void
   'room:adminChanged': (data: { newAdminId: string }) => void
-  'game:started': (data: { word: string | null; isImpostor: boolean; turnOrder: string[] }) => void
+  'room:languageChanged': (data: { language: SupportedLanguage }) => void
+  'game:started': (data: { word: string | null; isImpostor: boolean; turnOrder: string[]; mode: GameMode }) => void
   'game:newRound': (data: { round: number }) => void
   'game:votingStarted': () => void
   'vote:update': (data: { votes: Record<string, string>; twoThirdsReached: boolean }) => void
