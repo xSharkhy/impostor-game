@@ -10,7 +10,7 @@ function RootComponent() {
 
   return (
     <>
-      <div className="min-h-screen bg-[--color-bg-primary]">
+      <div className="min-h-screen bg-bg-primary">
         <ErrorBoundary>
           <Outlet />
         </ErrorBoundary>
@@ -25,10 +25,10 @@ function RootComponent() {
             color: 'var(--color-text-primary)',
           },
           classNames: {
-            success: 'border-[--color-success]/50',
-            error: 'border-[--color-danger]/50',
-            warning: 'border-[--color-neon-yellow]/50',
-            info: 'border-[--color-neon-cyan]/50',
+            success: 'border-success/50',
+            error: 'border-danger/50',
+            warning: 'border-neon-yellow/50',
+            info: 'border-neon-cyan/50',
           },
         }}
       />

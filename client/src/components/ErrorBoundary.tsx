@@ -44,16 +44,16 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           <Card variant="glass" className="w-full max-w-md">
             <CardHeader className="text-center">
               <div className="mb-4 text-6xl">💥</div>
-              <CardTitle className="text-xl text-[--color-text-primary]">
+              <CardTitle className="text-xl text-text-primary">
                 ¡Algo salió mal!
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-center">
-              <p className="text-sm text-[--color-text-secondary]">
+              <p className="text-sm text-text-secondary">
                 Ha ocurrido un error inesperado. Puedes intentar recargar la página.
               </p>
               {import.meta.env.DEV && this.state.error && (
-                <pre className="mt-4 max-h-32 overflow-auto rounded-lg bg-[--color-bg-tertiary] p-3 text-left text-xs text-[--color-danger]">
+                <pre className="mt-4 max-h-32 overflow-auto rounded-lg bg-bg-tertiary p-3 text-left text-xs text-danger">
                   {this.state.error.message}
                 </pre>
               )}

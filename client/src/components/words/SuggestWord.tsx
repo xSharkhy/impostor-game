@@ -68,11 +68,11 @@ export function SuggestWord({ onClose }: SuggestWordProps) {
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <label className="text-sm text-[--color-text-muted]">Categoría</label>
+            <label className="text-sm text-text-tertiary">Categoría</label>
             <select
               value={categoryId}
               onChange={(e) => setCategoryId(e.target.value)}
-              className="w-full rounded-md border border-[--color-border] bg-[--color-bg-primary] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[--color-accent-cyan]"
+              className="w-full rounded-md border border-border bg-bg-primary px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-neon-cyan"
             >
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
@@ -83,7 +83,7 @@ export function SuggestWord({ onClose }: SuggestWordProps) {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm text-[--color-text-muted]">Palabra</label>
+            <label className="text-sm text-text-tertiary">Palabra</label>
             <Input
               value={word}
               onChange={(e) => setWord(e.target.value)}
@@ -93,7 +93,7 @@ export function SuggestWord({ onClose }: SuggestWordProps) {
           </div>
 
           {success && (
-            <p className="text-sm text-[--color-success]">
+            <p className="text-sm text-success">
               Palabra sugerida correctamente
             </p>
           )}
@@ -106,7 +106,7 @@ export function SuggestWord({ onClose }: SuggestWordProps) {
             {isSubmitting ? 'Enviando...' : 'Sugerir'}
           </Button>
 
-          <p className="text-xs text-[--color-text-muted] text-center">
+          <p className="text-xs text-text-tertiary text-center">
             Las sugerencias serán revisadas antes de añadirse al juego
           </p>
         </form>

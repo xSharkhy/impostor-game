@@ -53,7 +53,7 @@ function AdminPage() {
 
         <Button
           variant="ghost"
-          className="w-full text-[--color-text-muted]"
+          className="w-full text-text-tertiary"
           onClick={() => navigate({ to: '/' })}
         >
           Volver al inicio

@@ -91,7 +91,7 @@ export function WordSuggestions() {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <p className="text-[--color-text-muted]">Cargando...</p>
+        <p className="text-text-tertiary">Cargando...</p>
       </div>
     )
   }
@@ -99,7 +99,7 @@ export function WordSuggestions() {
   if (error) {
     return (
       <div className="flex items-center justify-center p-8">
-        <p className="text-[--color-danger]">{error}</p>
+        <p className="text-danger">{error}</p>
       </div>
     )
   }
@@ -108,7 +108,7 @@ export function WordSuggestions() {
     <div className="space-y-6">
       <div className="text-center">
         <h1 className="text-2xl font-bold">Sugerencias de Palabras</h1>
-        <p className="text-sm text-[--color-text-muted]">
+        <p className="text-sm text-text-tertiary">
           {suggestions.length} sugerencias pendientes
         </p>
       </div>
@@ -116,7 +116,7 @@ export function WordSuggestions() {
       {suggestions.length === 0 ? (
         <Card>
           <CardContent className="py-8 text-center">
-            <p className="text-[--color-text-muted]">No hay sugerencias pendientes</p>
+            <p className="text-text-tertiary">No hay sugerencias pendientes</p>
           </CardContent>
         </Card>
       ) : (
@@ -126,10 +126,10 @@ export function WordSuggestions() {
               <CardContent className="flex items-center justify-between py-4">
                 <div>
                   <p className="font-semibold">{suggestion.word}</p>
-                  <p className="text-sm text-[--color-text-muted]">
+                  <p className="text-sm text-text-tertiary">
                     {suggestion.categoryName}
                   </p>
-                  <p className="text-xs text-[--color-text-muted]">
+                  <p className="text-xs text-text-tertiary">
                     {new Date(suggestion.createdAt).toLocaleDateString()}
                   </p>
                 </div>
