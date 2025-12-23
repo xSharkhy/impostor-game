@@ -1,11 +1,19 @@
 import { create } from 'zustand'
 import type { GameMode } from '@impostor/shared'
 
-type GamePhase = 'waiting' | 'playing' | 'voting' | 'results' | 'finished'
+type GamePhase = 'waiting' | 'collecting' | 'playing' | 'voting' | 'results' | 'finished'
 
 interface VoteState {
   votes: Record<string, string> // voterId -> targetId
   twoThirdsReached: boolean
+}
+
+interface CollectingState {
+  timeLimit: number
+  minWords: number
+  playerCount: number
+  wordCount: number
+  hasSubmittedWord: boolean
 }
 
 interface GameState {
@@ -16,6 +24,9 @@ interface GameState {
   isImpostor: boolean
   turnOrder: string[]
   currentRound: number
+
+  // Collecting (roulette mode)
+  collecting: CollectingState | null
 
   // Voting
   voteState: VoteState | null
@@ -29,6 +40,9 @@ interface GameState {
   revealedImpostorId: string | null
 
   // Actions
+  startCollecting: (data: { timeLimit: number; minWords: number; playerCount: number }) => void
+  updateWordCount: (count: number) => void
+  markWordSubmitted: () => void
   startGame: (data: { word: string | null; isImpostor: boolean; turnOrder: string[]; mode: GameMode }) => void
   setRound: (round: number) => void
   startVoting: () => void
@@ -47,6 +61,7 @@ const initialState = {
   isImpostor: false,
   turnOrder: [],
   currentRound: 0,
+  collecting: null,
   voteState: null,
   hasVoted: false,
   myVote: null,
@@ -59,6 +74,33 @@ const initialState = {
 export const useGameStore = create<GameState>((set) => ({
   ...initialState,
 
+  startCollecting: ({ timeLimit, minWords, playerCount }) =>
+    set({
+      phase: 'collecting',
+      mode: 'roulette',
+      collecting: {
+        timeLimit,
+        minWords,
+        playerCount,
+        wordCount: 0,
+        hasSubmittedWord: false,
+      },
+    }),
+
+  updateWordCount: (count) =>
+    set((state) => ({
+      collecting: state.collecting
+        ? { ...state.collecting, wordCount: count }
+        : null,
+    })),
+
+  markWordSubmitted: () =>
+    set((state) => ({
+      collecting: state.collecting
+        ? { ...state.collecting, hasSubmittedWord: true }
+        : null,
+    })),
+
   startGame: ({ word, isImpostor, turnOrder, mode }) =>
     set({
       phase: 'playing',
@@ -67,6 +109,8 @@ export const useGameStore = create<GameState>((set) => ({
       isImpostor,
       turnOrder,
       currentRound: 1,
+      // Reset collecting state
+      collecting: null,
       // Reset voting state
       voteState: null,
       hasVoted: false,
