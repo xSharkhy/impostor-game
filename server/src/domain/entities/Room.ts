@@ -39,7 +39,7 @@ const CODE_LENGTH = 4
 export class Room {
   readonly id: RoomId
   readonly code: RoomCode
-  readonly language: RoomLanguage
+  private _language: RoomLanguage
   readonly createdAt: Date
 
   private _adminId: PlayerId
@@ -56,7 +56,7 @@ export class Room {
   private constructor(props: RoomProps) {
     this.id = props.id
     this.code = props.code
-    this.language = props.language
+    this._language = props.language
     this.createdAt = props.createdAt
     this._adminId = props.adminId
     this._status = props.status
@@ -107,6 +107,7 @@ export class Room {
   // Getters
   get adminId(): PlayerId { return this._adminId }
   get status(): RoomStatus { return this._status }
+  get language(): RoomLanguage { return this._language }
   get currentWord(): string | undefined { return this._currentWord }
   get impostorId(): PlayerId | undefined { return this._impostorId }
   get turnOrder(): PlayerId[] | undefined { return this._turnOrder }
@@ -233,6 +234,14 @@ export class Room {
     newPlayers.set(playerId, player.updateDisplayName(displayName))
 
     return this.withUpdate({ players: newPlayers })
+  }
+
+  changeLanguage(language: RoomLanguage): Room {
+    if (this._status !== 'lobby') {
+      throw new GameAlreadyStartedError()
+    }
+
+    return this.withUpdate({ language })
   }
 
   // Game operations
@@ -405,6 +414,7 @@ export class Room {
   private withUpdate(updates: Partial<{
     adminId: PlayerId
     status: RoomStatus
+    language: RoomLanguage
     players: Map<PlayerId, Player>
     currentWord: string | undefined
     impostorId: PlayerId | undefined
@@ -422,7 +432,7 @@ export class Room {
       code: this.code,
       adminId: updates.adminId ?? this._adminId,
       status: updates.status ?? this._status,
-      language: this.language,
+      language: updates.language ?? this._language,
       players: playerArray,
       currentWord: 'currentWord' in updates ? updates.currentWord : this._currentWord,
       impostorId: 'impostorId' in updates ? updates.impostorId : this._impostorId,
