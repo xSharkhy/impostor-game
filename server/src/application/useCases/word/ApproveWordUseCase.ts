@@ -1,9 +1,11 @@
-import { IWordRepository, WordSuggestion } from '../../ports/repositories/IWordRepository.js'
+import { IWordRepository, WordSuggestion, WordTranslations } from '../../ports/repositories/IWordRepository.js'
 import { IEmailService } from '../../ports/services/IEmailService.js'
 
 export interface ApproveWordInput {
   wordId: string
   approve: boolean
+  translations?: WordTranslations
+  categoryId?: string
 }
 
 export interface ApproveWordOutput {
@@ -24,7 +26,17 @@ export class ApproveWordUseCase {
     let success: boolean
 
     if (input.approve) {
-      success = await this.wordRepository.approveWord(input.wordId)
+      // If translations are provided, use the new multi-language approval
+      if (input.translations && input.categoryId) {
+        success = await this.wordRepository.approveWordWithTranslations(
+          input.wordId,
+          input.categoryId,
+          input.translations
+        )
+      } else {
+        // Fallback to simple approval (for backwards compatibility)
+        success = await this.wordRepository.approveWord(input.wordId)
+      }
     } else {
       success = await this.wordRepository.rejectWord(input.wordId)
     }

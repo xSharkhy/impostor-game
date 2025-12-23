@@ -1,28 +1,61 @@
 import { useState, useEffect } from 'react'
-import { Button, Card, CardContent, Skeleton } from '@/components/ui'
+import { useTranslation } from 'react-i18next'
+import {
+  Button,
+  Card,
+  CardContent,
+  Skeleton,
+  Input,
+  Label,
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+} from '@/components/ui'
 import { supabase } from '@/lib/supabase'
+import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/lib/i18n'
 
 interface WordSuggestion {
   id: string
   word: string
+  lang: SupportedLanguage
   categoryId: string
   categoryName: string
   suggestedBy: string
   createdAt: string
 }
 
+type Translations = Record<SupportedLanguage, string>
+
 const API_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3001'
 
+const LANGUAGE_ORDER: SupportedLanguage[] = ['es', 'en', 'ca', 'eu', 'gl']
+
+const createEmptyTranslations = (): Translations => ({
+  es: '',
+  en: '',
+  ca: '',
+  eu: '',
+  gl: '',
+})
+
 export function WordSuggestions() {
+  const { t } = useTranslation()
   const [suggestions, setSuggestions] = useState<WordSuggestion[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [selectedSuggestion, setSelectedSuggestion] = useState<WordSuggestion | null>(null)
+  const [translations, setTranslations] = useState<Translations>(createEmptyTranslations())
+  const [isApproving, setIsApproving] = useState(false)
 
   const fetchSuggestions = async () => {
     try {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) {
-        setError('No autenticado')
+        setError(t('admin.notAuthenticated'))
         setLoading(false)
         return
       }
@@ -35,9 +68,9 @@ export function WordSuggestions() {
 
       if (!response.ok) {
         if (response.status === 403) {
-          setError('No tienes permisos de administrador')
+          setError(t('admin.noPermission'))
         } else {
-          setError('Error al cargar sugerencias')
+          setError(t('admin.errorLoading'))
         }
         setLoading(false)
         return
@@ -47,7 +80,7 @@ export function WordSuggestions() {
       setSuggestions(data)
       setLoading(false)
     } catch {
-      setError('Error de conexión')
+      setError(t('connection.error'))
       setLoading(false)
     }
   }
@@ -56,20 +89,46 @@ export function WordSuggestions() {
     fetchSuggestions()
   }, [])
 
-  const handleApprove = async (id: string) => {
+  const openTranslationModal = (suggestion: WordSuggestion) => {
+    const newTranslations = createEmptyTranslations()
+    // Pre-fill the original language with the suggested word
+    newTranslations[suggestion.lang] = suggestion.word
+    setTranslations(newTranslations)
+    setSelectedSuggestion(suggestion)
+  }
+
+  const closeTranslationModal = () => {
+    setSelectedSuggestion(null)
+    setTranslations(createEmptyTranslations())
+  }
+
+  const handleApproveWithTranslations = async () => {
+    if (!selectedSuggestion) return
+
     const { data: { session } } = await supabase.auth.getSession()
     if (!session) return
 
-    const response = await fetch(`${API_URL}/api/admin/words/${id}/approve`, {
+    // Validate all translations are filled
+    const hasEmptyTranslation = Object.values(translations).some((v) => !v.trim())
+    if (hasEmptyTranslation) return
+
+    setIsApproving(true)
+
+    const response = await fetch(`${API_URL}/api/admin/words/${selectedSuggestion.id}/approve`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${session.access_token}`,
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ translations }),
     })
 
     if (response.ok) {
-      setSuggestions((prev) => prev.filter((s) => s.id !== id))
+      setSuggestions((prev) => prev.filter((s) => s.id !== selectedSuggestion.id))
+      closeTranslationModal()
     }
+
+    setIsApproving(false)
   }
 
   const handleReject = async (id: string) => {
@@ -120,7 +179,7 @@ export function WordSuggestions() {
     return (
       <div className="space-y-6">
         <div className="text-center">
-          <h1 className="text-2xl font-bold">Sugerencias de Palabras</h1>
+          <h1 className="text-2xl font-bold">{t('admin.suggestions')}</h1>
         </div>
         <Card variant="glass">
           <CardContent className="py-8 text-center">
@@ -129,7 +188,7 @@ export function WordSuggestions() {
             </div>
             <p className="font-medium text-danger">{error}</p>
             <p className="mt-1 text-sm text-text-tertiary">
-              No se pudieron cargar las sugerencias
+              {t('admin.errorLoading')}
             </p>
             <Button
               variant="outline"
@@ -140,7 +199,7 @@ export function WordSuggestions() {
                 fetchSuggestions()
               }}
             >
-              Reintentar
+              {t('common.retry')}
             </Button>
           </CardContent>
         </Card>
@@ -151,9 +210,9 @@ export function WordSuggestions() {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h1 className="text-2xl font-bold">Sugerencias de Palabras</h1>
+        <h1 className="text-2xl font-bold">{t('admin.suggestions')}</h1>
         <p className="text-sm text-text-tertiary">
-          {suggestions.length} sugerencias pendientes
+          {t('admin.pendingCount', { count: suggestions.length })}
         </p>
       </div>
 
@@ -164,10 +223,10 @@ export function WordSuggestions() {
               ✨
             </div>
             <p className="font-medium text-text-primary">
-              ¡Todo al día!
+              {t('admin.allCaughtUp')}
             </p>
             <p className="mt-1 text-sm text-text-tertiary">
-              No hay sugerencias pendientes de revisar
+              {t('admin.noPending')}
             </p>
           </CardContent>
         </Card>
@@ -188,16 +247,16 @@ export function WordSuggestions() {
                 <div className="flex gap-2">
                   <Button
                     size="sm"
-                    onClick={() => handleApprove(suggestion.id)}
+                    onClick={() => openTranslationModal(suggestion)}
                   >
-                    Aprobar
+                    {t('admin.approve')}
                   </Button>
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => handleReject(suggestion.id)}
                   >
-                    Rechazar
+                    {t('admin.reject')}
                   </Button>
                 </div>
               </CardContent>
@@ -207,8 +266,57 @@ export function WordSuggestions() {
       )}
 
       <Button variant="outline" className="w-full" onClick={fetchSuggestions}>
-        Actualizar
+        {t('admin.refresh')}
       </Button>
+
+      {/* Translation Modal */}
+      <AlertDialog open={!!selectedSuggestion} onOpenChange={(open) => !open && closeTranslationModal()}>
+        <AlertDialogContent className="max-h-[90vh] overflow-y-auto">
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t('admin.translateWord')}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t('admin.translateDescription', {
+                word: selectedSuggestion?.word,
+                category: selectedSuggestion?.categoryName
+              })}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+
+          <div className="space-y-4 py-4">
+            {LANGUAGE_ORDER.map((langCode) => {
+              const langInfo = SUPPORTED_LANGUAGES[langCode]
+              const isOriginal = selectedSuggestion?.lang === langCode
+              return (
+                <div key={langCode} className="space-y-1.5">
+                  <Label className="flex items-center gap-2">
+                    <span>{langInfo.flag}</span>
+                    <span>{langInfo.name}</span>
+                    {isOriginal && (
+                      <span className="text-xs text-accent">({t('admin.original')})</span>
+                    )}
+                  </Label>
+                  <Input
+                    value={translations[langCode]}
+                    onChange={(e) => setTranslations((prev) => ({ ...prev, [langCode]: e.target.value }))}
+                    placeholder={langInfo.name}
+                  />
+                </div>
+              )
+            })}
+          </div>
+
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+            <Button
+              onClick={handleApproveWithTranslations}
+              disabled={isApproving || Object.values(translations).some((v) => !v.trim())}
+              isLoading={isApproving}
+            >
+              {t('admin.approveAll')}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

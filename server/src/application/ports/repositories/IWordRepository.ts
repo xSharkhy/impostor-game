@@ -13,11 +13,14 @@ export interface Category {
 export interface WordSuggestion {
   id: string
   word: string
+  lang: string
   categoryId: string
   categoryName: string
   suggestedBy: string
   createdAt: Date
 }
+
+export type WordTranslations = Record<string, string> // { es: 'Perro', en: 'Dog', ... }
 
 export interface IWordRepository {
   /**
@@ -38,7 +41,7 @@ export interface IWordRepository {
   /**
    * Create a word suggestion (unapproved)
    */
-  createSuggestion(word: string, categoryId: string, suggestedBy: string): Promise<void>
+  createSuggestion(word: string, categoryId: string, suggestedBy: string, lang: string): Promise<void>
 
   /**
    * Get all pending (unapproved) word suggestions
@@ -49,6 +52,12 @@ export interface IWordRepository {
    * Approve a word suggestion
    */
   approveWord(wordId: string): Promise<boolean>
+
+  /**
+   * Approve a word with translations for all languages
+   * Deletes the original suggestion and inserts translated words for each language
+   */
+  approveWordWithTranslations(wordId: string, categoryId: string, translations: WordTranslations): Promise<boolean>
 
   /**
    * Reject (delete) a word suggestion

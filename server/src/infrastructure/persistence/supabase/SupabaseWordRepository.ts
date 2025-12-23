@@ -4,6 +4,7 @@ import {
   WordResult,
   Category,
   WordSuggestion,
+  WordTranslations,
 } from '../../../application/ports/repositories/IWordRepository.js'
 
 export class SupabaseWordRepository implements IWordRepository {
@@ -77,13 +78,13 @@ export class SupabaseWordRepository implements IWordRepository {
     return !!data
   }
 
-  async createSuggestion(word: string, categoryId: string, suggestedBy: string): Promise<void> {
+  async createSuggestion(word: string, categoryId: string, suggestedBy: string, lang: string): Promise<void> {
     const normalizedWord = word.trim()
 
     const { error } = await this.supabase.from('words').insert({
       word: normalizedWord,
       category_id: categoryId,
-      lang: 'es',
+      lang: lang || 'es',
       approved: false,
       suggested_by: suggestedBy,
     })
@@ -100,6 +101,7 @@ export class SupabaseWordRepository implements IWordRepository {
         `
         id,
         word,
+        lang,
         category_id,
         suggested_by,
         created_at,
@@ -118,6 +120,7 @@ export class SupabaseWordRepository implements IWordRepository {
       return {
         id: row.id,
         word: row.word,
+        lang: row.lang || 'es',
         categoryId: row.category_id,
         categoryName: row.categories?.name_es || row.category_id,
         suggestedBy: row.suggested_by ?? 'unknown',
@@ -136,6 +139,39 @@ export class SupabaseWordRepository implements IWordRepository {
       console.error('Error approving word:', error)
     }
     return !error
+  }
+
+  async approveWordWithTranslations(
+    wordId: string,
+    categoryId: string,
+    translations: WordTranslations
+  ): Promise<boolean> {
+    // Build insert array for all languages
+    const wordsToInsert = Object.entries(translations).map(([lang, word]) => ({
+      word: word.trim(),
+      category_id: categoryId,
+      lang,
+      approved: true,
+      suggested_by: null,
+    }))
+
+    // Insert all translated words
+    const { error: insertError } = await this.supabase.from('words').insert(wordsToInsert)
+
+    if (insertError) {
+      console.error('Error inserting translations:', insertError)
+      return false
+    }
+
+    // Delete the original suggestion
+    const { error: deleteError } = await this.supabase.from('words').delete().eq('id', wordId)
+
+    if (deleteError) {
+      console.error('Error deleting original suggestion:', deleteError)
+      // Continue anyway - translations were inserted
+    }
+
+    return true
   }
 
   async rejectWord(wordId: string): Promise<boolean> {

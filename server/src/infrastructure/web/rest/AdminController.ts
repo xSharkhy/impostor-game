@@ -51,12 +51,26 @@ export function createAdminController(container: Container): Router {
     }
   })
 
-  // Approve word
+  // Approve word with translations
   router.post('/words/:id/approve', adminMiddleware, async (req, res) => {
     try {
+      const { translations } = req.body as {
+        translations?: Record<string, string>
+      }
+
+      // Get the suggestion to find its categoryId
+      const suggestionsResult = await approveWordUseCase.getPendingSuggestions()
+      const suggestion = suggestionsResult.suggestions.find((s) => s.id === req.params.id)
+
+      if (!suggestion) {
+        return res.status(404).json({ error: 'Suggestion not found' })
+      }
+
       const result = await approveWordUseCase.execute({
         wordId: req.params.id,
         approve: true,
+        translations,
+        categoryId: suggestion.categoryId,
       })
 
       if (result.success) {
