@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { toast } from 'sonner'
 import { supabase } from '@/lib/supabase'
-import { useRoomStore, useGameStore } from '@/stores'
+import { useRoomStore, useGameStore, useUserStore } from '@/stores'
 import type { ClientToServerEvents, ServerToClientEvents } from '@impostor/shared'
 
 type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>
@@ -48,6 +48,7 @@ export function useSocket() {
         return
       }
 
+      // Remove all previous listeners to avoid duplicates
       socket.off('connect')
       socket.off('disconnect')
       socket.off('connect_error')
@@ -57,6 +58,12 @@ export function useSocket() {
       socket.off('room:playerKicked')
       socket.off('room:adminChanged')
       socket.off('error')
+      socket.off('game:started')
+      socket.off('game:newRound')
+      socket.off('game:votingStarted')
+      socket.off('vote:update')
+      socket.off('vote:result')
+      socket.off('game:ended')
 
       socket.on('connect', () => {
         setIsConnected(true)
@@ -100,6 +107,18 @@ export function useSocket() {
       socket.on('room:playerKicked', ({ playerId }) => {
         const room = useRoomStore.getState().room
         const player = room?.players.find((p) => p.id === playerId)
+
+        // Check if the current user was kicked
+        const currentUserId = useUserStore.getState().user?.id
+        if (playerId === currentUserId) {
+          // Reset stores and show message
+          useRoomStore.getState().reset()
+          useGameStore.getState().reset()
+          toast.error('Has sido expulsado de la sala')
+          return
+        }
+
+        // Otherwise just remove the player from the list
         useRoomStore.getState().removePlayer(playerId)
         if (player) {
           toast.warning(`${player.displayName} ha sido expulsado`)
@@ -192,8 +211,8 @@ export function useSocket() {
   }, [])
 
   const playAgain = useCallback(() => {
+    // Only emit - the room:state handler will reset game state when room.status === 'lobby'
     socketInstance?.emit('game:playAgain')
-    useGameStore.getState().reset()
   }, [])
 
   return {
