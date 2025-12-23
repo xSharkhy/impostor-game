@@ -96,6 +96,13 @@ export class Player {
     })
   }
 
+  updateDisplayName(newName: string): Player {
+    return new Player({
+      ...this.toProps(),
+      displayName: newName,
+    })
+  }
+
   toProps(): PlayerProps {
     return {
       id: this.id,

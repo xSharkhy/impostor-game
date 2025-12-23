@@ -49,6 +49,7 @@ export interface ClientToServerEvents {
   'game:playAgain': () => void
   'word:suggest': (data: { word: string; categoryId: string; lang: SupportedLanguage }) => void
   'word:getCategories': () => void
+  'user:updateDisplayName': (data: { displayName: string }) => void
 }
 
 // Socket events - Server to Client

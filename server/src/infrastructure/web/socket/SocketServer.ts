@@ -8,6 +8,7 @@ import {
   createGameHandler,
   createVotingHandler,
   createWordHandler,
+  createUserHandler,
   type AuthenticatedSocket,
 } from './handlers/index.js'
 
@@ -36,6 +37,7 @@ export function createSocketServer(
   const gameHandler = createGameHandler(io, config.container)
   const votingHandler = createVotingHandler(io, config.container)
   const wordHandler = createWordHandler(io, config.container)
+  const userHandler = createUserHandler(io, config.container)
 
   // Connection handler
   io.on('connection', (socket) => {
@@ -47,6 +49,7 @@ export function createSocketServer(
     gameHandler(authSocket)
     votingHandler(authSocket)
     wordHandler(authSocket)
+    userHandler(authSocket)
   })
 
   return io

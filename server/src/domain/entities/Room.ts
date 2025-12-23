@@ -223,6 +223,18 @@ export class Room {
     return this.withUpdate({ players: newPlayers })
   }
 
+  updatePlayerDisplayName(playerId: PlayerId, displayName: string): Room {
+    const player = this._players.get(playerId)
+    if (!player) {
+      throw new PlayerNotFoundError()
+    }
+
+    const newPlayers = new Map(this._players)
+    newPlayers.set(playerId, player.updateDisplayName(displayName))
+
+    return this.withUpdate({ players: newPlayers })
+  }
+
   // Game operations
   startGame(word: string, category?: string): Room {
     if (this._status !== 'lobby') {
