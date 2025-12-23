@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Button,
   Card,
@@ -21,6 +22,7 @@ import { ResultsPanel } from './ResultsPanel'
 import { GameOverPanel } from './GameOverPanel'
 
 export function GameView() {
+  const { t } = useTranslation()
   const { word, isImpostor, turnOrder, currentRound, phase } = useGameStore()
   const { room } = useRoomStore()
   const { user } = useUserStore()
@@ -62,7 +64,7 @@ export function GameView() {
     const player = room.players.find((p) => p.id === playerId)
     return {
       id: playerId,
-      name: player?.displayName || 'Desconocido',
+      name: player?.displayName || t('common.unknown'),
       isMe: playerId === user.id,
       isEliminated: player?.isEliminated || false,
     }
@@ -75,7 +77,7 @@ export function GameView() {
         <Card variant={isImpostor ? 'glow-pink' : 'glow'} className="overflow-hidden">
           <CardHeader className="pb-2">
             <CardTitle className="text-center text-sm font-normal text-text-secondary">
-              {isImpostor ? 'Eres el impostor' : 'Tu palabra'}
+              {isImpostor ? t('game.youAreImpostor') : t('game.yourWord')}
             </CardTitle>
           </CardHeader>
           <CardContent className="pb-6">
@@ -97,7 +99,7 @@ export function GameView() {
             </div>
             {isImpostor && (
               <p className="mt-4 text-center text-sm text-text-secondary">
-                Descubre la palabra escuchando a los demás
+                {t('game.discoverWord')}
               </p>
             )}
           </CardContent>
@@ -108,7 +110,7 @@ export function GameView() {
       <div className="text-center">
         <span className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-bg-tertiary px-4 py-1.5 text-sm font-medium text-text-secondary">
           <span className="h-2 w-2 rounded-full bg-accent" />
-          Ronda {currentRound}
+          {t('game.round', { number: currentRound })}
         </span>
       </div>
 
@@ -116,7 +118,7 @@ export function GameView() {
       <div>
         <Card variant="glass">
           <CardHeader>
-            <CardTitle className="text-lg">Orden de turnos</CardTitle>
+            <CardTitle className="text-lg">{t('game.turnOrder')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
@@ -143,13 +145,13 @@ export function GameView() {
                   <span className={player.isMe ? 'font-semibold text-accent' : 'text-text-primary'}>
                     {player.name}
                     {player.isMe && (
-                      <span className="ml-1.5 text-xs text-text-secondary">(tú)</span>
+                      <span className="ml-1.5 text-xs text-text-secondary">{t('common.you')}</span>
                     )}
                   </span>
                   {player.isEliminated && (
                     <span className="ml-auto flex items-center gap-1 rounded-full bg-bg-elevated px-2 py-0.5 text-xs text-text-tertiary">
                       <span>👻</span>
-                      <span>Espectador</span>
+                      <span>{t('game.spectator')}</span>
                     </span>
                   )}
                 </div>
@@ -163,10 +165,10 @@ export function GameView() {
       {isAdmin && (
         <div className="space-y-3">
           <Button variant="neon" className="w-full text-base" onClick={startVoting}>
-            Iniciar Votación
+            {t('game.startVoting')}
           </Button>
           <Button variant="outline" className="w-full" onClick={nextRound}>
-            Siguiente Ronda
+            {t('game.nextRound')}
           </Button>
         </div>
       )}
@@ -176,24 +178,24 @@ export function GameView() {
         className="w-full text-text-tertiary hover:text-danger"
         onClick={() => setShowLeaveConfirm(true)}
       >
-        Abandonar partida
+        {t('game.leaveGame')}
       </Button>
 
       {/* Leave confirmation dialog */}
       <AlertDialog open={showLeaveConfirm} onOpenChange={setShowLeaveConfirm}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Abandonar partida</AlertDialogTitle>
+            <AlertDialogTitle>{t('game.leaveGame')}</AlertDialogTitle>
             <AlertDialogDescription>
               {isAdmin
-                ? '¡Eres el admin! Si abandonas, la partida continuará con otro admin.'
-                : '¿Seguro que quieres abandonar la partida en curso?'}
+                ? t('game.leaveGameAdminWarning')
+                : t('game.leaveGameConfirm')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
             <AlertDialogAction variant="danger" onClick={leaveRoom}>
-              Abandonar
+              {t('game.abandon')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

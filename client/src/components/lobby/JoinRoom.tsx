@@ -1,11 +1,14 @@
 import { useState, useRef, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'motion/react'
 import { Button, Card, CardContent } from '@/components/ui'
 import { useSocket } from '@/hooks'
 import { useRoomStore } from '@/stores'
 import { CONSTANTS } from '@impostor/shared'
+import { EditDisplayName } from './EditDisplayName'
 
 export function JoinRoom({ onBack }: { onBack: () => void }) {
+  const { t } = useTranslation()
   const [code, setCode] = useState('')
   const [isFocused, setIsFocused] = useState(false)
   const { joinRoom } = useSocket()
@@ -30,10 +33,16 @@ export function JoinRoom({ onBack }: { onBack: () => void }) {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center">
-        <h2 className="text-2xl font-bold">Unirse a sala</h2>
+        <h2 className="text-2xl font-bold">{t('join.title')}</h2>
         <p className="mt-1 text-sm text-text-secondary">
-          Introduce el código de 4 letras
+          {t('join.enterCode', { length: CONSTANTS.CODE_LENGTH })}
         </p>
+      </div>
+
+      {/* Display Name Editor */}
+      <div className="rounded-xl border border-border bg-bg-secondary p-3">
+        <p className="mb-1 text-center text-xs text-text-tertiary">{t('join.enterAs')}</p>
+        <EditDisplayName />
       </div>
 
       {/* Code Input Card */}
@@ -129,7 +138,7 @@ export function JoinRoom({ onBack }: { onBack: () => void }) {
               disabled={!isValid || isConnecting}
               isLoading={isConnecting}
             >
-              {isConnecting ? 'Conectando...' : 'Unirse'}
+              {isConnecting ? t('join.connecting') : t('join.join')}
             </Button>
           </form>
         </CardContent>
@@ -137,12 +146,12 @@ export function JoinRoom({ onBack }: { onBack: () => void }) {
 
       {/* Hint */}
       <p className="text-center text-xs text-text-tertiary">
-        El código aparece en la pantalla del admin
+        {t('join.codeHint')}
       </p>
 
       {/* Back button */}
       <Button variant="ghost" className="w-full" onClick={onBack}>
-        Volver
+        {t('common.back')}
       </Button>
     </div>
   )

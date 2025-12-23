@@ -1,9 +1,11 @@
+import { useTranslation } from 'react-i18next'
 import { motion } from 'motion/react'
 import { Button } from '@/components/ui'
 import { useSocket } from '@/hooks'
 import { useGameStore, useRoomStore, useUserStore } from '@/stores'
 
 export function VotingPanel() {
+  const { t } = useTranslation()
   const { voteState, hasVoted, myVote } = useGameStore()
   const { room } = useRoomStore()
   const { user } = useUserStore()
@@ -37,10 +39,10 @@ export function VotingPanel() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-2xl" aria-hidden="true">🗳️</span>
-          <h2 className="text-xl font-bold text-accent">¡A votar!</h2>
+          <h2 className="text-xl font-bold text-accent">{t('voting.title')}</h2>
         </div>
         <span className="text-xs text-text-tertiary">
-          {hasVoted ? '✓ Votaste' : `${threshold} = eliminar`}
+          {hasVoted ? t('voting.voted') : t('voting.threshold', { count: threshold })}
         </span>
       </div>
 
@@ -54,7 +56,7 @@ export function VotingPanel() {
         />
       </div>
       <p className="text-center text-xs text-text-tertiary">
-        {totalVotes} de {activePlayers.length} votos
+        {t('voting.votesCount', { current: totalVotes, total: activePlayers.length })}
       </p>
 
       {/* Players list - simplified without AnimatePresence */}
@@ -102,9 +104,9 @@ export function VotingPanel() {
                 <div className="flex flex-col">
                   <span className={`text-sm font-medium ${isMe ? 'text-accent' : 'text-text-primary'}`}>
                     {player.displayName}
-                    {isMe && <span className="ml-1 text-xs text-text-tertiary">(tú)</span>}
+                    {isMe && <span className="ml-1 text-xs text-text-tertiary">{t('common.you')}</span>}
                   </span>
-                  {isMyVote && <span className="text-[10px] text-neon-pink">Tu voto</span>}
+                  {isMyVote && <span className="text-[10px] text-neon-pink">{t('voting.yourVote')}</span>}
                 </div>
               </div>
 
@@ -124,7 +126,7 @@ export function VotingPanel() {
                     onClick={() => castVote(player.id)}
                     className="h-9 min-w-[52px] px-3 text-xs"
                   >
-                    Votar
+                    {t('voting.vote')}
                   </Button>
                 )}
               </div>
@@ -140,14 +142,14 @@ export function VotingPanel() {
             {isTie ? (
               <>
                 <div className="rounded-lg border border-neon-yellow/30 bg-neon-yellow/10 px-3 py-2 text-center">
-                  <p className="text-sm font-medium text-neon-yellow">🤝 ¡Empate!</p>
+                  <p className="text-sm font-medium text-neon-yellow">🤝 {t('voting.tie')}</p>
                 </div>
                 <Button
                   variant="neon"
                   className="w-full"
                   onClick={() => confirmVote(false)}
                 >
-                  ➡️ Continuar
+                  ➡️ {t('voting.continue')}
                 </Button>
               </>
             ) : (
@@ -157,14 +159,14 @@ export function VotingPanel() {
                   variant={voteState.twoThirdsReached ? 'neon-pink' : 'default'}
                   onClick={() => confirmVote(true)}
                 >
-                  {voteState.twoThirdsReached ? '💀 ¡Eliminar!' : `🎯 Eliminar (${maxVotes} votos)`}
+                  {voteState.twoThirdsReached ? `💀 ${t('voting.eliminate')}` : `🎯 ${t('voting.eliminateVotes', { count: maxVotes })}`}
                 </Button>
                 <Button
                   variant="ghost"
                   className="w-full"
                   onClick={() => confirmVote(false)}
                 >
-                  😇 Perdonar
+                  😇 {t('voting.forgive')}
                 </Button>
               </>
             )}
@@ -174,13 +176,13 @@ export function VotingPanel() {
         {isAdmin && !allVoted && (
           <div className="flex items-center justify-center gap-2 py-2 text-sm text-text-tertiary">
             <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
-            Esperando votos...
+            {t('voting.waitingVotes')}
           </div>
         )}
 
         {!isAdmin && (
           <p className="py-2 text-center text-xs text-text-tertiary">
-            {allVoted ? 'Esperando al admin...' : 'Esperando votos...'}
+            {allVoted ? t('voting.waitingAdmin') : t('voting.waitingVotes')}
           </p>
         )}
       </div>

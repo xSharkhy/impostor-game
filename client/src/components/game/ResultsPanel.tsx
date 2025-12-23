@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Button, Card, CardContent, Confetti, EmojiBurst } from '@/components/ui'
 import { useGameStore, useRoomStore, useUserStore } from '@/stores'
 
@@ -9,6 +10,7 @@ interface ResultsPanelProps {
 const AUTO_CONTINUE_SECONDS = 5
 
 export function ResultsPanel({ onContinue }: ResultsPanelProps) {
+  const { t } = useTranslation()
   const { lastEliminated, wasImpostor } = useGameStore()
   const { room } = useRoomStore()
   const { user } = useUserStore()
@@ -79,7 +81,7 @@ export function ResultsPanel({ onContinue }: ResultsPanelProps) {
 
       {/* Header */}
       <div className="text-center">
-        <h2 className="text-3xl font-bold">Resultado</h2>
+        <h2 className="text-3xl font-bold">{t('results.title')}</h2>
       </div>
 
       {/* Result Card */}
@@ -112,7 +114,7 @@ export function ResultsPanel({ onContinue }: ResultsPanelProps) {
                   <span className="font-semibold text-text-primary">
                     {eliminatedPlayer.displayName}
                   </span>{' '}
-                  ha sido eliminado
+                  {t('results.eliminated')}
                 </p>
               </div>
 
@@ -128,16 +130,16 @@ export function ResultsPanel({ onContinue }: ResultsPanelProps) {
                       : '0 0 30px rgba(239, 68, 68, 0.6)',
                   }}
                 >
-                  {wasImpostor ? '¡ERA EL IMPOSTOR!' : 'Inocente...'}
+                  {wasImpostor ? t('results.wasImpostor') : t('results.wasInnocent')}
                 </p>
                 {wasImpostor && (
                   <p className="mt-3 text-lg text-success">
-                    ¡Buen trabajo, equipo!
+                    {t('results.goodJob')}
                   </p>
                 )}
                 {!wasImpostor && (
                   <p className="mt-3 text-sm text-text-secondary">
-                    El impostor sigue entre vosotros...
+                    {t('results.impostorRemains')}
                   </p>
                 )}
               </div>
@@ -148,10 +150,10 @@ export function ResultsPanel({ onContinue }: ResultsPanelProps) {
                 🤷
               </div>
               <p className="text-2xl font-bold text-text-primary">
-                Nadie fue eliminado
+                {t('results.noElimination')}
               </p>
               <p className="text-sm text-text-tertiary">
-                No hubo suficientes votos
+                {t('results.notEnoughVotes')}
               </p>
 
               {/* Countdown timer */}
@@ -188,7 +190,7 @@ export function ResultsPanel({ onContinue }: ResultsPanelProps) {
                   </span>
                 </div>
                 <p className="text-xs text-text-tertiary">
-                  Continuando automáticamente...
+                  {t('results.continuing')}
                 </p>
               </div>
             </div>
@@ -199,7 +201,7 @@ export function ResultsPanel({ onContinue }: ResultsPanelProps) {
       {/* Continue button - show for admin always, or when someone was eliminated */}
       {(eliminatedPlayer || isAdmin) && (
         <Button variant="neon" className="w-full text-base" onClick={onContinue}>
-          {eliminatedPlayer ? 'Continuar' : 'Saltar'}
+          {eliminatedPlayer ? t('voting.continue') : t('results.skip')}
         </Button>
       )}
     </div>

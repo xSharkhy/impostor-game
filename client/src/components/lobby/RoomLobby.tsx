@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { motion } from 'motion/react'
 import {
   Button,
@@ -20,6 +21,7 @@ import { useRoomStore, useUserStore } from '@/stores'
 import { CONSTANTS } from '@impostor/shared'
 
 export function RoomLobby() {
+  const { t } = useTranslation()
   const { room } = useRoomStore()
   const { user } = useUserStore()
   const { leaveRoom, kickPlayer, startGame } = useSocket()
@@ -37,7 +39,7 @@ export function RoomLobby() {
       {/* Room Code Display */}
       <div className="text-center">
         <p className="text-sm font-medium text-text-secondary">
-          Código de sala
+          {t('room.code')}
         </p>
         <div className="mt-2">
           <p
@@ -50,7 +52,7 @@ export function RoomLobby() {
           </p>
         </div>
         <p className="mt-2 text-xs text-text-tertiary">
-          Comparte este código con tus amigos
+          {t('room.shareCode')}
         </p>
       </div>
 
@@ -60,14 +62,14 @@ export function RoomLobby() {
           <CardHeader className="pb-3">
             <CardTitle className="flex items-center justify-between text-base">
               <span className="flex items-center gap-2">
-                Jugadores
+                {t('room.players')}
                 <span className="rounded-full bg-bg-elevated px-2 py-0.5 text-sm font-normal text-text-secondary">
                   {room.players.length}
                 </span>
               </span>
               {!canStart && (
                 <span className="text-xs font-normal text-text-tertiary">
-                  Mínimo {CONSTANTS.MIN_PLAYERS}
+                  {t('room.minimum', { count: CONSTANTS.MIN_PLAYERS })}
                 </span>
               )}
             </CardTitle>
@@ -115,11 +117,11 @@ export function RoomLobby() {
                         <span className={`font-medium ${isMe ? 'text-accent' : 'text-text-primary'}`}>
                           {player.displayName}
                           {isMe && (
-                            <span className="ml-1.5 text-xs text-text-secondary">(tú)</span>
+                            <span className="ml-1.5 text-xs text-text-secondary">{t('common.you')}</span>
                           )}
                         </span>
                         {isPlayerAdmin && (
-                          <span className="text-xs text-neon-yellow">Admin</span>
+                          <span className="text-xs text-neon-yellow">{t('common.admin')}</span>
                         )}
                       </div>
                     </div>
@@ -132,7 +134,7 @@ export function RoomLobby() {
                         className="text-text-tertiary hover:text-danger"
                         onClick={() => setPlayerToKick({ id: player.id, name: player.displayName })}
                       >
-                        Expulsar
+                        {t('room.kick')}
                       </Button>
                     )}
                   </div>
@@ -161,7 +163,7 @@ export function RoomLobby() {
             ))}
           </div>
           <span className="text-sm text-text-secondary">
-            Esperando {playersNeeded} {playersNeeded === 1 ? 'jugador más' : 'jugadores más'}...
+            {t('room.waitingPlayers', { count: playersNeeded })}
           </span>
         </div>
       )}
@@ -175,7 +177,7 @@ export function RoomLobby() {
             disabled={!canStart}
             onClick={() => startGame()}
           >
-            {canStart ? 'Iniciar Partida' : `Esperando jugadores...`}
+            {canStart ? t('room.startGame') : t('room.waitingForPlayers')}
           </Button>
         )}
 
@@ -186,7 +188,7 @@ export function RoomLobby() {
               animate={{ opacity: [0.3, 1, 0.3] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             />
-            Esperando al admin...
+            {t('room.waitingAdmin')}
           </div>
         )}
 
@@ -195,7 +197,7 @@ export function RoomLobby() {
           className="w-full text-text-tertiary hover:text-danger"
           onClick={() => setShowLeaveConfirm(true)}
         >
-          Salir de la sala
+          {t('room.leaveRoom')}
         </Button>
       </div>
 
@@ -203,20 +205,20 @@ export function RoomLobby() {
       <AlertDialog open={!!playerToKick} onOpenChange={(open) => !open && setPlayerToKick(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Expulsar jugador</AlertDialogTitle>
+            <AlertDialogTitle>{t('room.kickPlayer')}</AlertDialogTitle>
             <AlertDialogDescription>
-              ¿Estás seguro de que quieres expulsar a <strong>{playerToKick?.name}</strong> de la sala?
+              {t('room.kickConfirm', { name: playerToKick?.name })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               variant="danger"
               onClick={() => {
                 if (playerToKick) kickPlayer(playerToKick.id)
               }}
             >
-              Expulsar
+              {t('room.kick')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -226,17 +228,17 @@ export function RoomLobby() {
       <AlertDialog open={showLeaveConfirm} onOpenChange={setShowLeaveConfirm}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Salir de la sala</AlertDialogTitle>
+            <AlertDialogTitle>{t('room.leaveRoom')}</AlertDialogTitle>
             <AlertDialogDescription>
               {isAdmin
-                ? 'Eres el admin. Si sales, otro jugador será asignado como admin.'
-                : '¿Estás seguro de que quieres salir de la sala?'}
+                ? t('room.leaveAdminWarning')
+                : t('room.leaveConfirm')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
             <AlertDialogAction variant="danger" onClick={leaveRoom}>
-              Salir
+              {t('room.leave')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

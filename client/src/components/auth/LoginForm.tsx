@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'motion/react'
 import { Button, Card, CardContent } from '@/components/ui'
 import { useAuth } from '@/hooks'
 
 export function LoginForm() {
+  const { t } = useTranslation()
   const { signInWithGoogle, signInWithGitHub } = useAuth()
   const [isLoading, setIsLoading] = useState<'google' | 'github' | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -14,7 +16,7 @@ export function LoginForm() {
       setError(null)
       await signInWithGoogle()
     } catch (err) {
-      setError('Error al iniciar sesión con Google')
+      setError(t('auth.errorGoogle'))
       setIsLoading(null)
     }
   }
@@ -25,7 +27,7 @@ export function LoginForm() {
       setError(null)
       await signInWithGitHub()
     } catch (err) {
-      setError('Error al iniciar sesión con GitHub')
+      setError(t('auth.errorGitHub'))
       setIsLoading(null)
     }
   }
@@ -39,9 +41,9 @@ export function LoginForm() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <h2 className="text-2xl font-bold">Bienvenido</h2>
+        <h2 className="text-2xl font-bold">{t('auth.welcome')}</h2>
         <p className="mt-1 text-sm text-text-secondary">
-          Inicia sesión para jugar
+          {t('auth.loginPrompt')}
         </p>
       </motion.div>
 
@@ -74,13 +76,13 @@ export function LoginForm() {
               isLoading={isLoading === 'google'}
             >
               {isLoading !== 'google' && <GoogleIcon />}
-              {isLoading === 'google' ? 'Conectando...' : 'Continuar con Google'}
+              {isLoading === 'google' ? t('auth.connecting') : t('auth.continueWithGoogle')}
             </Button>
 
             {/* Divider */}
             <div className="flex items-center gap-3 py-2">
               <div className="h-px flex-1 bg-border" />
-              <span className="text-xs text-text-tertiary">o</span>
+              <span className="text-xs text-text-tertiary">{t('common.or')}</span>
               <div className="h-px flex-1 bg-border" />
             </div>
 
@@ -93,7 +95,7 @@ export function LoginForm() {
               isLoading={isLoading === 'github'}
             >
               {isLoading !== 'github' && <GitHubIcon />}
-              {isLoading === 'github' ? 'Conectando...' : 'Continuar con GitHub'}
+              {isLoading === 'github' ? t('auth.connecting') : t('auth.continueWithGitHub')}
             </Button>
           </div>
         </CardContent>
@@ -101,7 +103,7 @@ export function LoginForm() {
 
       {/* Info */}
       <p className="text-center text-xs text-text-tertiary">
-        Al iniciar sesión, aceptas las reglas del juego
+        {t('auth.termsAccept')}
       </p>
     </div>
   )

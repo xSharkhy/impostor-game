@@ -3,7 +3,7 @@ import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { Toaster } from 'sonner'
 import { useAuth } from '@/hooks'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
-import { SoundToggle } from '@/components/ui'
+import { SoundToggle, LanguageSelector } from '@/components/ui'
 
 function RootComponent() {
   // Initialize auth listener
@@ -15,8 +15,9 @@ function RootComponent() {
         <ErrorBoundary>
           <Outlet />
         </ErrorBoundary>
-        {/* Sound toggle - fixed position */}
-        <div className="fixed bottom-4 right-4 z-50">
+        {/* Controls - fixed position */}
+        <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2">
+          <LanguageSelector compact className="h-8 w-auto bg-bg-elevated/80 backdrop-blur-sm" />
           <SoundToggle className="bg-bg-elevated/80 backdrop-blur-sm" />
         </div>
       </div>

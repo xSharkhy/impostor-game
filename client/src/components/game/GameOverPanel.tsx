@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Button, Card, CardContent, CardHeader, CardTitle, Confetti, EmojiBurst } from '@/components/ui'
 import { useSocket } from '@/hooks'
 import { useGameStore, useRoomStore, useUserStore } from '@/stores'
 
 export function GameOverPanel() {
+  const { t } = useTranslation()
   const { winner, revealedImpostorId, word } = useGameStore()
   const { room } = useRoomStore()
   const { user } = useUserStore()
@@ -68,7 +70,7 @@ export function GameOverPanel() {
               animation: 'gradient-shift 3s ease infinite',
             }}
           >
-            {playerWon ? '¡VICTORIA!' : '¡DERROTA!'}
+            {playerWon ? t('gameOver.victory') : t('gameOver.defeat')}
           </span>
         </h2>
         <p
@@ -76,7 +78,7 @@ export function GameOverPanel() {
             crewWon ? 'text-neon-green' : 'text-neon-pink'
           }`}
         >
-          {crewWon ? '¡Los civiles han ganado!' : '¡El impostor ha ganado!'}
+          {crewWon ? t('gameOver.crewWon') : t('gameOver.impostorWon')}
         </p>
       </div>
 
@@ -85,7 +87,7 @@ export function GameOverPanel() {
         <Card variant={wasImpostor ? 'glow-pink' : 'glow'}>
           <CardHeader className="pb-2">
             <CardTitle className="text-center text-sm font-normal text-text-secondary">
-              El impostor era
+              {t('gameOver.impostorWas')}
             </CardTitle>
           </CardHeader>
           <CardContent className="pb-6">
@@ -99,9 +101,9 @@ export function GameOverPanel() {
                   textShadow: '0 0 20px rgba(255, 45, 106, 0.5)',
                 }}
               >
-                {impostor?.displayName || 'Desconocido'}
+                {impostor?.displayName || t('common.unknown')}
                 {wasImpostor && (
-                  <span className="ml-2 text-lg text-text-secondary">(tú)</span>
+                  <span className="ml-2 text-lg text-text-secondary">{t('common.you')}</span>
                 )}
               </p>
             </div>
@@ -115,7 +117,7 @@ export function GameOverPanel() {
           <Card variant="glass">
             <CardHeader className="pb-2">
               <CardTitle className="text-center text-sm font-normal text-text-secondary">
-                La palabra era
+                {t('gameOver.wordWas')}
               </CardTitle>
             </CardHeader>
             <CardContent className="pb-6">
@@ -140,7 +142,7 @@ export function GameOverPanel() {
             className="w-full text-base"
             onClick={playAgain}
           >
-            🔄 ¡Otra partida!
+            🔄 {t('gameOver.playAgain')}
           </Button>
         )}
         <Button
@@ -148,7 +150,7 @@ export function GameOverPanel() {
           className="w-full"
           onClick={leaveRoom}
         >
-          👋 Volver al inicio
+          👋 {t('gameOver.backToStart')}
         </Button>
       </div>
 
@@ -156,7 +158,7 @@ export function GameOverPanel() {
       {!isAdmin && (
         <div className="flex items-center justify-center gap-2 text-sm text-text-tertiary">
           <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
-          Esperando al admin para nueva partida...
+          {t('gameOver.waitingNewGame')}
         </div>
       )}
     </div>

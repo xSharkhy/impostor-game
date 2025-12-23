@@ -1,4 +1,5 @@
 import { Component, ReactNode } from 'react'
+import i18n from '@/lib/i18n'
 import { Button, Card, CardContent, CardHeader, CardTitle } from '@/components/ui'
 
 interface ErrorBoundaryProps {
@@ -45,12 +46,12 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             <CardHeader className="text-center">
               <div className="mb-4 text-6xl" aria-hidden="true">💥</div>
               <CardTitle className="text-xl text-text-primary">
-                ¡Algo salió mal!
+                {i18n.t('error.title')}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-center">
               <p className="text-sm text-text-secondary">
-                Ha ocurrido un error inesperado. Puedes intentar recargar la página.
+                {i18n.t('error.description')}
               </p>
               {import.meta.env.DEV && this.state.error && (
                 <pre className="mt-4 max-h-32 overflow-auto rounded-lg bg-bg-tertiary p-3 text-left text-xs text-danger">
@@ -59,10 +60,10 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               )}
               <div className="flex gap-3 pt-2">
                 <Button variant="outline" className="flex-1" onClick={this.handleReset}>
-                  Reintentar
+                  {i18n.t('common.retry')}
                 </Button>
                 <Button variant="neon" className="flex-1" onClick={this.handleReload}>
-                  Recargar
+                  {i18n.t('error.reload')}
                 </Button>
               </div>
             </CardContent>
