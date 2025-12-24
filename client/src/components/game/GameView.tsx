@@ -24,7 +24,7 @@ import { GameOverPanel } from './GameOverPanel'
 
 export function GameView() {
   const { t } = useTranslation()
-  const { word, isImpostor, turnOrder, currentRound, phase } = useGameStore()
+  const { word, isImpostor, turnOrder, currentRound, phase, impostorCount } = useGameStore()
   const { room } = useRoomStore()
   const { user } = useUserStore()
   const { nextRound, startVoting, leaveRoom } = useSocket()
@@ -116,12 +116,18 @@ export function GameView() {
         </Card>
       </div>
 
-      {/* Round indicator - small badge */}
-      <div className="text-center">
+      {/* Round and impostor indicator - small badges */}
+      <div className="flex items-center justify-center gap-2">
         <span className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-bg-tertiary px-4 py-1.5 text-sm font-medium text-text-secondary">
           <span className="h-2 w-2 rounded-full bg-accent" />
           {t('game.round', { number: currentRound })}
         </span>
+        {impostorCount > 1 && (
+          <span className="inline-flex items-center gap-2 rounded-full border border-neon-pink/20 bg-bg-tertiary px-4 py-1.5 text-sm font-medium text-text-secondary">
+            <span className="h-2 w-2 rounded-full bg-neon-pink" />
+            {t('game.impostorCount', { count: impostorCount })}
+          </span>
+        )}
       </div>
 
       {/* Turn Order */}

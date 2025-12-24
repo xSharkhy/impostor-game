@@ -18,7 +18,8 @@ export interface RoomDTO {
   currentRound: number
   category: string | null
   currentWord: string | null // Only sent to non-impostors
-  impostorId: string | null // Only sent to the impostor
+  isImpostor: boolean // Whether the requesting player is an impostor
+  impostorCount: number // Total number of impostors in the game
   turnOrder: string[]
   currentTurnIndex: number
   winCondition: WinCondition | null
@@ -26,7 +27,7 @@ export interface RoomDTO {
 
 export class RoomMapper {
   static toDTO(room: Room, forPlayerId?: string): RoomDTO {
-    const isImpostor = forPlayerId === room.impostorId
+    const isImpostor = forPlayerId ? room.isImpostor(forPlayerId) : false
     const isFinished = room.status === 'finished'
 
     return {
@@ -39,8 +40,9 @@ export class RoomMapper {
       category: room.category ?? null,
       // Only reveal word to non-impostors during game, or to everyone after game ends
       currentWord: isFinished || !isImpostor ? (room.currentWord ?? null) : null,
-      // Only reveal impostor to themselves during game, or to everyone after game ends
-      impostorId: isFinished || isImpostor ? (room.impostorId ?? null) : null,
+      // Whether this player is an impostor
+      isImpostor,
+      impostorCount: room.impostorCount,
       turnOrder: room.turnOrder ?? [],
       currentTurnIndex: room.currentTurnIndex,
       winCondition: room.winCondition ?? null,
@@ -59,9 +61,9 @@ export class RoomMapper {
 
   /**
    * Creates a sanitized DTO safe to broadcast to all players
-   * (no sensitive data like word or impostor)
+   * (no sensitive data like word or impostor status)
    */
-  static toPublicDTO(room: Room): Omit<RoomDTO, 'currentWord' | 'impostorId'> {
+  static toPublicDTO(room: Room): Omit<RoomDTO, 'currentWord' | 'isImpostor'> {
     return {
       id: room.id,
       code: room.code,
@@ -70,6 +72,7 @@ export class RoomMapper {
       players: room.players.map((p) => this.playerToDTO(p)),
       currentRound: room.currentRound,
       category: room.category ?? null,
+      impostorCount: room.impostorCount,
       turnOrder: room.turnOrder ?? [],
       currentTurnIndex: room.currentTurnIndex,
       winCondition: room.winCondition ?? null,

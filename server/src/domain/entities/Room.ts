@@ -24,7 +24,8 @@ export interface RoomProps {
   language: RoomLanguage
   players: PlayerProps[]
   currentWord?: string
-  impostorId?: PlayerId
+  impostorIds?: PlayerId[]
+  pendingImpostorCount?: number
   turnOrder?: PlayerId[]
   currentRound: number
   category?: string
@@ -48,7 +49,8 @@ export class Room {
   private _status: RoomStatus
   private _players: Map<PlayerId, Player>
   private _currentWord?: string
-  private _impostorId?: PlayerId
+  private _impostorIds: PlayerId[]
+  private _pendingImpostorCount: number
   private _turnOrder?: PlayerId[]
   private _currentRound: number
   private _category?: string
@@ -67,7 +69,8 @@ export class Room {
       props.players.map(p => [p.id, Player.create(p)])
     )
     this._currentWord = props.currentWord
-    this._impostorId = props.impostorId
+    this._impostorIds = props.impostorIds ?? []
+    this._pendingImpostorCount = props.pendingImpostorCount ?? 1
     this._turnOrder = props.turnOrder
     this._currentRound = props.currentRound
     this._category = props.category
@@ -113,14 +116,38 @@ export class Room {
   get status(): RoomStatus { return this._status }
   get language(): RoomLanguage { return this._language }
   get currentWord(): string | undefined { return this._currentWord }
-  get impostorId(): PlayerId | undefined { return this._impostorId }
+  get impostorIds(): PlayerId[] { return this._impostorIds }
+  get impostorCount(): number { return this._impostorIds.length }
   get turnOrder(): PlayerId[] | undefined { return this._turnOrder }
   get currentRound(): number { return this._currentRound }
   get category(): string | undefined { return this._category }
   get winCondition(): WinCondition | undefined { return this._winCondition }
   get submittedWords(): Map<PlayerId, string> { return this._submittedWords }
   get wordCount(): number { return this._submittedWords.size }
+  get pendingImpostorCount(): number { return this._pendingImpostorCount }
   get lastActivity(): Date { return this._lastActivity }
+
+  // Multi-impostor methods
+  isImpostor(playerId: PlayerId): boolean {
+    return this._impostorIds.includes(playerId)
+  }
+
+  getRemainingImpostorCount(): number {
+    return this._impostorIds.filter(id => {
+      const player = this._players.get(id)
+      return player && !player.isEliminated
+    }).length
+  }
+
+  getRemainingCrewCount(): number {
+    return this.activePlayers.filter(p => !this.isImpostor(p.id)).length
+  }
+
+  private selectImpostors(count: number): PlayerId[] {
+    const playerIds = Array.from(this._players.keys())
+    const shuffled = this.shuffle(playerIds)
+    return shuffled.slice(0, count)
+  }
 
   get currentTurnIndex(): number {
     if (!this._turnOrder) return 0
@@ -251,7 +278,7 @@ export class Room {
   }
 
   // Roulette mode operations
-  startCollecting(): Room {
+  startCollecting(impostorCount: number = 1): Room {
     if (this._status !== 'lobby') {
       throw new GameAlreadyStartedError()
     }
@@ -263,6 +290,7 @@ export class Room {
     return this.withUpdate({
       status: 'collecting_words',
       submittedWords: new Map(),
+      pendingImpostorCount: impostorCount,
     })
   }
 
@@ -325,21 +353,22 @@ export class Room {
     const playerIds = Array.from(this._players.keys())
     const shuffled = this.shuffle(playerIds)
 
-    // Select random impostor
-    const impostorId = shuffled[randomInt(shuffled.length)]
+    // Select random impostors using stored pending count
+    const impostorIds = this.selectImpostors(this._pendingImpostorCount)
 
     return this.withUpdate({
       status: 'playing',
       currentWord: word,
-      impostorId,
+      impostorIds,
       turnOrder: shuffled,
       currentRound: 1,
       submittedWords: new Map(), // Clear submitted words
+      pendingImpostorCount: 1, // Reset
     })
   }
 
   // Game operations
-  startGame(word: string, category?: string): Room {
+  startGame(word: string, category?: string, impostorCount: number = 1): Room {
     if (this._status !== 'lobby') {
       throw new GameAlreadyStartedError()
     }
@@ -352,13 +381,13 @@ export class Room {
     const playerIds = Array.from(this._players.keys())
     const shuffled = this.shuffle(playerIds)
 
-    // Select random impostor
-    const impostorId = shuffled[randomInt(shuffled.length)]
+    // Select random impostors
+    const impostorIds = this.selectImpostors(impostorCount)
 
     return this.withUpdate({
       status: 'playing',
       currentWord: word,
-      impostorId,
+      impostorIds,
       turnOrder: shuffled,
       currentRound: 1,
       category,
@@ -462,15 +491,16 @@ export class Room {
   }
 
   checkWinCondition(): WinCondition | null {
-    const active = this.activePlayers
-    const impostorEliminated = this._impostorId &&
-      this._players.get(this._impostorId)?.isEliminated
+    const remainingImpostors = this.getRemainingImpostorCount()
+    const remainingCrew = this.getRemainingCrewCount()
 
-    if (impostorEliminated) {
+    // Crew wins: all impostors eliminated
+    if (remainingImpostors === 0) {
       return 'impostor_caught'
     }
 
-    if (active.length <= 2 && active.some(p => p.id === this._impostorId)) {
+    // Impostors win: only 1 crew member left
+    if (remainingCrew <= 1) {
       return 'impostor_survived'
     }
 
@@ -487,7 +517,7 @@ export class Room {
       status: 'lobby',
       players: newPlayers,
       currentWord: undefined,
-      impostorId: undefined,
+      impostorIds: [],
       turnOrder: undefined,
       currentRound: 0,
       category: undefined,
@@ -512,7 +542,8 @@ export class Room {
     language: RoomLanguage
     players: Map<PlayerId, Player>
     currentWord: string | undefined
-    impostorId: PlayerId | undefined
+    impostorIds: PlayerId[]
+    pendingImpostorCount: number
     turnOrder: PlayerId[] | undefined
     currentRound: number
     category: string | undefined
@@ -535,7 +566,8 @@ export class Room {
       language: updates.language ?? this._language,
       players: playerArray,
       currentWord: 'currentWord' in updates ? updates.currentWord : this._currentWord,
-      impostorId: 'impostorId' in updates ? updates.impostorId : this._impostorId,
+      impostorIds: 'impostorIds' in updates ? updates.impostorIds : this._impostorIds,
+      pendingImpostorCount: updates.pendingImpostorCount ?? this._pendingImpostorCount,
       turnOrder: 'turnOrder' in updates ? updates.turnOrder : this._turnOrder,
       currentRound: updates.currentRound ?? this._currentRound,
       category: 'category' in updates ? updates.category : this._category,
@@ -555,7 +587,8 @@ export class Room {
       language: this.language,
       players: this.players.map(p => p.toProps()),
       currentWord: this._currentWord,
-      impostorId: this._impostorId,
+      impostorIds: this._impostorIds,
+      pendingImpostorCount: this._pendingImpostorCount,
       turnOrder: this._turnOrder,
       currentRound: this._currentRound,
       category: this._category,
@@ -566,11 +599,11 @@ export class Room {
     }
   }
 
-  toClientProps(): Omit<RoomProps, 'impostorId' | 'currentWord'> & {
+  toClientProps(): Omit<RoomProps, 'impostorIds' | 'currentWord'> & {
     currentWord?: string | null
   } {
     const props = this.toProps()
-    const { impostorId, currentWord, ...rest } = props
+    const { impostorIds, currentWord, ...rest } = props
     return rest
   }
 }

@@ -12,6 +12,7 @@ interface CollectingState {
   timeLimit: number
   minWords: number
   playerCount: number
+  impostorCount: number
   wordCount: number
   hasSubmittedWord: boolean
 }
@@ -24,6 +25,7 @@ interface GameState {
   isImpostor: boolean
   turnOrder: string[]
   currentRound: number
+  impostorCount: number
 
   // Collecting (roulette mode)
   collecting: CollectingState | null
@@ -37,20 +39,20 @@ interface GameState {
   lastEliminated: string | null
   wasImpostor: boolean | null
   winner: 'crew' | 'impostor' | null
-  revealedImpostorId: string | null
+  revealedImpostorIds: string[]
 
   // Actions
-  startCollecting: (data: { timeLimit: number; minWords: number; playerCount: number }) => void
+  startCollecting: (data: { timeLimit: number; minWords: number; playerCount: number; impostorCount: number }) => void
   updateWordCount: (count: number) => void
   markWordSubmitted: () => void
-  startGame: (data: { word: string | null; isImpostor: boolean; turnOrder: string[]; mode: GameMode }) => void
+  startGame: (data: { word: string | null; isImpostor: boolean; turnOrder: string[]; mode: GameMode; impostorCount: number }) => void
   setRound: (round: number) => void
   startVoting: () => void
   updateVotes: (votes: Record<string, string>, twoThirdsReached: boolean) => void
   castVote: (targetId: string) => void
   setVoteResult: (eliminated?: string, wasImpostor?: boolean) => void
   continueFromResults: () => void
-  endGame: (winner: 'crew' | 'impostor', impostorId: string, word: string) => void
+  endGame: (winner: 'crew' | 'impostor', impostorIds: string[], word: string) => void
   reset: () => void
 }
 
@@ -61,6 +63,7 @@ const initialState = {
   isImpostor: false,
   turnOrder: [],
   currentRound: 0,
+  impostorCount: 1,
   collecting: null,
   voteState: null,
   hasVoted: false,
@@ -68,20 +71,22 @@ const initialState = {
   lastEliminated: null,
   wasImpostor: null,
   winner: null,
-  revealedImpostorId: null,
+  revealedImpostorIds: [] as string[],
 }
 
 export const useGameStore = create<GameState>((set) => ({
   ...initialState,
 
-  startCollecting: ({ timeLimit, minWords, playerCount }) =>
+  startCollecting: ({ timeLimit, minWords, playerCount, impostorCount }) =>
     set({
       phase: 'collecting',
       mode: 'roulette',
+      impostorCount,
       collecting: {
         timeLimit,
         minWords,
         playerCount,
+        impostorCount,
         wordCount: 0,
         hasSubmittedWord: false,
       },
@@ -101,7 +106,7 @@ export const useGameStore = create<GameState>((set) => ({
         : null,
     })),
 
-  startGame: ({ word, isImpostor, turnOrder, mode }) =>
+  startGame: ({ word, isImpostor, turnOrder, mode, impostorCount }) =>
     set({
       phase: 'playing',
       mode,
@@ -109,6 +114,7 @@ export const useGameStore = create<GameState>((set) => ({
       isImpostor,
       turnOrder,
       currentRound: 1,
+      impostorCount,
       // Reset collecting state
       collecting: null,
       // Reset voting state
@@ -119,7 +125,7 @@ export const useGameStore = create<GameState>((set) => ({
       lastEliminated: null,
       wasImpostor: null,
       winner: null,
-      revealedImpostorId: null,
+      revealedImpostorIds: [],
     }),
 
   setRound: (round) =>
@@ -162,11 +168,11 @@ export const useGameStore = create<GameState>((set) => ({
       wasImpostor: null,
     }),
 
-  endGame: (winner, impostorId, word) =>
+  endGame: (winner, impostorIds, word) =>
     set({
       phase: 'finished',
       winner,
-      revealedImpostorId: impostorId,
+      revealedImpostorIds: impostorIds,
       word, // Reveal word to all players including impostor
     }),
 

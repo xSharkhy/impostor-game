@@ -14,7 +14,7 @@ export interface ForceStartRouletteInput {
 export interface ForceStartRouletteOutput {
   room: Room
   word: string
-  impostorId: string
+  impostorIds: string[]
 }
 
 export class ForceStartRouletteUseCase {
@@ -44,7 +44,7 @@ export class ForceStartRouletteUseCase {
     return {
       room: updatedRoom,
       word: updatedRoom.currentWord!,
-      impostorId: updatedRoom.impostorId!,
+      impostorIds: updatedRoom.impostorIds,
     }
   }
 }

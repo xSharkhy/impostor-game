@@ -169,8 +169,8 @@ export function useSocket() {
       })
 
       // Game events
-      socket.on('game:collectingStarted', ({ timeLimit, minWords, playerCount }) => {
-        useGameStore.getState().startCollecting({ timeLimit, minWords, playerCount })
+      socket.on('game:collectingStarted', ({ timeLimit, minWords, playerCount, impostorCount }) => {
+        useGameStore.getState().startCollecting({ timeLimit, minWords, playerCount, impostorCount })
       })
 
       socket.on('game:wordCollected', ({ count }) => {
@@ -197,8 +197,8 @@ export function useSocket() {
         useGameStore.getState().setVoteResult(eliminated, wasImpostor)
       })
 
-      socket.on('game:ended', ({ winner, impostorId, word }) => {
-        useGameStore.getState().endGame(winner, impostorId, word)
+      socket.on('game:ended', ({ winner, impostorIds, word }) => {
+        useGameStore.getState().endGame(winner, impostorIds, word)
       })
 
       if (socket.connected) {
@@ -240,11 +240,12 @@ export function useSocket() {
     socketInstance?.emit('room:changeLanguage', { language })
   }, [])
 
-  const startGame = useCallback((options?: { mode?: GameMode; category?: string; customWord?: string }) => {
+  const startGame = useCallback((options?: { mode?: GameMode; category?: string; customWord?: string; impostorCount?: number }) => {
     socketInstance?.emit('game:start', {
       mode: options?.mode || 'classic',
       category: options?.category || '',
       customWord: options?.customWord,
+      impostorCount: options?.impostorCount ?? 1,
     })
   }, [])
 

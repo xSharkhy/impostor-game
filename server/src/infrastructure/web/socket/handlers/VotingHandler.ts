@@ -110,20 +110,27 @@ export function createVotingHandler(
 
         if (result.gameEnded) {
           const winner = result.winCondition === 'impostor_caught' ? 'crew' : 'impostor'
+          const wasEliminatedImpostor = result.eliminatedPlayerId
+            ? result.room.isImpostor(result.eliminatedPlayerId)
+            : false
           io.to(result.room.id).emit('vote:result', {
             eliminated: result.eliminatedPlayerId ?? undefined,
-            wasImpostor: result.winCondition === 'impostor_caught',
+            wasImpostor: wasEliminatedImpostor,
           })
           io.to(result.room.id).emit('game:ended', {
             winner,
-            impostorId: result.room.impostorId!,
+            impostorIds: result.room.impostorIds,
             word: result.room.currentWord!,
           })
           console.log(`Game ended in room: ${winner} wins!`)
         } else {
+          // Check if eliminated player was an impostor
+          const wasImpostor = result.eliminatedPlayerId
+            ? result.room.isImpostor(result.eliminatedPlayerId)
+            : false
           io.to(result.room.id).emit('vote:result', {
             eliminated: result.eliminatedPlayerId ?? undefined,
-            wasImpostor: false,
+            wasImpostor,
           })
         }
       } catch (error) {

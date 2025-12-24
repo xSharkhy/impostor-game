@@ -11,7 +11,7 @@ const AUTO_CONTINUE_SECONDS = 5
 
 export function ResultsPanel({ onContinue }: ResultsPanelProps) {
   const { t } = useTranslation()
-  const { lastEliminated, wasImpostor } = useGameStore()
+  const { lastEliminated, wasImpostor, impostorCount } = useGameStore()
   const { room } = useRoomStore()
   const { user } = useUserStore()
   const [showEffects, setShowEffects] = useState(false)
@@ -132,14 +132,22 @@ export function ResultsPanel({ onContinue }: ResultsPanelProps) {
                 >
                   {wasImpostor ? t('results.wasImpostor') : t('results.wasInnocent')}
                 </p>
-                {wasImpostor && (
+                {wasImpostor && impostorCount > 1 && (
+                  <p className="mt-3 text-lg text-success">
+                    {t('results.keepHunting')}
+                  </p>
+                )}
+                {wasImpostor && impostorCount === 1 && (
                   <p className="mt-3 text-lg text-success">
                     {t('results.goodJob')}
                   </p>
                 )}
                 {!wasImpostor && (
                   <p className="mt-3 text-sm text-text-secondary">
-                    {t('results.impostorRemains')}
+                    {impostorCount > 1
+                      ? t('results.impostorsRemain', { count: impostorCount })
+                      : t('results.impostorRemains')
+                    }
                   </p>
                 )}
               </div>

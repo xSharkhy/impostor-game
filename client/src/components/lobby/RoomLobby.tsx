@@ -25,7 +25,13 @@ import {
 import { useSocket } from '@/hooks'
 import { useRoomStore, useUserStore } from '@/stores'
 import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/lib/i18n'
-import { CONSTANTS, type GameMode } from '@impostor/shared'
+import {
+  CONSTANTS,
+  type GameMode,
+  getMinPlayersForImpostors,
+  getRecommendedImpostors,
+  isImpostorCountWarning,
+} from '@impostor/shared'
 
 export function RoomLobby() {
   const { t } = useTranslation()
@@ -36,16 +42,25 @@ export function RoomLobby() {
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false)
   const [customWord, setCustomWord] = useState('')
 
-  // Restore last used mode from localStorage
+  // Restore last used mode and impostor count from localStorage
   const [gameMode, setGameMode] = useState<GameMode>(() => {
     const saved = localStorage.getItem('lastGameMode') as GameMode | null
     return saved && ['classic', 'random', 'custom', 'roulette'].includes(saved) ? saved : 'classic'
   })
 
-  // Save mode to localStorage when it changes
+  const [impostorCount, setImpostorCount] = useState(() => {
+    const saved = localStorage.getItem('lastImpostorCount')
+    return saved ? Math.max(1, Math.min(CONSTANTS.MAX_IMPOSTORS, parseInt(saved, 10) || 1)) : 1
+  })
+
+  // Save mode and impostor count to localStorage when they change
   useEffect(() => {
     localStorage.setItem('lastGameMode', gameMode)
   }, [gameMode])
+
+  useEffect(() => {
+    localStorage.setItem('lastImpostorCount', String(impostorCount))
+  }, [impostorCount])
 
   // Reset to classic mode if current language doesn't support random
   useEffect(() => {
@@ -53,6 +68,16 @@ export function RoomLobby() {
       setGameMode('classic')
     }
   }, [room?.language, gameMode])
+
+  // Auto-adjust impostor count if it exceeds what's valid for player count
+  useEffect(() => {
+    if (room) {
+      const maxValid = Math.floor(room.players.length / CONSTANTS.MIN_PLAYERS_PER_IMPOSTOR)
+      if (impostorCount > maxValid && maxValid >= 1) {
+        setImpostorCount(maxValid)
+      }
+    }
+  }, [room?.players.length, impostorCount])
 
   if (!room || !user) return null
 
@@ -63,9 +88,15 @@ export function RoomLobby() {
   const hasEnoughPlayers = room.players.length >= CONSTANTS.MIN_PLAYERS
   const playersNeeded = CONSTANTS.MIN_PLAYERS - room.players.length
 
+  // Impostor count validation
+  const minPlayersForImpostors = getMinPlayersForImpostors(impostorCount)
+  const canHaveThisImpostorCount = room.players.length >= minPlayersForImpostors
+  const impostorWarning = isImpostorCountWarning(impostorCount, room.players.length)
+  const recommended = getRecommendedImpostors(room.players.length)
+
   // For custom mode, also need a word
   const canStartCustom = gameMode === 'custom' ? customWord.trim().length > 0 : true
-  const canStart = hasEnoughPlayers && canStartCustom
+  const canStart = hasEnoughPlayers && canStartCustom && canHaveThisImpostorCount
 
   // Get the mode description
   const getModeDescription = () => {
@@ -259,6 +290,50 @@ export function RoomLobby() {
                 </div>
               )}
 
+              {/* Impostor Count Selector */}
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-3">
+                  <span className="w-16 text-sm text-text-secondary">{t('room.impostors')}</span>
+                  <div className="flex flex-1 items-center justify-between rounded-md border border-border bg-bg-secondary px-3 py-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 w-6 p-0"
+                      onClick={() => setImpostorCount(Math.max(1, impostorCount - 1))}
+                      disabled={impostorCount <= 1}
+                    >
+                      -
+                    </Button>
+                    <span className="font-medium tabular-nums">{impostorCount}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 w-6 p-0"
+                      onClick={() => setImpostorCount(Math.min(CONSTANTS.MAX_IMPOSTORS, impostorCount + 1))}
+                      disabled={impostorCount >= CONSTANTS.MAX_IMPOSTORS || !canHaveThisImpostorCount}
+                    >
+                      +
+                    </Button>
+                  </div>
+                </div>
+                {/* Warnings and recommendations */}
+                {!canHaveThisImpostorCount && (
+                  <p className="text-xs text-danger">
+                    {t('room.needMorePlayers', { count: minPlayersForImpostors })}
+                  </p>
+                )}
+                {canHaveThisImpostorCount && impostorWarning === 'too_many' && (
+                  <p className="text-xs text-warning">
+                    {t('room.tooManyImpostors')}
+                  </p>
+                )}
+                {canHaveThisImpostorCount && impostorWarning === 'too_few' && (
+                  <p className="text-xs text-text-tertiary">
+                    {t('room.recommendedImpostors', { min: recommended.min, max: recommended.max })}
+                  </p>
+                )}
+              </div>
+
               {/* Language Selector */}
               <div className="flex items-center gap-3">
                 <span className="w-16 text-sm text-text-secondary">{t('room.language')}</span>
@@ -287,6 +362,7 @@ export function RoomLobby() {
               onClick={() => startGame({
                 mode: gameMode,
                 customWord: gameMode === 'custom' ? customWord.trim() : undefined,
+                impostorCount,
               })}
             >
               {hasEnoughPlayers ? t('room.startGame') : t('room.waitingForPlayers')}

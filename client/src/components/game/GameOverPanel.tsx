@@ -6,17 +6,18 @@ import { useGameStore, useRoomStore, useUserStore } from '@/stores'
 
 export function GameOverPanel() {
   const { t } = useTranslation()
-  const { winner, revealedImpostorId, word } = useGameStore()
+  const { winner, revealedImpostorIds, word } = useGameStore()
   const { room } = useRoomStore()
   const { user } = useUserStore()
   const { leaveRoom, playAgain } = useSocket()
   const [showConfetti, setShowConfetti] = useState(false)
   const [showEmoji, setShowEmoji] = useState(false)
 
-  const impostor = room?.players.find((p) => p.id === revealedImpostorId)
+  const impostors = room?.players.filter((p) => revealedImpostorIds.includes(p.id)) || []
   const isAdmin = room?.adminId === user?.id
-  const wasImpostor = revealedImpostorId === user?.id
+  const wasImpostor = user ? revealedImpostorIds.includes(user.id) : false
   const crewWon = winner === 'crew'
+  const multipleImpostors = revealedImpostorIds.length > 1
 
   // Trigger celebrations
   useEffect(() => {
@@ -87,25 +88,35 @@ export function GameOverPanel() {
         <Card variant={wasImpostor ? 'glow-pink' : 'glow'}>
           <CardHeader className="pb-2">
             <CardTitle className="text-center text-sm font-normal text-text-secondary">
-              {t('gameOver.impostorWas')}
+              {multipleImpostors ? t('gameOver.impostorsWere') : t('gameOver.impostorWas')}
             </CardTitle>
           </CardHeader>
           <CardContent className="pb-6">
-            <div className="flex flex-col items-center gap-3">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-neon-pink text-2xl font-bold text-white">
-                {impostor?.displayName.charAt(0).toUpperCase() || '?'}
-              </div>
-              <p
-                className="text-2xl font-bold text-neon-pink"
-                style={{
-                  textShadow: '0 0 20px rgba(255, 45, 106, 0.5)',
-                }}
-              >
-                {impostor?.displayName || t('common.unknown')}
-                {wasImpostor && (
-                  <span className="ml-2 text-lg text-text-secondary">{t('common.you')}</span>
-                )}
-              </p>
+            <div className={`flex flex-wrap items-center justify-center gap-4 ${multipleImpostors ? 'gap-y-6' : ''}`}>
+              {impostors.map((impostor) => {
+                const isMe = impostor.id === user?.id
+                return (
+                  <div key={impostor.id} className="flex flex-col items-center gap-2">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-neon-pink text-2xl font-bold text-white">
+                      {impostor.displayName.charAt(0).toUpperCase()}
+                    </div>
+                    <p
+                      className="text-xl font-bold text-neon-pink"
+                      style={{
+                        textShadow: '0 0 20px rgba(255, 45, 106, 0.5)',
+                      }}
+                    >
+                      {impostor.displayName}
+                      {isMe && (
+                        <span className="ml-2 text-base text-text-secondary">{t('common.you')}</span>
+                      )}
+                    </p>
+                  </div>
+                )
+              })}
+              {impostors.length === 0 && (
+                <p className="text-xl font-bold text-text-secondary">{t('common.unknown')}</p>
+              )}
             </div>
           </CardContent>
         </Card>

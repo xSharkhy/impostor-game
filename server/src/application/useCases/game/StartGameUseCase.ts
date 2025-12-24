@@ -16,6 +16,7 @@ export interface StartGameInput {
   mode?: GameMode
   categoryId?: string
   customWord?: string
+  impostorCount?: number
 }
 
 export interface StartGameOutput {
@@ -23,7 +24,7 @@ export interface StartGameOutput {
   word: string
   category: string
   mode: GameMode
-  impostorId: string
+  impostorIds: string[]
 }
 
 export interface StartCollectingOutput {
@@ -32,6 +33,7 @@ export interface StartCollectingOutput {
   timeLimit: number
   minWords: number
   playerCount: number
+  impostorCount: number
 }
 
 export class StartGameUseCase {
@@ -63,7 +65,8 @@ export class StartGameUseCase {
 
     // Roulette mode: start collecting phase
     if (mode === 'roulette') {
-      const updatedRoom = room.startCollecting()
+      const impostorCount = input.impostorCount ?? 1
+      const updatedRoom = room.startCollecting(impostorCount)
       await this.roomRepository.save(updatedRoom)
 
       return {
@@ -72,6 +75,7 @@ export class StartGameUseCase {
         timeLimit: 30, // ROULETTE_TIME_LIMIT from shared
         minWords: updatedRoom.minWordsRequired,
         playerCount: updatedRoom.playerCount,
+        impostorCount,
       }
     }
 
@@ -109,8 +113,9 @@ export class StartGameUseCase {
       category = wordResult.categoryName
     }
 
-    // Start game - Room internally selects impostor
-    const updatedRoom = room.startGame(word, category)
+    // Start game - Room internally selects impostor(s)
+    const impostorCount = input.impostorCount ?? 1
+    const updatedRoom = room.startGame(word, category, impostorCount)
 
     await this.roomRepository.save(updatedRoom)
 
@@ -119,7 +124,7 @@ export class StartGameUseCase {
       word,
       category,
       mode,
-      impostorId: updatedRoom.impostorId!,
+      impostorIds: updatedRoom.impostorIds,
     }
   }
 }

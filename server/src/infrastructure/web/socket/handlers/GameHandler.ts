@@ -16,13 +16,14 @@ export function createGameHandler(
     const { user } = socket
 
     // Start game (admin only)
-    socket.on('game:start', async ({ mode, category, customWord }) => {
+    socket.on('game:start', async ({ mode, category, customWord, impostorCount }) => {
       try {
         const result = await startGameUseCase.execute({
           adminId: user.id,
           mode: mode || 'classic',
           categoryId: category,
           customWord,
+          impostorCount: impostorCount ?? 1,
         })
 
         // Roulette mode: start collecting phase
@@ -32,8 +33,9 @@ export function createGameHandler(
             timeLimit: collectingResult.timeLimit,
             minWords: collectingResult.minWords,
             playerCount: collectingResult.playerCount,
+            impostorCount: collectingResult.impostorCount,
           })
-          console.log(`Roulette collecting started in room ${collectingResult.room.code}`)
+          console.log(`Roulette collecting started in room ${collectingResult.room.code} (impostors: ${collectingResult.impostorCount})`)
           return
         }
 
@@ -42,17 +44,18 @@ export function createGameHandler(
         const sockets = await io.in(result.room.id).fetchSockets()
         for (const s of sockets) {
           const authSocket = s as unknown as AuthenticatedSocket
-          const isImpostor = authSocket.user.id === result.impostorId
+          const isImpostor = result.impostorIds.includes(authSocket.user.id)
 
           s.emit('game:started', {
             word: isImpostor ? null : result.word,
             isImpostor,
             turnOrder: result.room.turnOrder ?? [],
             mode: result.mode,
+            impostorCount: result.impostorIds.length,
           })
         }
 
-        console.log(`Game started in room ${result.room.code} (mode: ${result.mode})`)
+        console.log(`Game started in room ${result.room.code} (mode: ${result.mode}, impostors: ${result.impostorIds.length})`)
       } catch (error) {
         if (error instanceof DomainError) {
           socket.emit('error', {
@@ -147,13 +150,14 @@ export function createGameHandler(
           const sockets = await io.in(startResult.room.id).fetchSockets()
           for (const s of sockets) {
             const authSocket = s as unknown as AuthenticatedSocket
-            const isImpostor = authSocket.user.id === startResult.impostorId
+            const isImpostor = startResult.impostorIds.includes(authSocket.user.id)
 
             s.emit('game:started', {
               word: isImpostor ? null : startResult.word,
               isImpostor,
               turnOrder: startResult.room.turnOrder ?? [],
               mode: 'roulette',
+              impostorCount: startResult.impostorIds.length,
             })
           }
 
@@ -186,13 +190,14 @@ export function createGameHandler(
         const sockets = await io.in(result.room.id).fetchSockets()
         for (const s of sockets) {
           const authSocket = s as unknown as AuthenticatedSocket
-          const isImpostor = authSocket.user.id === result.impostorId
+          const isImpostor = result.impostorIds.includes(authSocket.user.id)
 
           s.emit('game:started', {
             word: isImpostor ? null : result.word,
             isImpostor,
             turnOrder: result.room.turnOrder ?? [],
             mode: 'roulette',
+            impostorCount: result.impostorIds.length,
           })
         }
 

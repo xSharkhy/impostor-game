@@ -46,7 +46,7 @@ export interface ClientToServerEvents {
   'room:leave': () => void
   'room:kick': (data: { playerId: string }) => void
   'room:changeLanguage': (data: { language: SupportedLanguage }) => void
-  'game:start': (data: { mode?: GameMode; category?: string; customWord?: string }) => void
+  'game:start': (data: { mode?: GameMode; category?: string; customWord?: string; impostorCount?: number }) => void
   'game:nextRound': () => void
   'game:submitWord': (data: { word: string }) => void
   'game:forceStart': () => void
@@ -68,14 +68,14 @@ export interface ServerToClientEvents {
   'room:playerKicked': (data: { playerId: string }) => void
   'room:adminChanged': (data: { newAdminId: string }) => void
   'room:languageChanged': (data: { language: SupportedLanguage }) => void
-  'game:collectingStarted': (data: { timeLimit: number; minWords: number; playerCount: number }) => void
+  'game:collectingStarted': (data: { timeLimit: number; minWords: number; playerCount: number; impostorCount: number }) => void
   'game:wordCollected': (data: { count: number }) => void
-  'game:started': (data: { word: string | null; isImpostor: boolean; turnOrder: string[]; mode: GameMode }) => void
+  'game:started': (data: { word: string | null; isImpostor: boolean; turnOrder: string[]; mode: GameMode; impostorCount: number }) => void
   'game:newRound': (data: { round: number }) => void
   'game:votingStarted': () => void
   'vote:update': (data: { votes: Record<string, string>; twoThirdsReached: boolean }) => void
   'vote:result': (data: { eliminated?: string; wasImpostor?: boolean }) => void
-  'game:ended': (data: { winner: 'crew' | 'impostor'; impostorId: string; word: string }) => void
+  'game:ended': (data: { winner: 'crew' | 'impostor'; impostorIds: string[]; word: string }) => void
   'word:suggested': (data: { success: boolean; error?: string }) => void
   'word:categories': (data: { id: string; name: string }[]) => void
   'error': (data: { code: string; message: string }) => void
@@ -127,4 +127,35 @@ export const CONSTANTS = {
   CODE_LENGTH: 4,
   RATE_LIMIT_ROOMS_PER_HOUR: 3,
   ROULETTE_TIME_LIMIT: 30, // seconds
+  // Multi-impostor settings
+  MIN_PLAYERS_PER_IMPOSTOR: 2,
+  MAX_IMPOSTORS: 6,
+  IMPOSTOR_WARNING_THRESHOLD: 0.33,
 } as const
+
+// Multi-impostor helper functions
+export function getMinPlayersForImpostors(impostorCount: number): number {
+  return impostorCount * CONSTANTS.MIN_PLAYERS_PER_IMPOSTOR
+}
+
+export function getRecommendedImpostors(playerCount: number): { min: number; max: number } {
+  if (playerCount < 6) return { min: 1, max: 1 }
+  if (playerCount < 10) return { min: 1, max: 2 }
+  if (playerCount < 16) return { min: 2, max: 3 }
+  return { min: 3, max: 4 }
+}
+
+export function isImpostorCountValid(impostorCount: number, playerCount: number): boolean {
+  if (impostorCount < 1 || impostorCount > CONSTANTS.MAX_IMPOSTORS) return false
+  return playerCount >= getMinPlayersForImpostors(impostorCount)
+}
+
+export function isImpostorCountWarning(impostorCount: number, playerCount: number): 'too_many' | 'too_few' | null {
+  const ratio = impostorCount / playerCount
+  if (ratio > CONSTANTS.IMPOSTOR_WARNING_THRESHOLD) return 'too_many'
+
+  const recommended = getRecommendedImpostors(playerCount)
+  if (impostorCount < recommended.min) return 'too_few'
+
+  return null
+}
