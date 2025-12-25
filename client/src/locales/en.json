@@ -17,80 +17,80 @@
   },
   "app": {
     "title": "The Impostor",
-    "subtitle": "Social deduction game"
+    "subtitle": "Someone's lying. Find them."
   },
   "auth": {
     "welcome": "Welcome",
-    "loginPrompt": "Sign in to play",
+    "loginPrompt": "Come in. People are waiting.",
     "continueWithGoogle": "Continue with Google",
     "continueWithGitHub": "Continue with GitHub",
     "connecting": "Connecting...",
-    "termsAccept": "By signing in, you accept the game rules",
+    "termsAccept": "By entering, you agree to play fair (more or less)",
     "logout": "Sign out",
     "errorGoogle": "Error signing in with Google",
     "errorGitHub": "Error signing in with GitHub"
   },
   "home": {
     "greeting": "Hi,",
-    "createRoom": "Create Room",
+    "createRoom": "Create game",
     "creating": "Creating...",
-    "joinRoom": "Join Room",
+    "joinRoom": "Join",
     "suggestWord": "Suggest word",
-    "createRoomTitle": "Create new room",
-    "selectGameLanguage": "Select game language",
-    "gameLanguageHint": "Words will be shown in this language"
+    "createRoomTitle": "New game",
+    "selectGameLanguage": "Pick a language",
+    "gameLanguageHint": "Words will appear in this language"
   },
   "room": {
-    "code": "Room code",
-    "shareCode": "Share this code with your friends",
+    "code": "Code",
+    "shareCode": "Share this code. Tick tock.",
     "players": "Players",
     "minimum": "Minimum {{count}}",
-    "waitingPlayers_one": "Waiting for {{count}} more player...",
-    "waitingPlayers_other": "Waiting for {{count}} more players...",
-    "waitingAdmin": "Waiting for admin...",
-    "startGame": "Start Game",
-    "waitingForPlayers": "Waiting for players...",
-    "leaveRoom": "Leave room",
+    "waitingPlayers_one": "{{count}} more needed. The impostor doesn't wait.",
+    "waitingPlayers_other": "{{count}} more needed. The impostor doesn't wait.",
+    "waitingAdmin": "The boss is taking their time...",
+    "startGame": "Let the games begin",
+    "waitingForPlayers": "Gathering the crew...",
+    "leaveRoom": "Leave",
     "kick": "Kick",
     "kickPlayer": "Kick player",
-    "kickConfirm": "Are you sure you want to kick <strong>{{name}}</strong> from the room?",
-    "leaveConfirm": "Are you sure you want to leave the room?",
-    "leaveAdminWarning": "You are the admin. If you leave, another player will become admin.",
+    "kickConfirm": "Kick <strong>{{name}}</strong>? No going back.",
+    "leaveConfirm": "Leaving? The game goes on without you.",
+    "leaveAdminWarning": "If you leave, someone else takes charge.",
     "leave": "Leave",
     "language": "Language",
     "gameMode": "Mode",
     "modeClassic": "Classic",
-    "modeClassicDesc": "Words from our database by category",
+    "modeClassicDesc": "Random words by category",
     "modeRandom": "Random (RAE)",
-    "modeRandomDesc": "Random word from RAE dictionary (Spanish only)",
+    "modeRandomDesc": "Any word. Literally.",
     "modeCustom": "Custom",
-    "modeCustomDesc": "The admin writes the word",
+    "modeCustomDesc": "You pick the word",
     "modeRoulette": "Roulette",
-    "modeRouletteDesc": "Each player contributes a word",
+    "modeRouletteDesc": "Everyone brings a word",
     "customWordPlaceholder": "Write the secret word...",
     "customWordRequired": "Write a word to start",
     "impostors": "Impostors",
-    "needMorePlayers": "You need at least {{count}} players",
-    "tooManyImpostors": "Too many impostors for this number of players",
-    "recommendedImpostors": "Recommended: {{min}}-{{max}} impostors"
+    "needMorePlayers": "Not enough. You need at least {{count}}.",
+    "tooManyImpostors": "Too many wolves for this flock.",
+    "recommendedImpostors": "Sweet spot: {{min}}-{{max}}"
   },
   "collecting": {
     "title": "Roulette",
     "wordPlaceholder": "Your word...",
-    "submitWord": "Submit word",
+    "submitWord": "Send",
     "wordsReceived": "{{count}} of {{total}} words",
-    "wordSent": "Your word sent",
+    "wordSent": "Sent",
     "startNow": "Start now",
     "minWordsNeeded": "{{count}} more words needed",
     "languageHint": "The word should be in {{language}}",
     "timerExpired": "Time's up",
     "timerExpiredNoWords": "Not enough words to start",
-    "notEnoughWords": "Only {{count}} of {{min}} required words received",
-    "waitingAdminAction": "Waiting for admin to start another game",
-    "backToLobby": "Back to lobby"
+    "notEnoughWords": "Only {{count}} of {{min}} words received",
+    "waitingAdminAction": "Waiting for the boss...",
+    "backToLobby": "Back"
   },
   "join": {
-    "title": "Join room",
+    "title": "Join",
     "enterCode": "Enter the {{length}}-letter code",
     "enterAs": "You'll join as",
     "join": "Join",
@@ -100,100 +100,100 @@
   "game": {
     "youAreImpostor": "You are the impostor",
     "yourWord": "Your word",
-    "discoverWord": "Discover the word by listening to others",
+    "discoverWord": "Listen. Blend in. Survive.",
     "round": "Round {{number}}",
     "impostorCount_one": "{{count}} impostor",
     "impostorCount_other": "{{count}} impostors",
-    "turnOrder": "Turn order",
+    "turnOrder": "Time to describe",
     "spectator": "Spectator",
-    "startVoting": "Start Voting",
-    "nextRound": "Next Round",
-    "leaveGame": "Leave game",
-    "leaveGameConfirm": "Are you sure you want to leave the current game?",
-    "leaveGameAdminWarning": "You are the admin! If you leave, the game will continue with another admin.",
+    "startVoting": "Point fingers",
+    "nextRound": "Another round",
+    "leaveGame": "Leave",
+    "leaveGameConfirm": "Leaving? The game goes on without you.",
+    "leaveGameAdminWarning": "If you leave, someone else takes charge.",
     "abandon": "Leave"
   },
   "voting": {
-    "title": "Time to vote!",
-    "voted": "✓ Voted",
-    "threshold": "{{count}} = eliminate",
+    "title": "Vote!",
+    "voted": "Voted",
+    "threshold": "{{count}} votes and they're out",
     "votesCount": "{{current}} of {{total}} votes",
     "yourVote": "Your vote",
     "vote": "Vote",
     "tie": "Tie!",
     "continue": "Continue",
-    "eliminate": "Eliminate!",
-    "eliminateVotes": "Eliminate ({{count}} votes)",
-    "forgive": "Forgive",
-    "waitingVotes": "Waiting for votes...",
-    "waitingAdmin": "Waiting for admin..."
+    "eliminate": "Out!",
+    "eliminateVotes": "Out ({{count}} votes)",
+    "forgive": "Let it slide",
+    "waitingVotes": "Thinking...",
+    "waitingAdmin": "Waiting for the boss..."
   },
   "results": {
-    "title": "Result",
-    "eliminated": "was eliminated",
+    "title": "The verdict is...",
+    "eliminated": "has been eliminated",
     "wasImpostor": "WAS THE IMPOSTOR!",
-    "wasInnocent": "Innocent...",
-    "goodJob": "Good job, team!",
-    "keepHunting": "There are more impostors!",
-    "impostorRemains": "The impostor is still among you...",
-    "impostorsRemain": "The {{count}} impostors are still among you...",
-    "noElimination": "Nobody was eliminated",
-    "notEnoughVotes": "Not enough votes",
-    "continuing": "Continuing automatically...",
+    "wasInnocent": "Was one of us...",
+    "goodJob": "You got them!",
+    "keepHunting": "One down. More to go.",
+    "impostorRemains": "Still hiding among you.",
+    "impostorsRemain": "Still {{count}} hiding among you.",
+    "noElimination": "Everyone's safe... for now",
+    "notEnoughVotes": "Can't agree on anyone",
+    "continuing": "Next round in...",
     "skip": "Skip"
   },
   "gameOver": {
     "victory": "VICTORY!",
     "defeat": "DEFEAT!",
-    "crewWon": "The crew won!",
-    "impostorWon": "The impostor won!",
+    "crewWon": "The impostor is down!",
+    "impostorWon": "The impostor got away with it!",
     "impostorWas": "The impostor was",
     "impostorsWere": "The impostors were",
     "wordWas": "The word was",
-    "playAgain": "Play again!",
-    "backToStart": "Back to start",
-    "waitingNewGame": "Waiting for admin to start new game..."
+    "playAgain": "Rematch!",
+    "backToStart": "Exit",
+    "waitingNewGame": "Setting up rematch..."
   },
   "suggest": {
     "title": "Suggest word",
     "category": "Category",
-    "selectCategory": "Select a category",
+    "selectCategory": "Pick a category",
     "word": "Word",
     "wordPlaceholder": "Type a word...",
     "submit": "Suggest",
-    "submitting": "Submitting...",
-    "success": "Word suggested successfully",
-    "reviewNote": "Suggestions will be reviewed before being added to the game",
+    "submitting": "Sending...",
+    "success": "Sent!",
+    "reviewNote": "We'll review it. If it's good, it's in.",
     "errorCategories": "Error loading categories",
     "noCategories": "No categories available"
   },
   "admin": {
-    "suggestions": "Word Suggestions",
-    "pendingCount": "{{count}} pending suggestions",
+    "suggestions": "Suggestions",
+    "pendingCount": "{{count}} pending",
     "allCaughtUp": "All caught up!",
-    "noPending": "No pending suggestions to review",
+    "noPending": "No pending suggestions",
     "approve": "Approve",
     "reject": "Reject",
     "refresh": "Refresh",
-    "backToHome": "Back to home",
+    "backToHome": "Back",
     "notAuthenticated": "Not authenticated",
-    "noPermission": "You don't have admin permissions",
-    "errorLoading": "Error loading suggestions",
+    "noPermission": "No admin permissions",
+    "errorLoading": "Error loading",
     "translateWord": "Translate word",
-    "translateDescription": "Add translations for \"{{word}}\" ({{category}}) in all languages",
+    "translateDescription": "Translations for \"{{word}}\" ({{category}})",
     "original": "original",
     "approveAll": "Approve in all languages"
   },
   "profile": {
     "namePlaceholder": "Your name",
     "nameLength": "2-20 characters",
-    "errorSaving": "Error saving name",
-    "errorLength": "Name must be between 2 and 20 characters"
+    "errorSaving": "Error saving",
+    "errorLength": "Must be 2-20 characters"
   },
   "connection": {
-    "restored": "Connection restored",
-    "lost": "Connection lost",
-    "reconnecting": "Trying to reconnect...",
+    "restored": "Back online!",
+    "lost": "Lost you there",
+    "reconnecting": "Reconnecting...",
     "error": "Connection error",
     "noServer": "No server connection"
   },
@@ -202,11 +202,11 @@
     "playerLeft": "{{name}} left",
     "youWereKicked": "You were kicked from the room",
     "playerKicked": "{{name}} was kicked",
-    "newAdmin": "{{name}} is the new admin"
+    "newAdmin": "{{name}} is the new boss"
   },
   "error": {
-    "title": "Something went wrong!",
-    "description": "An unexpected error occurred. You can try reloading the page.",
+    "title": "Oops. That wasn't supposed to happen.",
+    "description": "Something broke. Try reloading.",
     "reload": "Reload"
   },
   "language": {
@@ -214,7 +214,7 @@
     "change": "Change language",
     "roomLanguage": "Room language",
     "differentLanguage": "The room is in {{language}}",
-    "willChange": "Your language will change automatically when you join.",
+    "willChange": "Your language will change automatically.",
     "joinAnyway": "Join"
   },
   "categories": {
@@ -224,5 +224,119 @@
     "objects": "Objects",
     "professions": "Professions",
     "sports": "Sports"
+  },
+  "terms": {
+    "title": "Terms of Use",
+    "subtitle": "The game rules (no lawyers involved)",
+    "privacyLink": "Privacy Policy",
+    "lastUpdated": "Last updated: December 2025",
+    "whatIsThis": {
+      "title": "What is this",
+      "p1": "The Impostor is a party game for playing with friends. One of you doesn't know the secret word and has to fake it while the others describe it. Simple, fun, and sometimes very tense.",
+      "p2": "By using the app, you accept these terms. If you don't like them, sorry, but we can't change them just for you."
+    },
+    "rules": {
+      "title": "Play fair",
+      "intro": "This is a social game. The point is to have fun with friends, not ruin anyone's day. Basic rules:",
+      "rule1": "Don't be toxic. No insults, harassment, or behavior that ruins the experience for others.",
+      "rule2": "Don't cheat. If you're the impostor, hold your ground. If you're not, don't leak the word.",
+      "rule3": "Don't use the app for anything illegal. This includes offensive content, spam, and anything that could get us in trouble.",
+      "rule4": "Respect other players. There's a real person behind every name.",
+      "rule5": "If you get caught, accept defeat with dignity. And if you win, don't be insufferable."
+    },
+    "account": {
+      "title": "Your account",
+      "p1": "To play you need to sign in with Google or GitHub. This gives us access to your email and name, nothing else. We don't access your contacts, photos, files, or anything weird.",
+      "p2": "Your account is yours. Don't share it with anyone. If someone does bad things with your account, you're responsible."
+    },
+    "content": {
+      "title": "Content you create",
+      "p1": "You can suggest words for the game. These words go through a filter before entering the database. We reserve the right to reject any word without explanation (though usually it's because it's offensive, too obscure, or just bad).",
+      "p2": "By suggesting a word, you give us permission to use it in the game. We won't give you credits or royalties. It's a contribution to the common good."
+    },
+    "consequences": {
+      "title": "If you misbehave",
+      "p1": "If you do things that aren't cool, we can take action. This includes but is not limited to:",
+      "item1": "Kicking you from ongoing games",
+      "item2": "Suspending or deleting your account",
+      "item3": "Permanently banning your access",
+      "p2": "There's no appeals court. This is a free game, not a constitutional right. If you think we made a mistake, you can write to us, but we promise nothing."
+    },
+    "disclaimer": {
+      "title": "The typical disclaimer",
+      "p1": "The Impostor is provided as is, without warranties of any kind. We don't guarantee it will always work, that it's bug-free, or that it will exist forever.",
+      "p2": "We're not responsible for what happens during games. If your friends discover you're a terrible liar, that's on you. If you lose an epic game because of a bug, sorry but we can't compensate you.",
+      "p3": "This is a personal project made with love. We do what we can to make it work well, but we're not a company with infinite resources."
+    },
+    "changes": {
+      "title": "Changes to these terms",
+      "content": "We can update these terms whenever we want. If the changes are significant, we'll try to let you know somehow. But ultimately, it's your responsibility to check them from time to time."
+    }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "subtitle": "What data we have and what we do with it",
+    "termsLink": "Terms of Use",
+    "lastUpdated": "Last updated: December 2025",
+    "intro": {
+      "title": "In short",
+      "p1": "We keep the minimum for the game to work. We don't sell your data, we don't do weird things with it, and we're not interested in spying on you.",
+      "p2": "That said, here are all the details because we like transparency."
+    },
+    "collect": {
+      "title": "What data we collect",
+      "intro": "Depending on how you use the app, we store different things:",
+      "auth": {
+        "title": "When you sign in (Google/GitHub)",
+        "item1": "Your unique user ID (generated by Supabase)",
+        "item2": "Your email (to identify you)",
+        "item3": "Your profile name (you can change it)"
+      },
+      "game": {
+        "title": "During the game",
+        "item1": "Your player name (the one you choose to display)",
+        "item2": "The words you suggest (if you decide to suggest any)"
+      },
+      "local": {
+        "title": "In your browser (localStorage)",
+        "item1": "Your language preference",
+        "item2": "Session data so you don't have to sign in every time"
+      }
+    },
+    "use": {
+      "title": "What we use your data for",
+      "intro": "Only for what we need. Specifically:",
+      "item1": "Let you play games and keep your session active",
+      "item2": "Show your name when you play",
+      "item3": "Know who suggested each word (for moderation)",
+      "item4": "Improve the game (if we see something failing a lot)"
+    },
+    "thirdParties": {
+      "title": "Third parties that touch your data",
+      "intro": "We use external services to make this work:",
+      "supabase": "Database and authentication. They store your profile and handle login.",
+      "oauth": "Only to verify your identity. We don't access more data from your account.",
+      "rae": "For the random word mode. We don't send your data to RAE, we just request words.",
+      "noSell": "We don't sell your data. We don't share it with advertisers. We don't do invasive analytics. Period."
+    },
+    "retention": {
+      "title": "How long we keep your data",
+      "item1": "Your profile: as long as you have an active account",
+      "item2": "Games: not saved. When the game ends, everything is deleted",
+      "item3": "Suggested words: indefinitely (they become part of the game)"
+    },
+    "rights": {
+      "title": "Your rights",
+      "intro": "Even though this is a free game, you have rights over your data:",
+      "item1": "You can ask us to delete your account and all your data",
+      "item2": "You can ask us for a copy of the data we have about you",
+      "item3": "You can change your profile name whenever you want",
+      "contact": "To exercise these rights, write to us. We don't have a fancy form, but we read all emails."
+    },
+    "security": {
+      "title": "Security",
+      "p1": "We use HTTPS for everything. Passwords are handled by Supabase (we don't even see them). Database access is restricted.",
+      "p2": "That said, nothing is 100% secure. If someone hacks Supabase, there's little we can do. But we do what's in our power."
+    }
   }
 }

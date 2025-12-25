@@ -17,82 +17,82 @@
   },
   "app": {
     "title": "L'Impostor",
-    "subtitle": "Joc de deducció social"
+    "subtitle": "Algu menteix. Descobreix-lo."
   },
   "auth": {
     "welcome": "Benvingut",
-    "loginPrompt": "Inicia sessió per jugar",
+    "loginPrompt": "Entra. Hi ha gent esperant.",
     "continueWithGoogle": "Continuar amb Google",
     "continueWithGitHub": "Continuar amb GitHub",
     "connecting": "Connectant...",
-    "termsAccept": "En iniciar sessió, acceptes les regles del joc",
-    "logout": "Tancar sessió",
-    "errorGoogle": "Error en iniciar sessió amb Google",
-    "errorGitHub": "Error en iniciar sessió amb GitHub"
+    "termsAccept": "En entrar, acceptes jugar net (mes o menys)",
+    "logout": "Tancar sessio",
+    "errorGoogle": "Error en iniciar sessio amb Google",
+    "errorGitHub": "Error en iniciar sessio amb GitHub"
   },
   "home": {
     "greeting": "Hola,",
-    "createRoom": "Crear Sala",
+    "createRoom": "Crear partida",
     "creating": "Creant...",
-    "joinRoom": "Unir-se a Sala",
+    "joinRoom": "Unir-se",
     "suggestWord": "Suggerir paraula",
-    "createRoomTitle": "Crear nova sala",
-    "selectGameLanguage": "Selecciona l'idioma del joc",
-    "gameLanguageHint": "Les paraules es mostraran en aquest idioma"
+    "createRoomTitle": "Nova partida",
+    "selectGameLanguage": "Tria l'idioma",
+    "gameLanguageHint": "Les paraules sortiran en aquest idioma"
   },
   "room": {
-    "code": "Codi de sala",
-    "shareCode": "Comparteix aquest codi amb els teus amics",
+    "code": "Codi",
+    "shareCode": "Passa aquest codi. Sense pressa pero sense pausa.",
     "players": "Jugadors",
-    "minimum": "Mínim {{count}}",
-    "waitingPlayers_one": "Esperant {{count}} jugador més...",
-    "waitingPlayers_other": "Esperant {{count}} jugadors més...",
-    "waitingAdmin": "Esperant l'admin...",
-    "startGame": "Iniciar Partida",
-    "waitingForPlayers": "Esperant jugadors...",
-    "leaveRoom": "Sortir de la sala",
-    "kick": "Expulsar",
-    "kickPlayer": "Expulsar jugador",
-    "kickConfirm": "Estàs segur que vols expulsar <strong>{{name}}</strong> de la sala?",
-    "leaveConfirm": "Estàs segur que vols sortir de la sala?",
-    "leaveAdminWarning": "Ets l'admin. Si surts, un altre jugador serà assignat com a admin.",
+    "minimum": "Minim {{count}}",
+    "waitingPlayers_one": "Falta {{count}}. L'impostor no espera.",
+    "waitingPlayers_other": "Falten {{count}}. L'impostor no espera.",
+    "waitingAdmin": "El cap triga...",
+    "startGame": "Que comenci l'espectacle",
+    "waitingForPlayers": "Reunio en curs...",
+    "leaveRoom": "Sortir",
+    "kick": "Fotre fora",
+    "kickPlayer": "Fotre fora jugador",
+    "kickConfirm": "Fotre fora <strong>{{name}}</strong>? No hi ha marxa enrere.",
+    "leaveConfirm": "Te'n vas? La partida segueix sense tu.",
+    "leaveAdminWarning": "Si te'n vas, un altre pren el comandament.",
     "leave": "Sortir",
     "language": "Idioma",
     "gameMode": "Mode",
-    "modeClassic": "Clàssic",
-    "modeClassicDesc": "Paraules de la nostra base de dades per categories",
+    "modeClassic": "Classic",
+    "modeClassicDesc": "Paraules aleatories per tema",
     "modeRandom": "Aleatori (RAE)",
-    "modeRandomDesc": "Paraula aleatòria del diccionari de la RAE (només espanyol)",
+    "modeRandomDesc": "Qualsevol paraula. Literalment.",
     "modeCustom": "Lliure",
-    "modeCustomDesc": "L'admin escriu la paraula",
+    "modeCustomDesc": "Tu tries la paraula",
     "modeRoulette": "Ruleta",
-    "modeRouletteDesc": "Cada jugador aporta una paraula",
+    "modeRouletteDesc": "Cadascun proposa una paraula",
     "customWordPlaceholder": "Escriu la paraula secreta...",
-    "customWordRequired": "Escriu una paraula per començar",
+    "customWordRequired": "Escriu una paraula per comenar",
     "impostors": "Impostors",
-    "needMorePlayers": "Necessites almenys {{count}} jugadors",
-    "tooManyImpostors": "Massa impostors per a aquesta quantitat de jugadors",
-    "recommendedImpostors": "Recomanat: {{min}}-{{max}} impostors"
+    "needMorePlayers": "Pocs sou. Minim {{count}}.",
+    "tooManyImpostors": "Massa llops per a tan poques ovelles.",
+    "recommendedImpostors": "L'ideal: {{min}}-{{max}}"
   },
   "collecting": {
     "title": "Ruleta",
     "wordPlaceholder": "La teva paraula...",
-    "submitWord": "Enviar paraula",
+    "submitWord": "Enviar",
     "wordsReceived": "{{count}} de {{total}} paraules",
-    "wordSent": "La teva paraula enviada",
-    "startNow": "Iniciar ja",
+    "wordSent": "Enviada",
+    "startNow": "Comenar ja",
     "minWordsNeeded": "Falten {{count}} paraules",
     "languageHint": "La paraula ha d'estar en {{language}}",
     "timerExpired": "Temps esgotat",
-    "timerExpiredNoWords": "No hi ha prou paraules per començar",
-    "notEnoughWords": "Només s'han rebut {{count}} de {{min}} paraules necessàries",
-    "waitingAdminAction": "Esperant que l'admin iniciï una altra partida",
-    "backToLobby": "Tornar al lobby"
+    "timerExpiredNoWords": "No hi ha prou paraules",
+    "notEnoughWords": "Nomes {{count}} de {{min}} paraules",
+    "waitingAdminAction": "Esperant el cap...",
+    "backToLobby": "Tornar"
   },
   "join": {
-    "title": "Unir-se a sala",
+    "title": "Unir-se",
     "enterCode": "Introdueix el codi de {{length}} lletres",
-    "enterAs": "Entraràs com",
+    "enterAs": "Entraras com",
     "join": "Unir-se",
     "connecting": "Connectant...",
     "codeHint": "El codi apareix a la pantalla de l'admin"
@@ -100,121 +100,121 @@
   "game": {
     "youAreImpostor": "Ets l'impostor",
     "yourWord": "La teva paraula",
-    "discoverWord": "Descobreix la paraula escoltant els altres",
+    "discoverWord": "Escolta. Dissimula. Sobreviu.",
     "round": "Ronda {{number}}",
     "impostorCount_one": "{{count}} impostor",
     "impostorCount_other": "{{count}} impostors",
-    "turnOrder": "Ordre de torns",
+    "turnOrder": "A descriure",
     "spectator": "Espectador",
-    "startVoting": "Iniciar Votació",
-    "nextRound": "Següent Ronda",
-    "leaveGame": "Abandonar partida",
-    "leaveGameConfirm": "Segur que vols abandonar la partida en curs?",
-    "leaveGameAdminWarning": "Ets l'admin! Si abandones, la partida continuarà amb un altre admin.",
+    "startVoting": "Hora d'assenyalar",
+    "nextRound": "Una altra ronda",
+    "leaveGame": "Abandonar",
+    "leaveGameConfirm": "Te'n vas? La partida segueix sense tu.",
+    "leaveGameAdminWarning": "Si te'n vas, un altre pren el comandament.",
     "abandon": "Abandonar"
   },
   "voting": {
     "title": "A votar!",
-    "voted": "✓ Has votat",
-    "threshold": "{{count}} = eliminar",
+    "voted": "Votat",
+    "threshold": "{{count}} vots i cau",
     "votesCount": "{{current}} de {{total}} vots",
     "yourVote": "El teu vot",
     "vote": "Votar",
     "tie": "Empat!",
     "continue": "Continuar",
-    "eliminate": "Eliminar!",
-    "eliminateVotes": "Eliminar ({{count}} vots)",
-    "forgive": "Perdonar",
-    "waitingVotes": "Esperant vots...",
-    "waitingAdmin": "Esperant l'admin..."
+    "eliminate": "Fora!",
+    "eliminateVotes": "Fora ({{count}} vots)",
+    "forgive": "Deixar-ho passar",
+    "waitingVotes": "Pensant...",
+    "waitingAdmin": "Esperant el cap..."
   },
   "results": {
-    "title": "Resultat",
+    "title": "I el veredicte es...",
     "eliminated": "ha estat eliminat",
     "wasImpostor": "ERA L'IMPOSTOR!",
-    "wasInnocent": "Innocent...",
-    "goodJob": "Bona feina, equip!",
-    "keepHunting": "Queden més impostors!",
-    "impostorRemains": "L'impostor segueix entre vosaltres...",
-    "impostorsRemain": "Els {{count}} impostors segueixen entre vosaltres...",
-    "noElimination": "Ningú ha estat eliminat",
-    "notEnoughVotes": "No hi ha hagut prou vots",
-    "continuing": "Continuant automàticament...",
+    "wasInnocent": "Era dels nostres...",
+    "goodJob": "L'heu pillat!",
+    "keepHunting": "Un menys. Pero en queden mes.",
+    "impostorRemains": "Encara es aqui. Amagat.",
+    "impostorsRemain": "Encara hi ha {{count}} amagats.",
+    "noElimination": "Tots a salvo... per ara",
+    "notEnoughVotes": "No us poseu d'acord",
+    "continuing": "Seguent ronda en...",
     "skip": "Saltar"
   },
   "gameOver": {
-    "victory": "VICTÒRIA!",
+    "victory": "VICTORIA!",
     "defeat": "DERROTA!",
-    "crewWon": "Els civils han guanyat!",
-    "impostorWon": "L'impostor ha guanyat!",
+    "crewWon": "L'impostor ha caigut!",
+    "impostorWon": "L'impostor se n'ha sortit!",
     "impostorWas": "L'impostor era",
     "impostorsWere": "Els impostors eren",
     "wordWas": "La paraula era",
-    "playAgain": "Una altra partida!",
-    "backToStart": "Tornar a l'inici",
-    "waitingNewGame": "Esperant l'admin per nova partida..."
+    "playAgain": "Revenja!",
+    "backToStart": "Sortir",
+    "waitingNewGame": "Preparant revenja..."
   },
   "suggest": {
     "title": "Suggerir paraula",
     "category": "Categoria",
-    "selectCategory": "Selecciona una categoria",
+    "selectCategory": "Tria categoria",
     "word": "Paraula",
     "wordPlaceholder": "Escriu una paraula...",
     "submit": "Suggerir",
     "submitting": "Enviant...",
-    "success": "Paraula suggerida correctament",
-    "reviewNote": "Els suggeriments seran revisats abans d'afegir-se al joc",
+    "success": "Enviada!",
+    "reviewNote": "Ho revisem i si mola, entra",
     "errorCategories": "Error en carregar categories",
-    "noCategories": "No hi ha categories disponibles"
+    "noCategories": "No hi ha categories"
   },
   "admin": {
-    "suggestions": "Suggeriments de Paraules",
-    "pendingCount": "{{count}} suggeriments pendents",
+    "suggestions": "Suggeriments",
+    "pendingCount": "{{count}} pendents",
     "allCaughtUp": "Tot al dia!",
-    "noPending": "No hi ha suggeriments pendents de revisar",
+    "noPending": "No hi ha suggeriments pendents",
     "approve": "Aprovar",
     "reject": "Rebutjar",
     "refresh": "Actualitzar",
-    "backToHome": "Tornar a l'inici",
+    "backToHome": "Tornar",
     "notAuthenticated": "No autenticat",
-    "noPermission": "No tens permisos d'administrador",
-    "errorLoading": "Error en carregar suggeriments",
+    "noPermission": "Sense permisos d'admin",
+    "errorLoading": "Error en carregar",
     "translateWord": "Traduir paraula",
-    "translateDescription": "Afegeix les traduccions per a \"{{word}}\" ({{category}}) en tots els idiomes",
+    "translateDescription": "Traduccions per a \"{{word}}\" ({{category}})",
     "original": "original",
     "approveAll": "Aprovar en tots els idiomes"
   },
   "profile": {
     "namePlaceholder": "El teu nom",
-    "nameLength": "2-20 caràcters",
-    "errorSaving": "Error en desar el nom",
-    "errorLength": "El nom ha de tenir entre 2 i 20 caràcters"
+    "nameLength": "2-20 caracters",
+    "errorSaving": "Error en desar",
+    "errorLength": "Entre 2 i 20 caracters"
   },
   "connection": {
-    "restored": "Connexió restablerta",
-    "lost": "Connexió perduda",
-    "reconnecting": "Intentant reconnectar...",
-    "error": "Error de connexió",
-    "noServer": "No hi ha connexió amb el servidor"
+    "restored": "De tornada!",
+    "lost": "T'hem perdut",
+    "reconnecting": "Tornant...",
+    "error": "Error de connexio",
+    "noServer": "Sense connexio al servidor"
   },
   "notifications": {
     "playerJoined": "{{name}} s'ha unit",
     "playerLeft": "{{name}} ha sortit",
-    "youWereKicked": "Has estat expulsat de la sala",
-    "playerKicked": "{{name}} ha estat expulsat",
-    "newAdmin": "{{name}} és el nou admin"
+    "youWereKicked": "T'han foragitat de la sala",
+    "playerKicked": "{{name}} ha estat foragitat",
+    "newAdmin": "{{name}} es el nou cap"
   },
   "error": {
-    "title": "Alguna cosa ha anat malament!",
-    "description": "Ha ocorregut un error inesperat. Pots intentar recarregar la pàgina.",
+    "title": "Ups. Aixo no estava previst.",
+    "description": "Alguna cosa ha fallat. Prova de recarregar.",
     "reload": "Recarregar"
   },
   "language": {
     "title": "Idioma",
     "change": "Canviar idioma",
     "roomLanguage": "Idioma de la sala",
-    "differentLanguage": "La sala està en {{language}}",
-    "willChange": "El teu idioma es canviarà automàticament en unir-te.",
+    "differentLanguage": "La sala esta en {{language}}",
+    "willChange": "El teu idioma canviara automaticament.",
     "joinAnyway": "Unir-se"
   },
   "categories": {
@@ -224,5 +224,119 @@
     "objects": "Objectes",
     "professions": "Professions",
     "sports": "Esports"
+  },
+  "terms": {
+    "title": "Termes d'us",
+    "subtitle": "Les regles del joc (sense advocats pel mig)",
+    "privacyLink": "Politica de privacitat",
+    "lastUpdated": "Ultima actualitzacio: Desembre 2025",
+    "whatIsThis": {
+      "title": "Que es aixo",
+      "p1": "L'Impostor es un party game per jugar amb amics. Un de vosaltres no coneix la paraula secreta i ha de dissimular mentre els altres la descriuen. Simple, divertit, i a vegades molt tens.",
+      "p2": "En usar l'aplicacio, acceptes aquestes condicions. Si no t'agraden, ho sentim, pero no podem canviar-les nomes per tu."
+    },
+    "rules": {
+      "title": "Juga net",
+      "intro": "Aixo es un joc social. La idea es passar-ho be amb amics, no amargar-li la vida a ningu. Les regles basiques:",
+      "rule1": "No siguis toxic. Res d'insults, assetjament ni comportament que arruini l'experiencia dels altres.",
+      "rule2": "No facis trampes. Si ets l'impostor, aguanta el tipus. Si no ho ets, no li xiulis la paraula a ningu.",
+      "rule3": "No facis servir l'app per res il·legal. Aixo inclou contingut ofensiu, spam i qualsevol cosa que ens pugui ficar en problemes.",
+      "rule4": "Respecta els altres jugadors. Darrere de cada nom hi ha una persona real.",
+      "rule5": "Si et pillen, accepta la derrota amb dignitat. I si guanyes, no siguis insuportable."
+    },
+    "account": {
+      "title": "El teu compte",
+      "p1": "Per jugar necessites iniciar sessio amb Google o GitHub. Aixo ens dona acces al teu email i nom, res mes. No accedim als teus contactes, fotos, arxius ni res estrany.",
+      "p2": "El teu compte es teu. No el comparteixis amb ningu. Si algu fa coses dolentes amb el teu compte, tu n'ets el responsable."
+    },
+    "content": {
+      "title": "Contingut que crees",
+      "p1": "Pots suggerir paraules per al joc. Aquestes paraules passen per un filtre abans d'entrar a la base de dades. Ens reservem el dret de rebutjar qualsevol paraula sense donar explicacions (encara que normalment es perque es ofensiva, molt rebuscada o simplement dolenta).",
+      "p2": "En suggerir una paraula, ens dones permis per usar-la al joc. No et donarem credits ni regalia. Es una contribucio al be comu."
+    },
+    "consequences": {
+      "title": "Si et portes malament",
+      "p1": "Si fas coses que no molen, podem prendre mesures. Aixo inclou pero no es limita a:",
+      "item1": "Fotre't fora de partides en curs",
+      "item2": "Suspendre o eliminar el teu compte",
+      "item3": "Banejar el teu acces permanentment",
+      "p2": "No hi ha tribunal d'apel·lacions. Aixo es un joc gratuit, no un dret constitucional. Si creus que hem comes un error, pots escriure'ns, pero no prometem res."
+    },
+    "disclaimer": {
+      "title": "El tipic disclaimer",
+      "p1": "L'Impostor s'ofereix tal qual, sense garanties de cap tipus. No garantim que funcioni sempre, que no tingui bugs ni que existira per sempre.",
+      "p2": "No som responsables del que passi durant les partides. Si els teus amics descobreixen que menteixes fatal, aixo es cosa teva. Si perds una partida epica per un bug, ho sentim pero no et podem compensar.",
+      "p3": "Aixo es un projecte personal fet amb estima. Fem el que podem perque funcioni be, pero no som una empresa amb recursos infinits."
+    },
+    "changes": {
+      "title": "Canvis en aquests termes",
+      "content": "Podem actualitzar aquests termes quan vulguem. Si els canvis son importants, intentarem avisar-te d'alguna forma. Pero al final, es la teva responsabilitat revisar-los de tant en tant."
+    }
+  },
+  "privacy": {
+    "title": "Politica de privacitat",
+    "subtitle": "Quines dades tenim i que fem amb elles",
+    "termsLink": "Termes d'us",
+    "lastUpdated": "Ultima actualitzacio: Desembre 2025",
+    "intro": {
+      "title": "En resum",
+      "p1": "Guardem el minim perque el joc funcioni. No venem les teves dades, no fem coses estranyes amb elles, i no ens interessa espiar-te.",
+      "p2": "Dit aixo, aqui tens tots els detalls perque ens agrada la transparencia."
+    },
+    "collect": {
+      "title": "Quines dades recollim",
+      "intro": "Depenent de com facis servir l'app, guardem coses diferents:",
+      "auth": {
+        "title": "Quan inicies sessio (Google/GitHub)",
+        "item1": "El teu ID d'usuari unic (generat per Supabase)",
+        "item2": "El teu email (per identificar-te)",
+        "item3": "El teu nom de perfil (pots canviar-lo)"
+      },
+      "game": {
+        "title": "Durant el joc",
+        "item1": "El teu nom de jugador (el que tries mostrar)",
+        "item2": "Les paraules que suggereixes (si decideixes suggerir-ne alguna)"
+      },
+      "local": {
+        "title": "Al teu navegador (localStorage)",
+        "item1": "La teva preferencia d'idioma",
+        "item2": "Dades de sessio per no haver d'iniciar sessio cada cop"
+      }
+    },
+    "use": {
+      "title": "Per a que fem servir les teves dades",
+      "intro": "Nomes per al que necessitem. Concretament:",
+      "item1": "Deixar-te jugar partides i mantenir la teva sessio activa",
+      "item2": "Mostrar el teu nom quan jugues",
+      "item3": "Saber qui ha suggerit cada paraula (per moderar)",
+      "item4": "Millorar el joc (si veiem que alguna cosa falla molt)"
+    },
+    "thirdParties": {
+      "title": "Tercers que toquen les teves dades",
+      "intro": "Fem servir serveis externs perque aixo funcioni:",
+      "supabase": "Base de dades i autenticacio. Guarden el teu perfil i gestionen el login.",
+      "oauth": "Nomes per verificar la teva identitat. No accedim a mes dades del teu compte.",
+      "rae": "Per al mode aleatori de paraules. No enviem dades teves a la RAE, nomes demanem paraules.",
+      "noSell": "No venem les teves dades. No les compartim amb anunciants. No fem analytics invasius. Punt."
+    },
+    "retention": {
+      "title": "Quant de temps guardem les teves dades",
+      "item1": "El teu perfil: mentre tinguis compte actiu",
+      "item2": "Les partides: no es guarden. Quan acaba la partida, s'esborra tot",
+      "item3": "Les paraules suggerides: indefinidament (formen part del joc)"
+    },
+    "rights": {
+      "title": "Els teus drets",
+      "intro": "Encara que aixo sigui un joc gratuit, tens drets sobre les teves dades:",
+      "item1": "Pots demanar-nos que esborrem el teu compte i totes les teves dades",
+      "item2": "Pots demanar-nos una copia de les dades que tenim sobre tu",
+      "item3": "Pots canviar el teu nom de perfil quan vulguis",
+      "contact": "Per exercir aquests drets, escriu-nos. No tenim un formulari fancy, pero llegim tots els emails."
+    },
+    "security": {
+      "title": "Seguretat",
+      "p1": "Fem servir HTTPS per a tot. Les contrasenyes les gestiona Supabase (nosaltres ni les veiem). L'acces a la base de dades esta restringit.",
+      "p2": "Dit aixo, res es 100% segur. Si algu hackeja Supabase, poc hi podem fer. Pero fem el que esta a les nostres mans."
+    }
   }
 }
