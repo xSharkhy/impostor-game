@@ -36,6 +36,8 @@ export interface RoomProps {
 }
 
 const MIN_PLAYERS = 3
+const MIN_PLAYERS_PER_IMPOSTOR = 2
+const MAX_IMPOSTORS = 6
 const CODE_CHARS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'
 const CODE_LENGTH = 4
 
@@ -287,6 +289,8 @@ export class Room {
       throw new NotEnoughPlayersError(MIN_PLAYERS)
     }
 
+    this.validateImpostorCount(impostorCount)
+
     return this.withUpdate({
       status: 'collecting_words',
       submittedWords: new Map(),
@@ -368,6 +372,17 @@ export class Room {
   }
 
   // Game operations
+  private validateImpostorCount(impostorCount: number): void {
+    if (impostorCount < 1 || impostorCount > MAX_IMPOSTORS) {
+      throw new InvalidStateError(`Impostor count must be between 1 and ${MAX_IMPOSTORS}`)
+    }
+
+    const minPlayersRequired = impostorCount * MIN_PLAYERS_PER_IMPOSTOR
+    if (this._players.size < minPlayersRequired) {
+      throw new InvalidStateError(`Need at least ${minPlayersRequired} players for ${impostorCount} impostor(s)`)
+    }
+  }
+
   startGame(word: string, category?: string, impostorCount: number = 1): Room {
     if (this._status !== 'lobby') {
       throw new GameAlreadyStartedError()
@@ -376,6 +391,8 @@ export class Room {
     if (this._players.size < MIN_PLAYERS) {
       throw new NotEnoughPlayersError(MIN_PLAYERS)
     }
+
+    this.validateImpostorCount(impostorCount)
 
     // Generate random turn order
     const playerIds = Array.from(this._players.keys())

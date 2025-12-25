@@ -316,8 +316,8 @@ export function RoomLobby() {
                     </Button>
                   </div>
                 </div>
-                {/* Warnings and recommendations */}
-                {!canHaveThisImpostorCount && (
+                {/* Warnings and recommendations - only show for 2+ impostors since 1 impostor is always valid with game minimum */}
+                {!canHaveThisImpostorCount && impostorCount > 1 && (
                   <p className="text-xs text-danger">
                     {t('room.needMorePlayers', { count: minPlayersForImpostors })}
                   </p>
@@ -327,7 +327,7 @@ export function RoomLobby() {
                     {t('room.tooManyImpostors')}
                   </p>
                 )}
-                {canHaveThisImpostorCount && impostorWarning === 'too_few' && (
+                {canHaveThisImpostorCount && impostorWarning === 'too_few' && impostorCount > 1 && (
                   <p className="text-xs text-text-tertiary">
                     {t('room.recommendedImpostors', { min: recommended.min, max: recommended.max })}
                   </p>
