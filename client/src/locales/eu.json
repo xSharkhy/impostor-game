@@ -25,7 +25,7 @@
     "continueWithGoogle": "Google-rekin jarraitu",
     "continueWithGitHub": "GitHub-ekin jarraitu",
     "connecting": "Konektatzen...",
-    "termsAccept": "Sartzean, garbi jokatzea onartzen duzu (gutxi gorabehera)",
+    "termsAccept": "Sartzean, <0>baldintzak</0> eta <1>pribatutasuna</1> onartzen dituzu",
     "logout": "Saioa itxi",
     "errorGoogle": "Errorea Google-rekin saioa hastean",
     "errorGitHub": "Errorea GitHub-ekin saioa hastean"
