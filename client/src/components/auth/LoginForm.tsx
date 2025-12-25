@@ -104,12 +104,13 @@ export function LoginForm() {
 
       {/* Legal links */}
       <p className="text-center text-xs text-text-tertiary">
-        <Trans i18nKey="auth.termsAccept">
-          Al entrar, aceptas los
-          <Link to="/terms" className="text-accent hover:underline">términos</Link>
-          y la
-          <Link to="/privacy" className="text-accent hover:underline">privacidad</Link>
-        </Trans>
+        <Trans
+          i18nKey="auth.termsAccept"
+          components={{
+            terms: <Link to="/terms" className="text-accent hover:underline" />,
+            privacy: <Link to="/privacy" className="text-accent hover:underline" />
+          }}
+        />
       </p>
     </div>
   )

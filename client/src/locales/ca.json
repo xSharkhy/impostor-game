@@ -25,7 +25,7 @@
     "continueWithGoogle": "Continuar amb Google",
     "continueWithGitHub": "Continuar amb GitHub",
     "connecting": "Connectant...",
-    "termsAccept": "En entrar, acceptes els <0>termes</0> i la <1>privacitat</1>",
+    "termsAccept": "En entrar, acceptes els <terms>termes</terms> i la <privacy>privacitat</privacy>",
     "logout": "Tancar sessio",
     "errorGoogle": "Error en iniciar sessio amb Google",
     "errorGitHub": "Error en iniciar sessio amb GitHub"

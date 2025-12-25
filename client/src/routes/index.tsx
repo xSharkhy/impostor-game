@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { Button, Skeleton } from '@/components/ui'
 import { LoginForm } from '@/components/auth/LoginForm'
 import { JoinRoom } from '@/components/lobby/JoinRoom'
@@ -158,6 +158,13 @@ function HomePage() {
         ) : (
           <LoginForm />
         )}
+
+        {/* Legal footer */}
+        <footer className="pt-8 text-center text-xs text-text-tertiary">
+          <Link to="/terms" className="hover:text-accent">{t('terms.title')}</Link>
+          <span className="mx-2">·</span>
+          <Link to="/privacy" className="hover:text-accent">{t('privacy.title')}</Link>
+        </footer>
       </div>
     </div>
   )
