@@ -93,10 +93,15 @@ The core business logic, independent of frameworks.
 export class Room {
   private props: RoomProps;
 
-  startGame(mode: GameMode, word: string): void;
-  castVote(voterId: string, targetId: string): void;
-  eliminatePlayer(playerId: string): void;
+  startGame(word: string, category?: string, impostorCount?: number): Room;
+  castVote(voterId: string, targetId: string): Room;
+  eliminatePlayer(playerId: string): Room;
   checkWinCondition(): 'impostor_caught' | 'impostor_survived' | null;
+
+  // Multi-impostor support
+  isImpostor(playerId: string): boolean;
+  getRemainingImpostorCount(): number;
+  getRemainingCrewCount(): number;
 }
 ```
 
@@ -362,10 +367,21 @@ export interface ServerToClientEvents {
 }
 
 // Constants
-export const MIN_PLAYERS = 3;
-export const MAX_ROOMS = 100;
-export const ROOM_TIMEOUT_MS = 5 * 60 * 1000;
-export const ROULETTE_TIME_LIMIT = 30;
+export const CONSTANTS = {
+  MIN_PLAYERS: 3,
+  MAX_ROOMS: 100,
+  ROOM_TIMEOUT_MS: 5 * 60 * 1000,
+  ROULETTE_TIME_LIMIT: 30,
+  // Multi-impostor settings
+  MIN_PLAYERS_PER_IMPOSTOR: 2,
+  MAX_IMPOSTORS: 6,
+  IMPOSTOR_WARNING_THRESHOLD: 0.33,
+};
+
+// Multi-impostor helpers
+export function getMinPlayersForImpostors(impostorCount: number): number;
+export function getRecommendedImpostors(playerCount: number): { min: number; max: number };
+export function isImpostorCountValid(impostorCount: number, playerCount: number): boolean;
 ```
 
 ---

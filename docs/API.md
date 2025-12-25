@@ -126,25 +126,34 @@ Start the game (admin only).
 // Classic mode - random word from category
 socket.emit('game:start', {
   mode: 'classic',
-  category: 'animals'
+  category: 'animals',
+  impostorCount: 1  // Optional: 1-6 impostors (default: 1)
 });
 
 // Random mode - word from RAE dictionary (Spanish only)
 socket.emit('game:start', {
-  mode: 'random'
+  mode: 'random',
+  impostorCount: 2  // Multiple impostors for larger groups
 });
 
 // Custom mode - admin provides word
 socket.emit('game:start', {
   mode: 'custom',
-  customWord: 'elephant'
+  customWord: 'elephant',
+  impostorCount: 1
 });
 
 // Roulette mode - players submit words
 socket.emit('game:start', {
-  mode: 'roulette'
+  mode: 'roulette',
+  impostorCount: 1
 });
 ```
+
+**Impostor Count Rules**:
+- Minimum: 1, Maximum: 6
+- Requires `impostorCount × 2` players minimum
+- Example: 2 impostors need 4+ players, 3 impostors need 6+ players
 
 **Response**:
 - Classic/Random/Custom: `game:started` with word data
@@ -153,6 +162,7 @@ socket.emit('game:start', {
 **Errors**:
 - `NOT_ADMIN` - Only admin can start
 - `NOT_ENOUGH_PLAYERS` - Need at least 3 players
+- `INVALID_STATE` - Invalid impostor count for player count
 
 ---
 
@@ -404,6 +414,7 @@ socket.on('game:collectingStarted', (data) => {
   // data.timeLimit: number (seconds, usually 30)
   // data.minWords: number (minimum words needed)
   // data.playerCount: number
+  // data.impostorCount: number (selected impostor count)
 });
 ```
 
@@ -431,6 +442,7 @@ socket.on('game:started', (data) => {
   // data.isImpostor: boolean
   // data.turnOrder: string[] (player IDs in turn order)
   // data.mode: GameMode
+  // data.impostorCount: number (total number of impostors)
 });
 ```
 
@@ -467,7 +479,7 @@ Game has ended.
 ```typescript
 socket.on('game:ended', (data) => {
   // data.winner: 'crew' | 'impostor'
-  // data.impostorId: string
+  // data.impostorIds: string[] (all impostor player IDs)
   // data.word: string
 });
 ```
@@ -556,8 +568,7 @@ interface ClientRoom {
   status: 'lobby' | 'collecting_words' | 'playing' | 'voting' | 'finished';
   language: 'es' | 'en' | 'ca' | 'eu' | 'gl';
   players: Player[];
-  currentWord?: string | null; // null for impostor
-  impostorId?: string;
+  currentWord?: string | null; // null for impostors
   turnOrder?: string[];
   currentRound: number;
   category?: string;
@@ -565,6 +576,8 @@ interface ClientRoom {
   wordCount?: number; // roulette mode
 }
 ```
+
+> **Note**: `impostorIds` are not included in `ClientRoom` for security reasons. Players only know if they themselves are an impostor via `game:started`.
 
 ### GameMode
 
@@ -598,12 +611,17 @@ socket.on('room:playerJoined', (player) => {
 });
 
 // 4. Start game (when 3+ players)
-socket.emit('game:start', { mode: 'classic', category: 'animals' });
+socket.emit('game:start', {
+  mode: 'classic',
+  category: 'animals',
+  impostorCount: 1  // Or more for larger groups
+});
 
 // 5. Receive game state
-socket.on('game:started', ({ word, isImpostor }) => {
+socket.on('game:started', ({ word, isImpostor, impostorCount }) => {
+  console.log(`Game started with ${impostorCount} impostor(s)`);
   if (isImpostor) {
-    console.log("You're the impostor! Fake it!");
+    console.log("You're an impostor! Fake it!");
   } else {
     console.log('Secret word:', word);
   }
@@ -632,8 +650,9 @@ socket.on('vote:result', ({ eliminated, wasImpostor }) => {
 });
 
 // 12. Game ends
-socket.on('game:ended', ({ winner, impostorId, word }) => {
+socket.on('game:ended', ({ winner, impostorIds, word }) => {
   console.log(`${winner} wins! Word was: ${word}`);
+  console.log(`Impostor(s) were: ${impostorIds.join(', ')}`);
 });
 
 // 13. Play again?

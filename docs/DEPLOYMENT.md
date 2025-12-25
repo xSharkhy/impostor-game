@@ -362,8 +362,241 @@ To deploy updates:
 
 ---
 
+## Phase 7: Auto-Deploy with GitHub Webhooks
+
+Set up automatic deployment when you push to GitHub.
+
+### 7.1 Webhook Server
+
+The project includes a webhook server in `scripts/webhook-server.js`. It listens for GitHub push events and automatically deploys the corresponding branch.
+
+```bash
+cd ~/impostor-game/scripts
+```
+
+### 7.2 Configure nginx for Webhook
+
+```bash
+sudo nano /etc/nginx/sites-available/impostor-webhook
+```
+
+```nginx
+server {
+    listen 80;
+    server_name webhook.your-api.domain;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/html;
+    }
+
+    location / {
+        proxy_pass http://localhost:9000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+```bash
+sudo ln -s /etc/nginx/sites-available/impostor-webhook /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+### 7.3 Add DNS Record
+
+Add a CNAME record for the webhook subdomain:
+
+| Type | Name | Value |
+|------|------|-------|
+| CNAME | `webhook.your-api` | `your-app-api.duckdns.org` |
+
+### 7.4 Get SSL Certificate
+
+```bash
+sudo certbot --nginx -d webhook.your-api.domain
+```
+
+### 7.5 Start Webhook Server
+
+```bash
+# Generate a secure secret
+WEBHOOK_SECRET=$(openssl rand -hex 32)
+echo "Your secret: $WEBHOOK_SECRET"  # Save this!
+
+# Start the webhook server
+cd ~/impostor-game/scripts
+WEBHOOK_SECRET="$WEBHOOK_SECRET" pm2 start webhook.ecosystem.config.cjs
+pm2 save
+```
+
+### 7.6 Configure GitHub Webhook
+
+1. Go to your repository: **Settings** > **Webhooks** > **Add webhook**
+2. Configure:
+   - **Payload URL**: `https://webhook.your-api.domain/webhook`
+   - **Content type**: `application/json`
+   - **Secret**: (the secret you generated)
+   - **Events**: Select "Just the push event"
+3. Click **Add webhook**
+
+### 7.7 Test Auto-Deploy
+
+```bash
+# Make a test commit
+git commit --allow-empty -m "test: webhook auto-deploy"
+git push origin main
+
+# Watch the webhook logs
+pm2 logs impostor-webhook
+```
+
+You should see:
+```
+📬 Received push event
+📦 Push to main by your-username
+🚀 Deploying main...
+✅ main deployed successfully
+```
+
+---
+
+## Phase 8: Beta Environment (Optional)
+
+Set up a separate beta environment for testing new features.
+
+### 8.1 Architecture
+
+```
+Production (main branch):
+  - Frontend: your-app.domain
+  - Backend:  api.your-app.domain (port 3001)
+
+Beta (beta branch):
+  - Frontend: beta.your-app.domain
+  - Backend:  beta.api.your-app.domain (port 3002)
+```
+
+### 8.2 Create Beta Branch
+
+```bash
+git checkout -b beta
+git push -u origin beta
+```
+
+### 8.3 Set Up Git Worktree on Pi
+
+```bash
+cd ~/impostor-game
+git fetch origin
+git worktree add ~/impostor-beta beta
+```
+
+### 8.4 Configure Beta Server
+
+```bash
+# Create .env for beta
+cat > ~/impostor-beta/server/.env << 'EOF'
+PORT=3002
+CLIENT_URL=https://beta.your-app.domain
+
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_PUBLISHABLE_KEY=your-anon-key
+SUPABASE_SECRET_KEY=your-service-role-key
+
+ADMIN_EMAILS=your@email.com
+EOF
+
+# Build and start
+cd ~/impostor-beta
+pnpm install
+pnpm build:server
+
+# Create PM2 config
+cat > ~/impostor-beta/ecosystem.config.cjs << 'EOF'
+module.exports = {
+  apps: [{
+    name: 'impostor-api-beta',
+    cwd: './server',
+    script: 'dist/index.js',
+    env: { NODE_ENV: 'production' },
+    instances: 1,
+    autorestart: true,
+    max_memory_restart: '300M'
+  }]
+}
+EOF
+
+pm2 start ecosystem.config.cjs
+pm2 save
+```
+
+### 8.5 Configure nginx for Beta API
+
+```bash
+sudo nano /etc/nginx/sites-available/impostor-beta
+```
+
+```nginx
+server {
+    listen 80;
+    server_name beta.api.your-app.domain;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/html;
+    }
+
+    location / {
+        proxy_pass http://localhost:3002;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 86400;
+    }
+}
+```
+
+```bash
+sudo ln -s /etc/nginx/sites-available/impostor-beta /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+sudo certbot --nginx -d beta.api.your-app.domain
+```
+
+### 8.6 Configure Vercel for Beta Frontend
+
+1. In Vercel Dashboard > Project > Settings > Domains
+2. Add `beta.your-app.domain` and configure for branch `beta`
+3. In Environment Variables, add override for Preview/beta:
+   - `VITE_SOCKET_URL` = `https://beta.api.your-app.domain`
+
+### 8.7 Add Beta Redirect URL in Supabase
+
+In Supabase > Authentication > URL Configuration > Redirect URLs:
+```
+https://beta.your-app.domain/**
+```
+
+### 8.8 Webhook Auto-Deploys Beta Too
+
+The webhook server automatically handles both branches. Push to `beta` and it will deploy to the beta environment:
+
+```bash
+git checkout beta
+git push origin beta
+# Beta environment updates automatically
+```
+
+---
+
 ## Checklist
 
+### Production Deployment
 - [ ] DuckDNS subdomain created and updating
 - [ ] CNAME record pointing to DuckDNS
 - [ ] Node.js 20 installed on Pi
@@ -376,6 +609,22 @@ To deploy updates:
 - [ ] Supabase redirect URLs updated
 - [ ] OAuth providers updated (Google/GitHub)
 - [ ] Full test: login → create room → play game
+
+### Auto-Deploy (Optional)
+- [ ] Webhook server running (`impostor-webhook`)
+- [ ] nginx configured for webhook endpoint
+- [ ] SSL certificate for webhook subdomain
+- [ ] GitHub webhook configured with secret
+- [ ] Test push triggers auto-deploy
+
+### Beta Environment (Optional)
+- [ ] Git worktree for beta branch
+- [ ] PM2 running `impostor-api-beta` on port 3002
+- [ ] nginx configured for beta API
+- [ ] SSL certificate for beta API
+- [ ] Vercel configured for beta branch
+- [ ] Beta redirect URL in Supabase
+- [ ] Test beta environment works independently
 
 ---
 

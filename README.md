@@ -30,11 +30,13 @@ A real-time multiplayer social deduction game. One player is secretly the impost
 - **Real-time multiplayer** via WebSockets (Socket.io)
 - **OAuth authentication** with Google and GitHub
 - **4 game modes**: Classic, Random, Custom Word, Roulette
+- **Multi-impostor support**: 1-6 impostors based on player count
 - **5 languages**: Spanish, English, Catalan, Basque, Galician
 - **2/3 majority voting** system with live vote tracking
 - **Mobile-first** responsive design with safe areas
 - **Spectator mode** for eliminated players
 - **Auto-reconnection** with state preservation
+- **Auto-deploy** via GitHub webhooks
 - **Accessible** - WCAG AA compliant
 
 ---
@@ -209,6 +211,9 @@ pnpm build        # Production build
 - [x] i18n (5 languages)
 - [x] Mobile-first design
 - [x] Production deployment
+- [x] Multi-impostor modifier (1-6 impostors)
+- [x] Auto-deploy via GitHub webhooks
+- [x] Beta environment (staging)
 - [ ] Phone OTP authentication
 - [ ] Sound effects
 - [ ] Game history
