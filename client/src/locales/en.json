@@ -25,7 +25,7 @@
     "continueWithGoogle": "Continue with Google",
     "continueWithGitHub": "Continue with GitHub",
     "connecting": "Connecting...",
-    "termsAccept": "By entering, you agree to play fair (more or less)",
+    "termsAccept": "By joining, you accept the <0>terms</0> and <1>privacy</1>",
     "logout": "Sign out",
     "errorGoogle": "Error signing in with Google",
     "errorGitHub": "Error signing in with GitHub"

@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation, Trans } from 'react-i18next'
+import { Link } from '@tanstack/react-router'
 import { motion, AnimatePresence } from 'motion/react'
 import { Button, Card, CardContent } from '@/components/ui'
 import { useAuth } from '@/hooks'
@@ -101,9 +102,14 @@ export function LoginForm() {
         </CardContent>
       </Card>
 
-      {/* Info */}
+      {/* Legal links */}
       <p className="text-center text-xs text-text-tertiary">
-        {t('auth.termsAccept')}
+        <Trans i18nKey="auth.termsAccept">
+          Al entrar, aceptas los
+          <Link to="/terms" className="text-accent hover:underline">términos</Link>
+          y la
+          <Link to="/privacy" className="text-accent hover:underline">privacidad</Link>
+        </Trans>
       </p>
     </div>
   )
