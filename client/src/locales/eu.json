@@ -17,76 +17,76 @@
   },
   "app": {
     "title": "Inpostorrea",
-    "subtitle": "Dedukzio sozialeko jokoa"
+    "subtitle": "Norbait gezurretan ari da. Aurkitu."
   },
   "auth": {
     "welcome": "Ongi etorri",
-    "loginPrompt": "Hasi saioa jokatzeko",
+    "loginPrompt": "Sartu. Jendea zain dago.",
     "continueWithGoogle": "Google-rekin jarraitu",
     "continueWithGitHub": "GitHub-ekin jarraitu",
     "connecting": "Konektatzen...",
-    "termsAccept": "Saioa hastean, jokoaren arauak onartzen dituzu",
+    "termsAccept": "Sartzean, garbi jokatzea onartzen duzu (gutxi gorabehera)",
     "logout": "Saioa itxi",
     "errorGoogle": "Errorea Google-rekin saioa hastean",
     "errorGitHub": "Errorea GitHub-ekin saioa hastean"
   },
   "home": {
     "greeting": "Kaixo,",
-    "createRoom": "Gela Sortu",
+    "createRoom": "Partida sortu",
     "creating": "Sortzen...",
-    "joinRoom": "Gelara Sartu",
+    "joinRoom": "Sartu",
     "suggestWord": "Hitza proposatu",
-    "createRoomTitle": "Gela berria sortu",
-    "selectGameLanguage": "Aukeratu jokoaren hizkuntza",
+    "createRoomTitle": "Partida berria",
+    "selectGameLanguage": "Aukeratu hizkuntza",
     "gameLanguageHint": "Hitzak hizkuntza honetan agertuko dira"
   },
   "room": {
-    "code": "Gelaren kodea",
-    "shareCode": "Partekatu kode hau zure lagunekin",
+    "code": "Kodea",
+    "shareCode": "Pasatu kode hau. Presarik gabe baina geldirik gabe.",
     "players": "Jokalariak",
     "minimum": "Gutxienez {{count}}",
-    "waitingPlayers_one": "{{count}} jokalari gehiagoren zain...",
-    "waitingPlayers_other": "{{count}} jokalari gehiagoren zain...",
-    "waitingAdmin": "Adminaren zain...",
-    "startGame": "Jokoa Hasi",
-    "waitingForPlayers": "Jokalarien zain...",
-    "leaveRoom": "Gelatik irten",
+    "waitingPlayers_one": "{{count}} falta da. Inpostorreak ez du itxaroten.",
+    "waitingPlayers_other": "{{count}} falta dira. Inpostorreak ez du itxaroten.",
+    "waitingAdmin": "Burua motel dabil...",
+    "startGame": "Has dadila ikuskizuna",
+    "waitingForPlayers": "Bilera martxan...",
+    "leaveRoom": "Irten",
     "kick": "Kanporatu",
     "kickPlayer": "Jokalaria kanporatu",
-    "kickConfirm": "Ziur zaude <strong>{{name}}</strong> gelatik kanporatu nahi duzula?",
-    "leaveConfirm": "Ziur zaude gelatik irten nahi duzula?",
-    "leaveAdminWarning": "Admin zara. Irteten bazara, beste jokalari bat izendatuko da admin gisa.",
+    "kickConfirm": "<strong>{{name}}</strong> kanporatu? Ez dago atzera bueltarik.",
+    "leaveConfirm": "Joaten zara? Partidak zureak gabe jarraituko du.",
+    "leaveAdminWarning": "Joaten bazara, beste batek hartuko du agintea.",
     "leave": "Irten",
     "language": "Hizkuntza",
     "gameMode": "Modua",
     "modeClassic": "Klasikoa",
-    "modeClassicDesc": "Gure datu-baseko hitzak kategorien arabera",
+    "modeClassicDesc": "Ausazko hitzak gaien arabera",
     "modeRandom": "Ausazkoa (RAE)",
-    "modeRandomDesc": "RAE hiztegiaren ausazko hitza (gaztelaniaz soilik)",
+    "modeRandomDesc": "Edozein hitz. Literalki. (gaztelaniaz soilik)",
     "modeCustom": "Librea",
-    "modeCustomDesc": "Adminak hitza idazten du",
+    "modeCustomDesc": "Zuk aukeratzen duzu hitza",
     "modeRoulette": "Ruleta",
-    "modeRouletteDesc": "Jokalari bakoitzak hitz bat ekartzen du",
+    "modeRouletteDesc": "Bakoitzak hitz bat proposatzen du",
     "customWordPlaceholder": "Idatzi hitz sekretua...",
     "customWordRequired": "Idatzi hitz bat hasteko"
   },
   "collecting": {
     "title": "Ruleta",
     "wordPlaceholder": "Zure hitza...",
-    "submitWord": "Hitza bidali",
+    "submitWord": "Bidali",
     "wordsReceived": "{{count}} / {{total}} hitz",
-    "wordSent": "Zure hitza bidalita",
+    "wordSent": "Bidalita",
     "startNow": "Hasi orain",
     "minWordsNeeded": "{{count}} hitz falta dira",
     "languageHint": "Hitzak {{language}} hizkuntzan egon behar du",
     "timerExpired": "Denbora agortu da",
-    "timerExpiredNoWords": "Ez dago hitz nahikorik hasteko",
-    "notEnoughWords": "{{count}} hitz jaso dira {{min}} beharrezkoetatik",
-    "waitingAdminAction": "Adminaren zain beste partida bat hasteko",
-    "backToLobby": "Lobbyra itzuli"
+    "timerExpiredNoWords": "Ez dago hitz nahikorik",
+    "notEnoughWords": "{{count}} hitz bakarrik {{min}}-etik",
+    "waitingAdminAction": "Buruaren zain...",
+    "backToLobby": "Atzera"
   },
   "join": {
-    "title": "Gelara sartu",
+    "title": "Sartu",
     "enterCode": "Sartu {{length}} letrako kodea",
     "enterAs": "Honela sartuko zara",
     "join": "Sartu",
@@ -96,108 +96,108 @@
   "game": {
     "youAreImpostor": "Inpostorrea zara",
     "yourWord": "Zure hitza",
-    "discoverWord": "Aurkitu hitza besteei entzunez",
+    "discoverWord": "Entzun. Disimulatu. Biziraupen.",
     "round": "{{number}}. txanda",
-    "turnOrder": "Txanden ordena",
+    "turnOrder": "Deskribatzera",
     "spectator": "Ikuslea",
-    "startVoting": "Bozketa Hasi",
-    "nextRound": "Hurrengo Txanda",
-    "leaveGame": "Jokoa utzi",
-    "leaveGameConfirm": "Ziur zaude uneko jokoa utzi nahi duzula?",
-    "leaveGameAdminWarning": "Admin zara! Joaten bazara, jokoak beste admin batekin jarraituko du.",
+    "startVoting": "Seinalatzeko ordua",
+    "nextRound": "Beste txanda bat",
+    "leaveGame": "Utzi",
+    "leaveGameConfirm": "Joaten zara? Partidak zureak gabe jarraituko du.",
+    "leaveGameAdminWarning": "Joaten bazara, beste batek hartuko du agintea.",
     "abandon": "Utzi"
   },
   "voting": {
     "title": "Bozkatzera!",
-    "voted": "✓ Bozkatuta",
-    "threshold": "{{count}} = kanporatu",
+    "voted": "Bozkatuta",
+    "threshold": "{{count}} boto eta erori",
     "votesCount": "{{current}} / {{total}} boto",
     "yourVote": "Zure botoa",
     "vote": "Bozkatu",
     "tie": "Berdinketa!",
     "continue": "Jarraitu",
-    "eliminate": "Kanporatu!",
-    "eliminateVotes": "Kanporatu ({{count}} boto)",
-    "forgive": "Barkatu",
-    "waitingVotes": "Botoen zain...",
-    "waitingAdmin": "Adminaren zain..."
+    "eliminate": "Kanpora!",
+    "eliminateVotes": "Kanpora ({{count}} boto)",
+    "forgive": "Pasatzen utzi",
+    "waitingVotes": "Pentsatzen...",
+    "waitingAdmin": "Buruaren zain..."
   },
   "results": {
-    "title": "Emaitza",
+    "title": "Eta epaia da...",
     "eliminated": "kanporatua izan da",
     "wasImpostor": "INPOSTORREA ZEN!",
-    "wasInnocent": "Errugabea...",
-    "goodJob": "Lan ona, taldea!",
-    "impostorRemains": "Inpostorrea oraindik zuen artean dago...",
-    "noElimination": "Inor ez da kanporatu",
-    "notEnoughVotes": "Ez dago boto nahikorik",
-    "continuing": "Automatikoki jarraituz...",
+    "wasInnocent": "Guretakoa zen...",
+    "goodJob": "Harrapatu duzue!",
+    "impostorRemains": "Oraindik hemen. Ezkutatuta.",
+    "noElimination": "Guztiak salbu... oraingoz",
+    "notEnoughVotes": "Ez zarete ados jartzen",
+    "continuing": "Hurrengo txanda...",
     "skip": "Saltatu"
   },
   "gameOver": {
     "victory": "GARAIPENA!",
     "defeat": "PORROTA!",
-    "crewWon": "Zibilek irabazi dute!",
-    "impostorWon": "Inpostorreak irabazi du!",
+    "crewWon": "Inpostorrea erori da!",
+    "impostorWon": "Inpostorreak berearekin atera du!",
     "impostorWas": "Inpostorrea zen",
     "wordWas": "Hitza zen",
-    "playAgain": "Beste partida bat!",
-    "backToStart": "Hasierara itzuli",
-    "waitingNewGame": "Adminaren zain partida berri baterako..."
+    "playAgain": "Mendekua!",
+    "backToStart": "Irten",
+    "waitingNewGame": "Mendekua prestatzen..."
   },
   "suggest": {
     "title": "Hitza proposatu",
     "category": "Kategoria",
-    "selectCategory": "Hautatu kategoria bat",
+    "selectCategory": "Aukeratu kategoria",
     "word": "Hitza",
     "wordPlaceholder": "Idatzi hitz bat...",
     "submit": "Proposatu",
     "submitting": "Bidaltzen...",
-    "success": "Hitza ondo proposatuta",
-    "reviewNote": "Proposamenak berrikusiko dira jokoan gehitu aurretik",
+    "success": "Bidalita!",
+    "reviewNote": "Berrikusiko dugu eta ona bada, sartuko da",
     "errorCategories": "Errorea kategoriak kargatzean",
-    "noCategories": "Ez dago kategoriarik eskuragarri"
+    "noCategories": "Ez dago kategoriarik"
   },
   "admin": {
-    "suggestions": "Hitzen Proposamenak",
-    "pendingCount": "{{count}} proposamen zain",
+    "suggestions": "Proposamenak",
+    "pendingCount": "{{count}} zain",
     "allCaughtUp": "Dena eguneratuta!",
-    "noPending": "Ez dago berrikusteko proposamenik",
+    "noPending": "Ez dago proposamenik zain",
     "approve": "Onartu",
     "reject": "Baztertu",
     "refresh": "Eguneratu",
-    "backToHome": "Hasierara itzuli",
+    "backToHome": "Atzera",
     "notAuthenticated": "Autentifikatu gabe",
-    "noPermission": "Ez duzu admin baimenik",
-    "errorLoading": "Errorea proposamenak kargatzean",
+    "noPermission": "Admin baimenik gabe",
+    "errorLoading": "Errorea kargatzean",
     "translateWord": "Hitza itzuli",
-    "translateDescription": "Gehitu \"{{word}}\" ({{category}}) hitzaren itzulpenak hizkuntza guztietan",
+    "translateDescription": "\"{{word}}\" ({{category}}) hitzaren itzulpenak",
     "original": "jatorrizkoa",
     "approveAll": "Onartu hizkuntza guztietan"
   },
   "profile": {
     "namePlaceholder": "Zure izena",
     "nameLength": "2-20 karaktere",
-    "errorSaving": "Errorea izena gordetzean",
-    "errorLength": "Izenak 2 eta 20 karaktere artean izan behar ditu"
+    "errorSaving": "Errorea gordetzean",
+    "errorLength": "2 eta 20 karaktere artean"
   },
   "connection": {
-    "restored": "Konexioa berrezarrita",
-    "lost": "Konexioa galduta",
-    "reconnecting": "Berriz konektatzen saiatzen...",
+    "restored": "Itzuli gara!",
+    "lost": "Galdu zaitugu",
+    "reconnecting": "Itzultzen...",
     "error": "Konexio errorea",
-    "noServer": "Ez dago zerbitzariarekin konexiorik"
+    "noServer": "Zerbitzaririk gabe"
   },
   "notifications": {
     "playerJoined": "{{name}} sartu da",
     "playerLeft": "{{name}} irten da",
     "youWereKicked": "Gelatik kanporatu zaituzte",
     "playerKicked": "{{name}} kanporatua izan da",
-    "newAdmin": "{{name}} admin berria da"
+    "newAdmin": "{{name}} buru berria da"
   },
   "error": {
-    "title": "Zerbait gaizki joan da!",
-    "description": "Ustekabeko errore bat gertatu da. Orria birkargatu dezakezu.",
+    "title": "Ups. Hau ez zegoen aurreikusita.",
+    "description": "Zerbait huts egin du. Saiatu birkargatzean.",
     "reload": "Birkargatu"
   },
   "language": {
@@ -205,7 +205,7 @@
     "change": "Hizkuntza aldatu",
     "roomLanguage": "Gelaren hizkuntza",
     "differentLanguage": "Gela {{language}} hizkuntzan dago",
-    "willChange": "Zure hizkuntza automatikoki aldatuko da sartzean.",
+    "willChange": "Zure hizkuntza automatikoki aldatuko da.",
     "joinAnyway": "Sartu"
   },
   "categories": {
@@ -215,5 +215,119 @@
     "objects": "Objektuak",
     "professions": "Lanbideak",
     "sports": "Kirolak"
+  },
+  "terms": {
+    "title": "Erabilera baldintzak",
+    "subtitle": "Jokoaren arauak (abokaturik gabe)",
+    "privacyLink": "Pribatutasun politika",
+    "lastUpdated": "Azken eguneratzea: 2025eko abendua",
+    "whatIsThis": {
+      "title": "Zer da hau",
+      "p1": "Inpostorrea lagunekin jolasteko party game bat da. Zuetako batek ez daki hitz sekretua eta disimulatu behar du besteek deskribatzen duten bitartean. Sinplea, dibertigarria, eta batzuetan oso tentsioa.",
+      "p2": "Aplikazioa erabiltzean, baldintza hauek onartzen dituzu. Ez badizkizute gustatzen, sentitzen dugu, baina ezin ditugu zuretzako bakarrik aldatu."
+    },
+    "rules": {
+      "title": "Jokatu garbi",
+      "intro": "Hau joko sozial bat da. Helburua lagunekin ondo pasatzea da, ez inori bizitza mingoztea. Oinarrizko arauak:",
+      "rule1": "Ez izan toxikoa. Ez irainik, ez jazarpenik, ez besteen esperientzia hondatzen duen portaerarik.",
+      "rule2": "Ez egin tranparik. Inpostorrea bazara, eutsi. Ez bazara, ez eman hitza inori.",
+      "rule3": "Ez erabili aplikazioa ezer ilegaletarako. Honek eduki iraingarria, spam-a eta arazoak sor ditzakeen edozer barne hartzen du.",
+      "rule4": "Errespetatu beste jokalariak. Izen bakoitzaren atzean pertsona erreal bat dago.",
+      "rule5": "Harrapatzen bazaituzte, onartu porrot duintasunez. Eta irabazten baduzu, ez izan jasanezina."
+    },
+    "account": {
+      "title": "Zure kontua",
+      "p1": "Jolasteko Google edo GitHub-ekin saioa hasi behar duzu. Honek zure emaila eta izena ematen dizkigu, besterik ez. Ez dugu zure kontaktuetara, argazkietara, fitxategietara edo ezer arrarora sartzen.",
+      "p2": "Zure kontua zurea da. Ez partekatu inorekin. Norbaitek zure kontuarekin gauza txarrak egiten baditu, zu zara arduraduna."
+    },
+    "content": {
+      "title": "Sortzen duzun edukia",
+      "p1": "Jokorako hitzak proposatu ditzakezu. Hitz hauek iragazki batetik pasatzen dira datu-basean sartu aurretik. Edozein hitz arrazoirik eman gabe baztertzeko eskubidea gordetzen dugu (normalean iraingarria, korapilatsuegoa edo txarra delako).",
+      "p2": "Hitz bat proposatzerakoan, jokoan erabiltzeko baimena ematen diguzu. Ez dizugu krediturik edo erregaliarik emango. Guztion onurarako ekarpen bat da."
+    },
+    "consequences": {
+      "title": "Gaizki portatzen bazara",
+      "p1": "Ez diren gauzak egiten badituzu, neurriak har ditzakegu. Honek barne hartzen du baina ez da mugatzen:",
+      "item1": "Abian dauden partidetan kanporatzea",
+      "item2": "Zure kontua etetea edo ezabatzea",
+      "item3": "Zure sarbidea betiko debekatzea",
+      "p2": "Ez dago apelazioen auzitegirik. Hau doako joko bat da, ez eskubide konstituzional bat. Akats bat egin dugula uste baduzu, idatzi diezagukezu, baina ez dugu ezer agintzen."
+    },
+    "disclaimer": {
+      "title": "Disclaimer tipikoa",
+      "p1": "Inpostorrea dagoen bezala eskaintzen da, inolako bermerik gabe. Ez dugu bermatzen beti funtzionatuko duenik, bug-ik ez duenik edo betiko existituko denik.",
+      "p2": "Ez gara partidetan gertatzen denaren arduradun. Zure lagunek gezurtia zarela deskubritzen badute, hori zure kontua da. Bug batengatik partida epiko bat galtzen baduzu, sentitzen dugu baina ezin dizugu konpentsatu.",
+      "p3": "Hau maitasunez egindako proiektu pertsonal bat da. Ondo funtziona dezan ahal duguna egiten dugu, baina ez gara baliabide infinituekin duen enpresa bat."
+    },
+    "changes": {
+      "title": "Baldintza hauetan aldaketak",
+      "content": "Baldintza hauek nahi dugunean eguneratu ditzakegu. Aldaketak garrantzitsuak badira, nolabait abisatzen saiatuko gara. Baina azken finean, zure ardura da noizean behin berrikustea."
+    }
+  },
+  "privacy": {
+    "title": "Pribatutasun politika",
+    "subtitle": "Zein datu ditugun eta haiekin zer egiten dugun",
+    "termsLink": "Erabilera baldintzak",
+    "lastUpdated": "Azken eguneratzea: 2025eko abendua",
+    "intro": {
+      "title": "Laburbilduz",
+      "p1": "Jokoak funtziona dezan behar den minimoa gordetzen dugu. Ez ditugu zure datuak saltzen, ez dugu gauza arrarorik egiten haiekin, eta ez zaitugu espiatzea interesatzen.",
+      "p2": "Hori esanda, hona hemen xehetasun guztiak gardentasuna gustatzen zaigulako."
+    },
+    "collect": {
+      "title": "Zein datu biltzen ditugun",
+      "intro": "Aplikazioa nola erabiltzen duzunaren arabera, gauza desberdinak gordetzen ditugu:",
+      "auth": {
+        "title": "Saioa hasten duzunean (Google/GitHub)",
+        "item1": "Zure erabiltzaile ID bakarra (Supabase-k sortua)",
+        "item2": "Zure emaila (zu identifikatzeko)",
+        "item3": "Zure profil izena (aldatu dezakezu)"
+      },
+      "game": {
+        "title": "Jokoan zehar",
+        "item1": "Zure jokalari izena (erakustea hautatzen duzuna)",
+        "item2": "Proposatzen dituzun hitzak (proposatzea erabakitzen baduzu)"
+      },
+      "local": {
+        "title": "Zure nabigatzailean (localStorage)",
+        "item1": "Zure hizkuntza hobespena",
+        "item2": "Saio datuak aldi bakoitzean saioa hasi behar ez izateko"
+      }
+    },
+    "use": {
+      "title": "Zertarako erabiltzen ditugun zure datuak",
+      "intro": "Behar duguna soilik. Zehazki:",
+      "item1": "Partidak jolastea utzi eta zure saioa aktibo mantentzea",
+      "item2": "Zure izena erakustea jolasten duzunean",
+      "item3": "Hitz bakoitza nork proposatu duen jakitea (moderatzeko)",
+      "item4": "Jokoa hobetzea (zerbait asko huts egiten duela ikusten badugu)"
+    },
+    "thirdParties": {
+      "title": "Zure datuak ukitzen dituzten hirugarrenak",
+      "intro": "Hau funtziona dezan kanpoko zerbitzuak erabiltzen ditugu:",
+      "supabase": "Datu-basea eta autentikazioa. Zure profila gordetzen dute eta saioa kudeatzen dute.",
+      "oauth": "Zure identitatea egiaztatzeko soilik. Ez dugu zure kontuko beste daturik atzitzen.",
+      "rae": "Ausazko hitz modurako. Ez ditugu zure datuak RAE-ra bidaltzen, hitzak soilik eskatzen ditugu.",
+      "noSell": "Ez ditugu zure datuak saltzen. Ez ditugu iragarle-ekin partekatzen. Ez dugu analitika inbaditzailerik egiten. Puntua."
+    },
+    "retention": {
+      "title": "Zenbat denbora gordetzen ditugun zure datuak",
+      "item1": "Zure profila: kontu aktiboa duzun bitartean",
+      "item2": "Partidak: ez dira gordetzen. Partida amaitzean, dena ezabatzen da",
+      "item3": "Proposatutako hitzak: mugagabean (jokoaren parte dira)"
+    },
+    "rights": {
+      "title": "Zure eskubideak",
+      "intro": "Hau doako joko bat izan arren, zure datuei buruzko eskubideak dituzu:",
+      "item1": "Zure kontua eta datu guztiak ezabatzeko eska diezagukezu",
+      "item2": "Zuri buruz ditugun datuen kopia bat eska diezagukezu",
+      "item3": "Zure profil izena nahi duzunean aldatu dezakezu",
+      "contact": "Eskubide hauek erabiltzeko, idatzi guri. Ez dugu formulario dotorea, baina email guztiak irakurtzen ditugu."
+    },
+    "security": {
+      "title": "Segurtasuna",
+      "p1": "HTTPS erabiltzen dugu denerako. Pasahitzak Supabase-k kudeatzen ditu (guk ez ditugu ikusten). Datu-basera sarbidea mugatuta dago.",
+      "p2": "Hori esanda, ezer ez da %100 segurua. Norbaitek Supabase hackeatzen badu, gutxi egin dezakegu. Baina gure esku dagoena egiten dugu."
+    }
   }
 }
