@@ -1,7 +1,9 @@
 import { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import { motion } from 'motion/react'
 import { Button, Card, CardContent, Confetti, EmojiBurst } from '@/components/ui'
 import { useGameStore, useRoomStore, useUserStore } from '@/stores'
+import { fadeInUp, popIn, springBouncy, victoryReveal } from '@/lib/motion'
 
 interface ResultsPanelProps {
   onContinue: () => void
@@ -80,79 +82,118 @@ export function ResultsPanel({ onContinue }: ResultsPanelProps) {
       )}
 
       {/* Header */}
-      <div className="text-center">
+      <motion.div
+        className="text-center"
+        variants={fadeInUp}
+        initial="initial"
+        animate="animate"
+        transition={springBouncy}
+      >
         <h2 className="text-3xl font-bold">{t('results.title')}</h2>
-      </div>
+      </motion.div>
 
       {/* Result Card */}
-      <Card
-        variant={wasImpostor ? 'glow' : eliminatedPlayer ? 'glow-pink' : 'glass'}
-        className="overflow-hidden"
+      <motion.div
+        variants={victoryReveal}
+        initial="initial"
+        animate="animate"
       >
-        <CardContent className="py-10 text-center">
-          {eliminatedPlayer ? (
-            <div className="space-y-6">
-              {/* Eliminated player avatar */}
-              <div className="mx-auto">
-                <div
-                  className={`mx-auto flex h-24 w-24 items-center justify-center rounded-full text-4xl font-bold ${
-                    wasImpostor
-                      ? 'bg-neon-pink text-white'
-                      : 'bg-bg-elevated text-text-primary'
-                  }`}
-                  style={wasImpostor ? {
-                    boxShadow: '0 0 30px rgba(255, 45, 106, 0.5), 0 0 60px rgba(255, 45, 106, 0.3)',
-                  } : undefined}
+        <Card
+          variant={wasImpostor ? 'glow' : eliminatedPlayer ? 'glow-pink' : 'glass'}
+          className="overflow-hidden"
+        >
+          <CardContent className="py-10 text-center">
+            {eliminatedPlayer ? (
+              <div className="space-y-6">
+                {/* Eliminated player avatar */}
+                <motion.div
+                  className="mx-auto"
+                  variants={popIn}
+                  initial="initial"
+                  animate="animate"
                 >
-                  {eliminatedPlayer.displayName.charAt(0).toUpperCase()}
-                </div>
-              </div>
+                  <div
+                    className={`mx-auto flex h-24 w-24 items-center justify-center rounded-full text-4xl font-bold ${
+                      wasImpostor
+                        ? 'bg-neon-pink text-white'
+                        : 'bg-bg-elevated text-text-primary'
+                    }`}
+                    style={wasImpostor ? {
+                      boxShadow: '0 0 30px rgba(255, 45, 106, 0.5), 0 0 60px rgba(255, 45, 106, 0.3)',
+                    } : undefined}
+                  >
+                    {eliminatedPlayer.displayName.charAt(0).toUpperCase()}
+                  </div>
+                </motion.div>
 
-              {/* Player name */}
-              <div>
-                <p className="text-lg text-text-secondary">
-                  <span className="font-semibold text-text-primary">
-                    {eliminatedPlayer.displayName}
-                  </span>{' '}
-                  {t('results.eliminated')}
-                </p>
-              </div>
-
-              {/* Result */}
-              <div className="pt-2">
-                <p
-                  className={`text-4xl font-black ${
-                    wasImpostor ? 'text-success' : 'text-danger'
-                  }`}
-                  style={{
-                    textShadow: wasImpostor
-                      ? '0 0 30px rgba(34, 197, 94, 0.6)'
-                      : '0 0 30px rgba(239, 68, 68, 0.6)',
-                  }}
+                {/* Player name */}
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, ...springBouncy }}
                 >
-                  {wasImpostor ? t('results.wasImpostor') : t('results.wasInnocent')}
-                </p>
-                {wasImpostor && impostorCount > 1 && (
-                  <p className="mt-3 text-lg text-success">
-                    {t('results.keepHunting')}
+                  <p className="text-lg text-text-secondary">
+                    <span className="font-semibold text-text-primary">
+                      {eliminatedPlayer.displayName}
+                    </span>{' '}
+                    {t('results.eliminated')}
                   </p>
-                )}
-                {wasImpostor && impostorCount === 1 && (
-                  <p className="mt-3 text-lg text-success">
-                    {t('results.goodJob')}
+                </motion.div>
+
+                {/* Result */}
+                <motion.div
+                  className="pt-2"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5, type: 'spring', stiffness: 400, damping: 20 }}
+                >
+                  <p
+                    className={`text-4xl font-black ${
+                      wasImpostor ? 'text-success' : 'text-danger'
+                    }`}
+                    style={{
+                      textShadow: wasImpostor
+                        ? '0 0 30px rgba(34, 197, 94, 0.6)'
+                        : '0 0 30px rgba(239, 68, 68, 0.6)',
+                    }}
+                  >
+                    {wasImpostor ? t('results.wasImpostor') : t('results.wasInnocent')}
                   </p>
-                )}
-                {!wasImpostor && (
-                  <p className="mt-3 text-sm text-text-secondary">
-                    {impostorCount > 1
-                      ? t('results.impostorsRemain', { count: impostorCount })
-                      : t('results.impostorRemains')
-                    }
-                  </p>
-                )}
+                  {wasImpostor && impostorCount > 1 && (
+                    <motion.p
+                      className="mt-3 text-lg text-success"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.8 }}
+                    >
+                      {t('results.keepHunting')}
+                    </motion.p>
+                  )}
+                  {wasImpostor && impostorCount <= 1 && (
+                    <motion.p
+                      className="mt-3 text-lg text-success"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.8 }}
+                    >
+                      {t('results.goodJob')}
+                    </motion.p>
+                  )}
+                  {!wasImpostor && (
+                    <motion.p
+                      className="mt-3 text-sm text-text-secondary"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.8 }}
+                    >
+                      {impostorCount > 1
+                        ? t('results.impostorsRemain', { count: impostorCount })
+                        : t('results.impostorRemains')}
+                    </motion.p>
+                  )}
+                </motion.div>
               </div>
-            </div>
-          ) : (
+            ) : (
             <div className="space-y-4">
               <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-bg-elevated text-5xl" aria-hidden="true">
                 🤷
@@ -205,12 +246,19 @@ export function ResultsPanel({ onContinue }: ResultsPanelProps) {
           )}
         </CardContent>
       </Card>
+      </motion.div>
 
       {/* Continue button - show for admin always, or when someone was eliminated */}
       {(eliminatedPlayer || isAdmin) && (
-        <Button variant="neon" className="w-full text-base" onClick={onContinue}>
-          {eliminatedPlayer ? t('voting.continue') : t('results.skip')}
-        </Button>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, ...springBouncy }}
+        >
+          <Button variant="neon" className="w-full text-base" onClick={onContinue}>
+            {eliminatedPlayer ? t('voting.continue') : t('results.skip')}
+          </Button>
+        </motion.div>
       )}
     </div>
   )

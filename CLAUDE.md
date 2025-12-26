@@ -69,12 +69,14 @@ server/src/
 - [x] Mobile-first (safe areas, touch targets)
 - [x] README portfolio
 - [x] Audio infraestructura (hook, store, toggle)
+- [x] i18n (5 idiomas: ES, EN, CA, EU, GL)
+- [x] Persistir displayName en Supabase
 
 ### Pendiente
-- [ ] Phone OTP (requiere Twilio)
-- [ ] Persistir displayName en Supabase
-- [ ] i18n (ES/EN)
+- [ ] Animaciones del juego (FASE J) ← **Próximo**
 - [ ] Archivos mp3 de sonido
+- [ ] Phone OTP (requiere Twilio)
+- [ ] Nuevos modos de juego (FASE G)
 - [ ] Deploy Pi 5
 
 ## Comandos

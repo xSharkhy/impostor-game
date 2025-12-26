@@ -3,6 +3,7 @@ import { motion } from 'motion/react'
 import { Button } from '@/components/ui'
 import { useSocket } from '@/hooks'
 import { useGameStore, useRoomStore, useUserStore } from '@/stores'
+import { staggerContainer, listItem, springBouncy, fadeInUp, tapScale } from '@/lib/motion'
 
 export function VotingPanel() {
   const { t } = useTranslation()
@@ -36,31 +37,61 @@ export function VotingPanel() {
   return (
     <div className="flex h-full w-full max-w-md flex-col gap-3">
       {/* Compact Header */}
-      <div className="flex items-center justify-between">
+      <motion.div
+        className="flex items-center justify-between"
+        variants={fadeInUp}
+        initial="initial"
+        animate="animate"
+        transition={springBouncy}
+      >
         <div className="flex items-center gap-2">
-          <span className="text-2xl" aria-hidden="true">🗳️</span>
+          <motion.span
+            className="text-2xl"
+            aria-hidden="true"
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 500, damping: 25 }}
+          >
+            🗳️
+          </motion.span>
           <h2 className="text-xl font-bold text-accent">{t('voting.title')}</h2>
         </div>
         <span className="text-xs text-text-tertiary">
           {hasVoted ? t('voting.voted') : t('voting.threshold', { count: threshold })}
         </span>
-      </div>
+      </motion.div>
 
       {/* Progress bar */}
-      <div className="h-1.5 overflow-hidden rounded-full bg-bg-tertiary">
+      <motion.div
+        className="h-1.5 overflow-hidden rounded-full bg-bg-tertiary"
+        initial={{ opacity: 0, scaleX: 0 }}
+        animate={{ opacity: 1, scaleX: 1 }}
+        transition={{ delay: 0.1, ...springBouncy }}
+        style={{ transformOrigin: 'left' }}
+      >
         <motion.div
           className="h-full bg-gradient-to-r from-accent to-neon-pink"
           initial={{ width: 0 }}
           animate={{ width: `${(totalVotes / activePlayers.length) * 100}%` }}
           transition={{ duration: 0.3 }}
         />
-      </div>
-      <p className="text-center text-xs text-text-tertiary">
+      </motion.div>
+      <motion.p
+        className="text-center text-xs text-text-tertiary"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
         {t('voting.votesCount', { current: totalVotes, total: activePlayers.length })}
-      </p>
+      </motion.p>
 
-      {/* Players list - simplified without AnimatePresence */}
-      <div className="flex-1 space-y-1.5 overflow-y-auto">
+      {/* Players list with stagger animation */}
+      <motion.div
+        className="flex-1 space-y-1.5 overflow-y-auto"
+        variants={staggerContainer}
+        initial="initial"
+        animate="animate"
+      >
         {activePlayers.map((player) => {
           const votes = voteCounts[player.id] || 0
           const isMe = player.id === user.id
@@ -68,8 +99,9 @@ export function VotingPanel() {
           const hasThreshold = votes >= threshold
 
           return (
-            <div
+            <motion.div
               key={player.id}
+              variants={listItem}
               className={`relative flex items-center justify-between rounded-lg px-3 py-2 ${
                 isMyVote
                   ? 'border border-neon-pink/50 bg-neon-pink/10'
@@ -80,11 +112,13 @@ export function VotingPanel() {
             >
               {/* Vote bar background */}
               {votes > 0 && (
-                <div
-                  className={`absolute inset-y-0 left-0 rounded-lg transition-all duration-300 ${
+                <motion.div
+                  className={`absolute inset-y-0 left-0 rounded-lg ${
                     hasThreshold ? 'bg-danger/20' : 'bg-neon-purple/10'
                   }`}
-                  style={{ width: `${(votes / activePlayers.length) * 100}%` }}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${(votes / activePlayers.length) * 100}%` }}
+                  transition={{ duration: 0.3, ease: 'easeOut' }}
                 />
               )}
 
@@ -113,27 +147,35 @@ export function VotingPanel() {
               {/* Vote count & button */}
               <div className="relative z-10 flex items-center gap-2">
                 {votes > 0 && (
-                  <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-                    hasThreshold ? 'bg-danger text-white' : 'bg-bg-elevated text-text-secondary'
-                  }`}>
+                  <motion.span
+                    key={votes}
+                    className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                      hasThreshold ? 'bg-danger text-white' : 'bg-bg-elevated text-text-secondary'
+                    }`}
+                    initial={{ scale: 1.4 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+                  >
                     {votes}
-                  </span>
+                  </motion.span>
                 )}
                 {!hasVoted && !isMe && (
-                  <Button
-                    size="sm"
-                    variant="neon-outline"
-                    onClick={() => castVote(player.id)}
-                    className="h-9 min-w-[52px] px-3 text-xs"
-                  >
-                    {t('voting.vote')}
-                  </Button>
+                  <motion.div whileTap={tapScale}>
+                    <Button
+                      size="sm"
+                      variant="neon-outline"
+                      onClick={() => castVote(player.id)}
+                      className="h-9 min-w-[52px] px-3 text-xs"
+                    >
+                      {t('voting.vote')}
+                    </Button>
+                  </motion.div>
                 )}
               </div>
-            </div>
+            </motion.div>
           )
         })}
-      </div>
+      </motion.div>
 
       {/* Admin controls - ALWAYS at bottom */}
       <div className="mt-auto space-y-2 pt-2">

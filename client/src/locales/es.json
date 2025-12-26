@@ -102,6 +102,7 @@
     "yourWord": "Tu palabra",
     "discoverWord": "Escucha. Disimula. Sobrevive.",
     "round": "Ronda {{number}}",
+    "roundLabel": "Ronda",
     "impostorCount_one": "{{count}} impostor",
     "impostorCount_other": "{{count}} impostores",
     "turnOrder": "A describir",

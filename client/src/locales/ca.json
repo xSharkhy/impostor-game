@@ -102,6 +102,7 @@
     "yourWord": "La teva paraula",
     "discoverWord": "Escolta. Dissimula. Sobreviu.",
     "round": "Ronda {{number}}",
+    "roundLabel": "Ronda",
     "impostorCount_one": "{{count}} impostor",
     "impostorCount_other": "{{count}} impostors",
     "turnOrder": "A descriure",

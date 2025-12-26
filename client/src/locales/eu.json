@@ -102,6 +102,7 @@
     "yourWord": "Zure hitza",
     "discoverWord": "Entzun. Disimulatu. Bizirik iraun.",
     "round": "{{number}}. txanda",
+    "roundLabel": "Txanda",
     "impostorCount_one": "{{count}} inpostorre",
     "impostorCount_other": "{{count}} inpostorre",
     "turnOrder": "Deskribatzera",

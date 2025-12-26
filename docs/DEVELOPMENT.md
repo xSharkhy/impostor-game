@@ -96,6 +96,30 @@ CREATE POLICY "Users can insert their own profile"
   ON public.profiles FOR INSERT
   WITH CHECK (auth.uid() = id);
 
+-- Function to auto-create profile on signup
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.profiles (id, display_name)
+  VALUES (
+    NEW.id,
+    COALESCE(
+      NEW.raw_user_meta_data->>'full_name',
+      NEW.raw_user_meta_data->>'name',
+      split_part(NEW.email, '@', 1)
+    )
+  );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Trigger to auto-create profile on signup
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW
+  EXECUTE FUNCTION public.handle_new_user();
+
 -- Categories table
 CREATE TABLE IF NOT EXISTS public.categories (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -356,3 +380,352 @@ pnpm install
 5. Open a Pull Request
 
 Please follow the existing code style and add tests if applicable.
+
+---
+
+## Animations Implementation Plan
+
+> Plan de implementación de animaciones para mejorar la experiencia del juego.
+> Las animaciones deben ser **goofy pero elegantes** - manteniendo el estilo minimalista pero añadiendo personalidad party.
+
+### Contexto Importante
+
+**El juego está pensado para jugarse en persona**. Los turnos son en **sentido horario** desde un jugador designado aleatoriamente. La lista de turnos en pantalla es una **referencia visual** para cuando se juega a través de Discord o similar, no un sistema interactivo de avance de turno.
+
+### Sistema de Animaciones Existente
+
+Ya existe un sistema completo en `client/src/lib/motion.ts` (424 líneas) con:
+
+| Categoría | Variantes |
+|-----------|-----------|
+| Transiciones | `springTransition`, `springBouncy`, `springGentle`, `easeOutExpo`, `easeOutBack` |
+| Fade | `fadeIn`, `fadeInUp`, `fadeInDown`, `fadeInScale` |
+| Slide | `slideInFromLeft`, `slideInFromRight`, `slideInFromBottom` |
+| Scale | `scaleIn`, `popIn`, `bounceIn` |
+| Goofy | `wobble`, `jelly`, `rubberBand`, `tada`, `swing`, `heartbeat` |
+| Dramatic | `explosiveReveal`, `roundReveal`, `shakeAnimation` |
+| Glow | `pulseGlow`, `pulseGlowPink`, `floatingAnimation` |
+| Stagger | `staggerContainer`, `staggerContainerFast`, `staggerItem`, `listItem` |
+| Victory | `victoryReveal`, `impostorReveal`, `wordReveal` |
+| Hover | `hoverScale`, `hoverLift`, `tapScale` |
+
+**Problema actual**: Estas variantes están **casi sin usar**. Los componentes del juego tienen animaciones mínimas o ninguna.
+
+---
+
+### FASE J — Animaciones del Juego
+
+#### J1. Transición de Ronda (Round Transition)
+
+**Componente**: `GameView.tsx`
+**Animaciones**: `roundReveal`, `bounceIn`
+
+Cuando cambia `currentRound`:
+1. **Overlay dramático** con el número de ronda grande
+2. Número entra con `roundReveal` (blur → bounce)
+3. Opcional: cuenta regresiva 3...2...1 antes de empezar
+4. Fade out del overlay, reveal del nuevo estado
+
+```tsx
+// Ejemplo de implementación
+<AnimatePresence>
+  {showRoundTransition && (
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+      variants={fadeIn}
+    >
+      <motion.span
+        className="text-9xl font-black text-accent"
+        variants={roundReveal}
+      >
+        {currentRound}
+      </motion.span>
+    </motion.div>
+  )}
+</AnimatePresence>
+```
+
+**Trigger**: Cuando `phase` cambia a `'playing'` después de `'results'` o al inicio del juego.
+
+---
+
+#### J2. Reveal de la Palabra Secreta
+
+**Componente**: `GameView.tsx`
+**Animaciones**: `wordReveal`, `pulseGlowPink`
+
+Al mostrar la palabra (o "???"):
+1. Card entra con `fadeInScale`
+2. Palabra entra con `wordReveal` (delay 0.5s)
+3. Para impostor: "???" tiene `pulseGlowPink` infinito
+4. Para crew: palabra tiene glow verde sutil
+
+---
+
+#### J3. Lista de Jugadores (Turn Order)
+
+**Componente**: `GameView.tsx`
+**Animaciones**: `staggerContainer`, `listItem`, `hoverLift`
+
+La lista de turnos es **referencial** (para Discord, etc.):
+1. Contenedor usa `staggerContainer`
+2. Cada jugador entra con `listItem` (stagger 0.08s)
+3. Hover con `hoverLift` en cada item
+4. El jugador actual (tú) tiene borde accent con `pulseGlow` sutil
+5. Jugador eliminado: fade con `strikethrough` animado
+
+**Nota UX**: No hay "turno activo" porque el juego es presencial. La lista solo muestra el orden de referencia.
+
+---
+
+#### J4. Transición Playing → Voting
+
+**Componente**: `GameView.tsx` / `VotingPanel.tsx`
+**Animaciones**: `slideInFromRight`, `fadeIn`
+
+Cuando admin inicia votación:
+1. Vista de juego hace `slideInFromLeft` exit
+2. VotingPanel entra con `slideInFromRight`
+3. Título "Votación" con `bounceIn`
+
+---
+
+#### J5. Votación: Feedback Visual
+
+**Componente**: `VotingPanel.tsx`
+**Animaciones**: `jelly`, `tapScale`, `staggerContainer`
+
+1. Lista de candidatos con `staggerContainer`
+2. Al recibir un voto: badge hace `jelly` o `rubberBand`
+3. Botones de voto con `tapScale`
+4. Barra de progreso 2/3 con animación suave
+
+---
+
+#### J6. Results: Reveal del Eliminado
+
+**Componente**: `ResultsPanel.tsx`
+**Animaciones**: `impostorReveal`, `victoryReveal`, `tada`
+
+1. Card de resultado entra con `victoryReveal`
+2. Avatar del eliminado con `popIn`
+3. Si era impostor: `impostorReveal` + confetti
+4. Si era inocente: `shakeAnimation` sutil
+5. Texto "Era impostor" / "Era inocente" con `fadeInUp`
+
+---
+
+#### J7. Game Over: Victoria Final
+
+**Componente**: `GameOverPanel.tsx`
+**Animaciones**: `explosiveReveal`, `tada`, `confetti`
+
+1. Overlay entra con `fadeIn`
+2. Emoji trofeo/calavera con `explosiveReveal`
+3. Texto de victoria con `victoryReveal`
+4. Reveal del impostor(es) con `impostorReveal`
+5. Confetti party para crew / emojis skull para impostor
+
+---
+
+#### J8. Micro-interacciones Generales
+
+**Componentes**: Varios
+**Animaciones**: `hoverScale`, `tapScale`, `heartbeat`
+
+1. **Botones**: `whileTap={tapScale}` en todos
+2. **Cards interactivas**: `whileHover={hoverScale}`
+3. **Timer bajo**: `heartbeat` cuando quedan <10 segundos
+4. **Badge de ronda**: `wobble` al hacer hover
+
+---
+
+### Orden de Implementación Sugerido
+
+1. **J1 - Round Transition** (alto impacto, cambio localizado)
+2. **J2 - Word Reveal** (mejora inmediata en GameView)
+3. **J3 - Turn Order Stagger** (mejora feeling de lista)
+4. **J5 - Voting Feedback** (más interactivo)
+5. **J6 - Results Reveal** (más dramático)
+6. **J4 - Phase Transitions** (polish general)
+7. **J7 - Game Over** (ya tiene confetti, añadir más drama)
+8. **J8 - Micro-interactions** (polish final)
+
+---
+
+### Notas de Implementación
+
+- Usar `AnimatePresence` para enter/exit animations
+- Usar `motion.div` con `variants` para animaciones complejas
+- No animar elementos que cambien frecuentemente (evitar jank)
+- Respetar `prefers-reduced-motion` para accesibilidad
+- Mantener animaciones < 1s para no interrumpir el flujo del juego
+
+### Consideraciones de UX para Juego Presencial
+
+Como el juego es **para jugar en persona**:
+- Las animaciones son **celebratorias**, no informativas de turno
+- La lista de turnos es **referencia estática** para Discord, no interactiva
+- El foco visual debe estar en la **palabra** y el **número de ronda**
+- Los momentos dramáticos son: reveal de palabra, votación, resultado, game over
+
+---
+
+## Roadmap UX-First: Tareas Pendientes
+
+> Priorización basada en **impacto en la experiencia del usuario**.
+> Última actualización: 2025-12-26
+
+### Contexto: El Juego es Presencial
+
+El Impostor está diseñado para **jugarse en persona**. Esto significa:
+- La UI es una **herramienta de apoyo**, no el juego en sí
+- Los momentos importantes son los **reveals** y **resultados**
+- Las animaciones deben **celebrar** momentos, no informar turnos
+- El audio refuerza momentos clave sin ser intrusivo
+
+---
+
+### Nivel 1: Alto Impacto UX (Hacer Ahora)
+
+Estas mejoras transforman la experiencia de "app funcional" a "juego memorable".
+
+#### FASE J — Animaciones del Juego
+**Estado**: 🔴 Pendiente
+**Impacto**: ⭐⭐⭐⭐⭐
+
+El sistema de animaciones (`motion.ts`) está completo pero sin usar. Implementar:
+- J1: Transición de ronda con número dramático
+- J2: Reveal de palabra secreta
+- J3: Lista de jugadores con stagger
+- J4: Transiciones entre fases
+- J5: Feedback visual en votación
+- J6: Reveal del eliminado
+- J7: Victoria final dramática
+- J8: Micro-interacciones
+
+**Por qué es prioritario**: Las animaciones dan **personalidad** al juego. Sin ellas, se siente como una app genérica. Con ellas, se convierte en una experiencia party memorable.
+
+#### Archivos de Audio (mp3)
+**Estado**: 🔴 Pendiente (infraestructura ✅)
+**Impacto**: ⭐⭐⭐⭐
+
+La infraestructura de audio está lista (`useSound`, `useSoundStore`, `SoundToggle`). Faltan los archivos:
+
+| Efecto | Momento | Estilo sugerido |
+|--------|---------|-----------------|
+| `join.mp3` | Jugador entra | Pop suave |
+| `start.mp3` | Juego inicia | Fanfarria corta |
+| `vote.mp3` | Voto emitido | Click satisfactorio |
+| `reveal.mp3` | Reveal impostor | Dramático/suspense |
+| `win.mp3` | Crew gana | Celebración |
+| `lose.mp3` | Impostor gana | Tono menor/misterioso |
+| `tick.mp3` | Timer bajo | Tick tenso |
+| `round.mp3` | Nueva ronda | Transición |
+
+**Por qué es prioritario**: El audio refuerza los momentos emocionales. Un "ding" al votar o una fanfarria al ganar eleva la experiencia significativamente.
+
+---
+
+### Nivel 2: Impacto UX Medio (Después de Nivel 1)
+
+Mejoras que expanden las posibilidades del juego.
+
+#### FASE G — Nuevos Modos de Juego
+**Estado**: 🔴 Pendiente
+**Impacto**: ⭐⭐⭐
+
+Modos actuales: Clásico, Random (RAE), Custom, Roulette
+
+Modos propuestos:
+- **Colaborativo**: Jugadores sugieren palabras antes de empezar
+- **Temático**: Categorías especiales (películas, lugares, etc.)
+- **Speed**: Rondas más cortas, más presión
+
+**Consideración UX**: El modo Roulette ya es colaborativo. ¿Realmente necesitamos más modos o pulir los existentes?
+
+#### I2-I4 — Auditoría UX Formal
+**Estado**: 🔴 Pendiente
+**Impacto**: ⭐⭐⭐
+
+Tareas:
+- Testing con usuarios reales
+- Grabación de sesiones
+- Identificar puntos de fricción
+- Documentar mejoras
+
+**Consideración**: Mejor hacer esto DESPUÉS de implementar animaciones y audio, para evaluar la experiencia completa.
+
+---
+
+### Nivel 3: Impacto UX Bajo (Nice-to-Have)
+
+Mejoras técnicas o de nicho que no afectan la experiencia core.
+
+#### E1 — Phone OTP
+**Estado**: 🔴 Pendiente (requiere Twilio)
+**Impacto**: ⭐⭐
+
+Permite login con número de teléfono. Útil para usuarios sin cuentas Google/GitHub, pero:
+- Requiere configurar Twilio (coste)
+- Google/GitHub cubren 95%+ de usuarios
+- No es bloqueante para jugar
+
+#### FASE H — Monetización
+**Estado**: 🔴 Pendiente
+**Impacto**: ⭐
+
+Ideas:
+- Cosméticos (colores premium, animaciones especiales)
+- Buy me a coffee
+- Premium slots (>8 jugadores)
+
+**Prohibido**: Paywalls, ventajas competitivas, revelar impostor.
+
+**Consideración**: El juego debe ser excelente ANTES de monetizar. Priorizar experiencia.
+
+#### Deploy Raspberry Pi 5
+**Estado**: 🔴 Pendiente
+**Impacto**: ⭐ (infraestructura)
+
+Stack: nginx + PM2 + certbot
+
+No afecta UX directamente, pero permite:
+- Hosting propio
+- Sin costes de cloud
+- Control total
+
+---
+
+### Orden de Implementación Recomendado
+
+```
+1. FASE J - Animaciones (J1 → J8)
+   └── Alto impacto, mejora inmediata de percepción
+
+2. Audio mp3s
+   └── Complementa las animaciones
+
+3. UX Review (I2-I4)
+   └── Evaluar experiencia completa
+
+4. Pulir modos existentes vs nuevos modos
+   └── Decisión basada en UX review
+
+5. Deploy
+   └── Cuando esté listo para producción
+
+6. Phone OTP / Monetización
+   └── Solo si hay demanda real
+```
+
+---
+
+### Principios UX para Recordar
+
+1. **El juego es presencial**: La app apoya, no reemplaza la interacción humana
+2. **Momentos > Información**: Las animaciones celebran, no informan
+3. **Audio sutil**: Refuerza sin molestar, siempre con opción de mute
+4. **Mobile-first**: La mayoría jugará desde el móvil
+5. **Accesibilidad**: Respetar `prefers-reduced-motion`, contrastes WCAG
+6. **Party pero elegante**: Revolut > Vercel, goofy pero con clase
