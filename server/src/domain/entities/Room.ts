@@ -488,7 +488,7 @@ export class Room {
   }
 
   continueAfterVoting(): Room {
-    // Reset votes and return to playing
+    // Reset votes, increment round, and return to playing
     const newPlayers = new Map(this._players)
     for (const [id, player] of newPlayers) {
       newPlayers.set(id, player.resetVote())
@@ -497,6 +497,7 @@ export class Room {
     return this.withUpdate({
       status: 'playing',
       players: newPlayers,
+      currentRound: this._currentRound + 1,
     })
   }
 
