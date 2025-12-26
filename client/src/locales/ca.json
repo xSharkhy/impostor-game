@@ -72,7 +72,8 @@
     "impostors": "Impostors",
     "needMorePlayers": "Pocs sou. Minim {{count}}.",
     "tooManyImpostors": "Massa llops per a tan poques ovelles.",
-    "recommendedImpostors": "L'ideal: {{min}}-{{max}}"
+    "recommendedImpostors": "L'ideal: {{min}}-{{max}}",
+    "maxImpostorsReached": "Màxim 6 impostors"
   },
   "collecting": {
     "title": "Ruleta",

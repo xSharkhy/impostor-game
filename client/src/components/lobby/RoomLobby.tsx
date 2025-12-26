@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { motion } from 'motion/react'
+import { motion, useAnimation } from 'motion/react'
 import {
   Button,
   Card,
@@ -28,8 +28,6 @@ import { SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/lib/i18n'
 import {
   CONSTANTS,
   type GameMode,
-  getMinPlayersForImpostors,
-  getRecommendedImpostors,
   isImpostorCountWarning,
 } from '@impostor/shared'
 
@@ -52,6 +50,10 @@ export function RoomLobby() {
     const saved = localStorage.getItem('lastImpostorCount')
     return saved ? Math.max(1, Math.min(CONSTANTS.MAX_IMPOSTORS, parseInt(saved, 10) || 1)) : 1
   })
+
+  // Animation for shake feedback
+  const shakeControls = useAnimation()
+  const [shakeMessage, setShakeMessage] = useState<string | null>(null)
 
   // Save mode and impostor count to localStorage when they change
   useEffect(() => {
@@ -79,6 +81,37 @@ export function RoomLobby() {
     }
   }, [room?.players.length, impostorCount])
 
+  // Handle increment with feedback when blocked
+  const handleIncrementImpostor = useCallback(() => {
+    if (!room) return
+
+    const maxForPlayers = Math.floor(room.players.length / CONSTANTS.MIN_PLAYERS_PER_IMPOSTOR)
+    const nextCount = impostorCount + 1
+
+    // Can increment normally
+    if (nextCount <= CONSTANTS.MAX_IMPOSTORS && nextCount <= maxForPlayers) {
+      setImpostorCount(nextCount)
+      return
+    }
+
+    // Can't increment - show feedback
+    shakeControls.start({
+      x: [0, -4, 4, -4, 4, 0],
+      transition: { duration: 0.4 },
+    })
+
+    // Determine why and show message
+    if (nextCount > CONSTANTS.MAX_IMPOSTORS) {
+      setShakeMessage(t('room.maxImpostorsReached'))
+    } else if (nextCount > maxForPlayers) {
+      const playersNeeded = nextCount * CONSTANTS.MIN_PLAYERS_PER_IMPOSTOR
+      setShakeMessage(t('room.needMorePlayers', { count: playersNeeded }))
+    }
+
+    // Clear message after delay
+    setTimeout(() => setShakeMessage(null), 2500)
+  }, [room, impostorCount, shakeControls, t])
+
   if (!room || !user) return null
 
   // Check which modes are available for the current room language
@@ -89,10 +122,9 @@ export function RoomLobby() {
   const playersNeeded = CONSTANTS.MIN_PLAYERS - room.players.length
 
   // Impostor count validation
-  const minPlayersForImpostors = getMinPlayersForImpostors(impostorCount)
-  const canHaveThisImpostorCount = room.players.length >= minPlayersForImpostors
+  const maxImpostorsForPlayers = Math.floor(room.players.length / CONSTANTS.MIN_PLAYERS_PER_IMPOSTOR)
+  const canHaveThisImpostorCount = impostorCount <= maxImpostorsForPlayers
   const impostorWarning = isImpostorCountWarning(impostorCount, room.players.length)
-  const recommended = getRecommendedImpostors(room.players.length)
 
   // For custom mode, also need a word
   const canStartCustom = gameMode === 'custom' ? customWord.trim().length > 0 : true
@@ -294,7 +326,10 @@ export function RoomLobby() {
               <div className="space-y-1.5">
                 <div className="flex items-center gap-3">
                   <span className="w-16 text-sm text-text-secondary">{t('room.impostors')}</span>
-                  <div className="flex flex-1 items-center justify-between rounded-md border border-border bg-bg-secondary px-3 py-2">
+                  <motion.div
+                    className="flex flex-1 items-center justify-between rounded-md border border-border bg-bg-secondary px-3 py-2"
+                    animate={shakeControls}
+                  >
                     <Button
                       variant="ghost"
                       size="sm"
@@ -309,27 +344,27 @@ export function RoomLobby() {
                       variant="ghost"
                       size="sm"
                       className="h-6 w-6 p-0"
-                      onClick={() => setImpostorCount(Math.min(CONSTANTS.MAX_IMPOSTORS, impostorCount + 1))}
-                      disabled={impostorCount >= CONSTANTS.MAX_IMPOSTORS || !canHaveThisImpostorCount}
+                      onClick={handleIncrementImpostor}
                     >
                       +
                     </Button>
-                  </div>
+                  </motion.div>
                 </div>
-                {/* Warnings and recommendations - only show for 2+ impostors since 1 impostor is always valid with game minimum */}
-                {!canHaveThisImpostorCount && impostorCount > 1 && (
-                  <p className="text-xs text-danger">
-                    {t('room.needMorePlayers', { count: minPlayersForImpostors })}
-                  </p>
+                {/* Feedback message when can't increment */}
+                {shakeMessage && (
+                  <motion.p
+                    className="text-xs text-warning"
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                  >
+                    {shakeMessage}
+                  </motion.p>
                 )}
-                {canHaveThisImpostorCount && impostorWarning === 'too_many' && (
+                {/* Only show recommendations when there are 4+ players (with 3 only 1 impostor is possible) */}
+                {!shakeMessage && room.players.length >= 4 && canHaveThisImpostorCount && impostorWarning === 'too_many' && (
                   <p className="text-xs text-warning">
                     {t('room.tooManyImpostors')}
-                  </p>
-                )}
-                {canHaveThisImpostorCount && impostorWarning === 'too_few' && impostorCount > 1 && (
-                  <p className="text-xs text-text-tertiary">
-                    {t('room.recommendedImpostors', { min: recommended.min, max: recommended.max })}
                   </p>
                 )}
               </div>

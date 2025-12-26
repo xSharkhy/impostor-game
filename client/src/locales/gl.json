@@ -72,7 +72,8 @@
     "impostors": "Impostores",
     "needMorePlayers": "Poucos sodes. Mínimo {{count}}.",
     "tooManyImpostors": "Moitos lobos para tan poucas ovellas.",
-    "recommendedImpostors": "O ideal: {{min}}-{{max}}"
+    "recommendedImpostors": "O ideal: {{min}}-{{max}}",
+    "maxImpostorsReached": "Máximo 6 impostores"
   },
   "collecting": {
     "title": "Ruleta",

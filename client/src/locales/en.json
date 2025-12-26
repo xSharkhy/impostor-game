@@ -72,7 +72,8 @@
     "impostors": "Impostors",
     "needMorePlayers": "Not enough. You need at least {{count}}.",
     "tooManyImpostors": "Too many wolves for this flock.",
-    "recommendedImpostors": "Sweet spot: {{min}}-{{max}}"
+    "recommendedImpostors": "Sweet spot: {{min}}-{{max}}",
+    "maxImpostorsReached": "Max 6 impostors"
   },
   "collecting": {
     "title": "Roulette",

@@ -72,7 +72,8 @@
     "impostors": "Inpostorreak",
     "needMorePlayers": "Gutxi zarete. Gutxienez {{count}}.",
     "tooManyImpostors": "Otso gehiegi ardi gutxi honentzat.",
-    "recommendedImpostors": "Egokiena: {{min}}-{{max}}"
+    "recommendedImpostors": "Egokiena: {{min}}-{{max}}",
+    "maxImpostorsReached": "Gehienez 6 inpostorre"
   },
   "collecting": {
     "title": "Ruleta",
