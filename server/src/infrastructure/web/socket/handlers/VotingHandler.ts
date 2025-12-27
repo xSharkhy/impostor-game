@@ -95,7 +95,7 @@ export function createVotingHandler(
           const updatedRoom = room.continueAfterVoting()
           await roomRepository.save(updatedRoom)
 
-          io.to(room.id).emit('vote:result', {})
+          io.to(room.id).emit('vote:result', { newRound: updatedRoom.currentRound })
           return
         }
 
@@ -104,7 +104,7 @@ export function createVotingHandler(
         })
 
         if (result.isTie) {
-          io.to(result.room.id).emit('vote:result', {})
+          io.to(result.room.id).emit('vote:result', { newRound: result.room.currentRound })
           return
         }
 
@@ -131,6 +131,7 @@ export function createVotingHandler(
           io.to(result.room.id).emit('vote:result', {
             eliminated: result.eliminatedPlayerId ?? undefined,
             wasImpostor,
+            newRound: result.room.currentRound,
           })
         }
       } catch (error) {

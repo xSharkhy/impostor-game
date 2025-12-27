@@ -38,6 +38,7 @@ interface GameState {
   // Results
   lastEliminated: string | null
   wasImpostor: boolean | null
+  pendingRound: number | null // Round to apply when continuing from results
   winner: 'crew' | 'impostor' | null
   revealedImpostorIds: string[]
 
@@ -50,7 +51,7 @@ interface GameState {
   startVoting: () => void
   updateVotes: (votes: Record<string, string>, twoThirdsReached: boolean) => void
   castVote: (targetId: string) => void
-  setVoteResult: (eliminated?: string, wasImpostor?: boolean) => void
+  setVoteResult: (eliminated?: string, wasImpostor?: boolean, newRound?: number) => void
   continueFromResults: () => void
   endGame: (winner: 'crew' | 'impostor', impostorIds: string[], word: string) => void
   reset: () => void
@@ -70,6 +71,7 @@ const initialState = {
   myVote: null,
   lastEliminated: null,
   wasImpostor: null,
+  pendingRound: null,
   winner: null,
   revealedImpostorIds: [] as string[],
 }
@@ -151,22 +153,25 @@ export const useGameStore = create<GameState>((set) => ({
 
   castVote: (targetId) => set({ hasVoted: true, myVote: targetId }),
 
-  setVoteResult: (eliminated, wasImpostor) =>
+  setVoteResult: (eliminated, wasImpostor, newRound) =>
     set({
       phase: 'results',
       lastEliminated: eliminated ?? null,
       wasImpostor: wasImpostor ?? null,
+      pendingRound: newRound ?? null,
     }),
 
   continueFromResults: () =>
-    set({
+    set((state) => ({
       phase: 'playing',
+      currentRound: state.pendingRound ?? state.currentRound,
       voteState: null,
       hasVoted: false,
       myVote: null,
       lastEliminated: null,
       wasImpostor: null,
-    }),
+      pendingRound: null,
+    })),
 
   endGame: (winner, impostorIds, word) =>
     set({

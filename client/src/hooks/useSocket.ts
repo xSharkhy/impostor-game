@@ -193,8 +193,8 @@ export function useSocket() {
         useGameStore.getState().updateVotes(votes, twoThirdsReached)
       })
 
-      socket.on('vote:result', ({ eliminated, wasImpostor }) => {
-        useGameStore.getState().setVoteResult(eliminated, wasImpostor)
+      socket.on('vote:result', ({ eliminated, wasImpostor, newRound }) => {
+        useGameStore.getState().setVoteResult(eliminated, wasImpostor, newRound)
       })
 
       socket.on('game:ended', ({ winner, impostorIds, word }) => {

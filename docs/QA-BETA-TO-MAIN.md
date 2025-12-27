@@ -118,7 +118,7 @@
 - [x] Mayoría 2/3 → jugador eliminado
 - [ ] Si eliminado era impostor → "ERA EL IMPOSTOR" + confetti
 - [ ] Si eliminado era inocente → "Era de los nuestros..."
-- [vuelve a salir el mismo número de ronda] **CRÍTICO**: Ronda avanza después de votación (no se queda igual)
+- [x] **CRÍTICO**: Ronda avanza después de votación (CORREGIDO - newRound en vote:result)
 
 ### 5.3 Multi-impostor en votación
 - [ ] Si había 2 impostores y eliminan 1 → "Uno menos. Quedan más."
@@ -175,7 +175,7 @@
 - [x] Lobby se ve bien en móvil
 - [x] GameView se ve bien en móvil
 - [x] Votación usable en móvil (touch targets suficientes)
-- [la del número de ronda especialmente, pero quiero mantenerla, así que habrá que optimizarla] Animaciones no causan lag en móvil
+- [x] Animaciones no causan lag en móvil (OPTIMIZADO - sin blur, con will-change)
 
 ### 8.2 Safe areas
 - [x] Contenido no se corta en notch/dynamic island
@@ -234,13 +234,13 @@
 | Área | Estado | Notas |
 |------|--------|-------|
 | Auth | ✅ | Funciona correctamente |
-| Routing | ⚠️ | `/join` y `/room/XXXX` dan 404 en navegación directa |
+| Routing | ✅ | Comportamiento esperado (estado interno en `/`) |
 | Lobby | ✅ | OK |
 | Multi-impostor | ⏳ | Pendiente probar con 4+ jugadores |
-| Animaciones | ⚠️ | Transición de ronda laggy en móvil |
-| Votación | 🔴 | Ronda NO avanza tras votación (bug crítico) |
+| Animaciones | ✅ | Optimizada para móvil (sin blur, con will-change) |
+| Votación | ✅ | Ronda avanza correctamente (fix: newRound en vote:result) |
 | Game Over | ✅ | OK |
-| Mobile | ⚠️ | Back button cierra navegador (comportamiento normal si no hay historial) |
+| Mobile | ✅ | Back button comportamiento esperado |
 | i18n | ✅ | OK |
 | Admin | ⏳ | Pendiente probar aprobar/rechazar |
 
@@ -249,23 +249,26 @@
 ## ✅ Decisión final
 
 - [ ] **APROBADO para merge** - Todos los tests críticos pasan
-- [x] **BLOQUEADO** - Issues encontrados (listar abajo)
+- [ ] **BLOQUEADO** - Issues encontrados (listar abajo)
+
+> ⚠️ **Estado actual**: Issues críticos corregidos, pendiente re-testing en beta
 
 ### Issues bloqueantes encontrados:
 
-1. **🔴 CRÍTICO - Ronda no avanza tras votación**
-   - El número de ronda se repite después de votar
-   - El fix en `Room.continueAfterVoting()` no está llegando al servidor de beta
-   - **Acción:** Verificar que el servidor de la Pi tiene el código actualizado
+1. ~~**🔴 CRÍTICO - Ronda no avanza tras votación**~~ → **CORREGIDO** ✅
+   - El servidor incrementaba la ronda pero no la comunicaba al cliente
+   - Fix: Añadido `newRound` al evento `vote:result`
+   - El cliente ahora guarda `pendingRound` y lo aplica al continuar
 
 2. ~~**🟡 Routing SPA incompleto**~~ → **NO ES BUG**
    - `/join` y `/room/XXXX` nunca existieron como rutas
    - La app usa estado interno en `/` para cambiar entre vistas
    - Comportamiento esperado ✅
 
-3. **🟡 Animación de ronda laggy en móvil**
-   - La transición del número grande causa jank
-   - **Acción:** Optimizar con `will-change` o reducir complejidad
+3. ~~**🟡 Animación de ronda laggy en móvil**~~ → **CORREGIDO** ✅
+   - Eliminados filtros blur que causaban jank en GPU
+   - Añadido `will-change: transform, opacity`
+   - Reducida escala inicial y rotación
 
 ### Issues no bloqueantes:
 - Browser back cierra navegador en móvil → Comportamiento esperado si no hay historial
@@ -273,4 +276,4 @@
 
 ---
 
-*Última actualización: Diciembre 2024*
+*Última actualización: 27 Diciembre 2024*

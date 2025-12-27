@@ -74,7 +74,7 @@ export interface ServerToClientEvents {
   'game:newRound': (data: { round: number }) => void
   'game:votingStarted': () => void
   'vote:update': (data: { votes: Record<string, string>; twoThirdsReached: boolean }) => void
-  'vote:result': (data: { eliminated?: string; wasImpostor?: boolean }) => void
+  'vote:result': (data: { eliminated?: string; wasImpostor?: boolean; newRound?: number }) => void
   'game:ended': (data: { winner: 'crew' | 'impostor'; impostorIds: string[]; word: string }) => void
   'word:suggested': (data: { success: boolean; error?: string }) => void
   'word:categories': (data: { id: string; name: string }[]) => void
