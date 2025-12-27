@@ -230,30 +230,26 @@ export const pulseGlowPink: Variants = {
   },
 }
 
-// Round number dramatic entrance
+// Round number dramatic entrance (optimized for mobile - no blur filters)
 export const roundReveal: Variants = {
   initial: {
-    scale: 4,
+    scale: 3,
     opacity: 0,
-    rotate: -180,
-    filter: 'blur(20px)',
+    rotate: -90,
   },
   animate: {
-    scale: [4, 1.2, 0.9, 1],
+    scale: [3, 1.1, 0.95, 1],
     opacity: 1,
-    rotate: [-180, 10, -5, 0],
-    filter: 'blur(0px)',
+    rotate: [-90, 5, -2, 0],
     transition: {
-      duration: 0.8,
+      duration: 0.6,
       ease: [0.34, 1.56, 0.64, 1],
     },
   },
   exit: {
-    scale: 0,
+    scale: 0.8,
     opacity: 0,
-    rotate: 180,
-    filter: 'blur(10px)',
-    transition: { duration: 0.3 },
+    transition: { duration: 0.2 },
   },
 }
 

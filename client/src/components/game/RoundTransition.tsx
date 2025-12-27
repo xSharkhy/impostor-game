@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useTranslation } from 'react-i18next'
-import { fadeIn, roundReveal, springBouncy } from '@/lib/motion'
+import { fadeIn, roundReveal } from '@/lib/motion'
 
 interface RoundTransitionProps {
   round: number
@@ -39,28 +39,29 @@ export function RoundTransition({ round, show, onComplete }: RoundTransitionProp
     <AnimatePresence>
       {show && (
         <motion.div
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/95"
           variants={fadeIn}
           initial="initial"
           animate="animate"
           exit="exit"
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.2 }}
         >
           {/* Round label */}
           <motion.span
             className="mb-4 text-lg font-medium uppercase tracking-widest text-text-secondary"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, ...springBouncy }}
+            transition={{ delay: 0.1, duration: 0.3 }}
           >
             {t('game.roundLabel', 'Ronda')}
           </motion.span>
 
-          {/* Big round number */}
+          {/* Big round number - GPU accelerated */}
           <motion.span
-            className="text-[12rem] font-black leading-none text-accent"
+            className="text-[10rem] font-black leading-none text-accent sm:text-[12rem]"
             style={{
-              textShadow: '0 0 60px rgba(168, 85, 247, 0.5), 0 0 120px rgba(168, 85, 247, 0.3)',
+              textShadow: '0 0 40px rgba(168, 85, 247, 0.4)',
+              willChange: 'transform, opacity',
             }}
             variants={roundReveal}
             initial="initial"
@@ -71,10 +72,10 @@ export function RoundTransition({ round, show, onComplete }: RoundTransitionProp
 
           {/* Decorative elements */}
           <motion.div
-            className="mt-8 flex items-center gap-3"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5, ...springBouncy }}
+            className="mt-6 flex items-center gap-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.3 }}
           >
             <span className="h-1 w-12 rounded-full bg-accent/30" />
             <span className="h-2 w-2 rounded-full bg-accent" />
